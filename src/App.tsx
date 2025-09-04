@@ -23,7 +23,6 @@ function App() {
   const [step, setStep] = useState<number>(STEPS.Splash);
   const [answers, setAnswers] = useState<Answers>({});
   const [questionIndex, setQuestionIndex] = useState(0);
-  const [selfie, setSelfie] = useState<string | undefined>();
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<GenerationResult | null>(null);
 
@@ -47,7 +46,6 @@ function App() {
   };
 
   const startGeneration = async (maybeSelfie?: string) => {
-    setSelfie(maybeSelfie);
     setStep(STEPS.Generating);
     setError(null);
     try {
@@ -72,7 +70,6 @@ function App() {
     setStep(STEPS.Splash);
     setAnswers({});
     setQuestionIndex(0);
-    setSelfie(undefined);
     setError(null);
     setResult(null);
   };
