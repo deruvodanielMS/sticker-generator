@@ -40,11 +40,13 @@ function safeParseJsonFromString(s: string) {
   }
 }
 
-export async function generateArchetypeWithLLM(answers: Answers): Promise<{ archetype: Archetype; prompt: string }> {
+export async function generateArchetypeWithLLM(answers: Answers, variant?: string): Promise<{ archetype: Archetype; prompt: string }> {
   const lines = Object.entries(answers)
     .map(([k, v]) => `- ${k}: ${v.choice}${v.intensity ? ` (intensity: ${v.intensity})` : ''}`)
     .join('\n');
-  const instruction = `You are an assistant that maps a user's short answers into a creative AI archetype and a detailed image generation prompt for a circular sticker.
+  const varNote = variant ? `Use style variation token: ${variant}. Slightly bias colors/composition based on this token to produce variant outputs.` : '';
+
+  const instruction = `You are an assistant that maps a user's short answers into a creative AI archetype and a detailed image generation prompt for a circular sticker. ${varNote}
 
 Be creative and vary outputs: even with similar inputs, return varied phrasing, color combinations, and micro-style hints. Add subtle variation so the resulting images can differ across requests.
 
