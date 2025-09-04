@@ -116,8 +116,32 @@ function App() {
         />
       )}
       {step === STEPS.Photo && (
-        <PhotoCapture onConfirm={startGeneration} onSkip={() => startGeneration(undefined)} />
+        <PhotoCapture onConfirm={(dataUrl?: string) => preparePrompt(dataUrl)} onSkip={() => preparePrompt(undefined)} />
       )}
+
+      {step === STEPS.PromptPreview && generatedPrompt && generatedArchetype && (
+        <PromptPreview
+          archetype={generatedArchetype}
+          prompt={generatedPrompt}
+          onChange={(p) => setGeneratedPrompt(p)}
+          onGenerate={startGeneration}
+          onRegenerate={async () => {
+            setPromptLoading(true);
+            try {
+              const llm = await import('./services/llmService');
+              const out = await llm.generateArchetypeWithLLM(answers);
+              setGeneratedArchetype(out.archetype);
+              setGeneratedPrompt(out.prompt);
+            } catch (e: any) {
+              setError('Regenerate failed');
+            } finally {
+              setPromptLoading(false);
+            }
+          }}
+          loading={promptLoading}
+        />
+      )}
+
       {step === STEPS.Generating && <LoadingScreen />}
       {step === STEPS.Result && result && <ResultScreen result={result} onRestart={restart} />}
     </div>
