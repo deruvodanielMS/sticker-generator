@@ -7,7 +7,7 @@ async function callPaLM(promptText: string): Promise<string> {
   const url = `https://generativeai.googleapis.com/v1/models/text-bison-001:generateText?key=${API_KEY}`;
   const body = {
     prompt: { text: promptText },
-    temperature: 0.2,
+    temperature: 0.7,
     maxOutputTokens: 800,
   };
   const res = await fetch(url, {
