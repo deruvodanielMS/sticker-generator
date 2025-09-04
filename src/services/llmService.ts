@@ -41,12 +41,14 @@ function safeParseJsonFromString(s: string) {
 }
 
 export async function generateArchetypeWithLLM(answers: Answers): Promise<{ archetype: Archetype; prompt: string }> {
-  const lines = Object.entries(answers).map(([k, v]) => `- ${k}: ${v}`).join('\n');
+  const lines = Object.entries(answers)
+    .map(([k, v]) => `- ${k}: ${v.choice}${v.intensity ? ` (intensity: ${v.intensity})` : ''}`)
+    .join('\n');
   const instruction = `You are an assistant that maps a user's short answers into a creative AI archetype and a detailed image generation prompt for a circular sticker.
 
 Be creative and vary outputs: even with similar inputs, return varied phrasing, color combinations, and micro-style hints. Add subtle variation so the resulting images can differ across requests.
 
-User answers:
+User answers (each includes optional intensity from 1-10):
 ${lines}
 
 Return a JSON object ONLY with the following fields:
@@ -57,7 +59,7 @@ Return a JSON object ONLY with the following fields:
 - robotType (string): short description of the robot character
 - robotPose (string): short description of the robot pose
 - colorPalette (string): color palette description
-- prompt (string): final single prompt to send to an image generation API. The prompt should be concise and include the above visual details and that the output is a high-quality circular sticker design. Use neutral respectful wording regarding user's photo; do not include personal identifiable requests.
+- prompt (string): final single prompt to send to an image generation API. The prompt should be concise and include the above visual details and that the output is a high-quality circular sticker design. If an intensity is provided, weigh visual choices accordingly (e.g., higher intensity -> bolder colors, more dramatic lighting). Use neutral respectful wording regarding user's photo; do not include personal identifiable requests.
 
 Example output (JSON):
 {
