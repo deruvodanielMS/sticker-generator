@@ -29,8 +29,6 @@ function App() {
   const currentQuestion = QUESTIONS[questionIndex];
   const total = QUESTIONS.length;
 
-  const archetype = useMemo(() => (Object.keys(answers).length === total ? deriveArchetype(answers) : null), [answers, total]);
-
   const handleSelect = (optId: string) => {
     setAnswers(prev => ({ ...prev, [currentQuestion.id]: optId }));
   };
@@ -49,20 +47,27 @@ function App() {
     setStep(STEPS.Generating);
     setError(null);
     try {
-      if (!archetype) throw new Error('Archetype unavailable');
       if (!navigator.onLine) throw new Error('No internet connection. Please connect to continue.');
-      const res = await generateSticker(archetype, maybeSelfie);
+
+      // Try LLM to derive a rich archetype and prompt
+      let generatedArchetype = null;
+      let finalPrompt: string | undefined = undefined;
+      try {
+        const llm = await import('./services/llmService');
+        const out = await llm.generateArchetypeWithLLM(answers);
+        generatedArchetype = out.archetype;
+        finalPrompt = out.prompt;
+      } catch (llmErr) {
+        // fallback to local mapping
+        generatedArchetype = deriveArchetype(answers);
+      }
+
+      const res = await generateSticker(generatedArchetype, maybeSelfie, finalPrompt);
       setResult(res);
       setStep(STEPS.Result);
     } catch (e: any) {
-      if (archetype) {
-        const fallback = await generateSticker(archetype, maybeSelfie);
-        setResult(fallback);
-        setStep(STEPS.Result);
-      } else {
-        setError(e?.message || 'Something went wrong. Please try again.');
-        setStep(STEPS.Photo);
-      }
+      setError(e?.message || 'Something went wrong. Please try again.');
+      setStep(STEPS.Photo);
     }
   };
 
