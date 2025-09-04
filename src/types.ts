@@ -25,4 +25,6 @@ export type GenerationResult = {
   imageUrl: string; // data URL or remote URL
   archetype: Archetype;
   prompt: string;
+  source?: 'openai' | 'fallback';
+  providerError?: string | null;
 };
