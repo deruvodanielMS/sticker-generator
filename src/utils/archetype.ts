@@ -28,11 +28,11 @@ const BASE_ARCHETYPES: Record<string, Omit<Archetype, 'name' | 'descriptor' | 'v
 };
 
 export function deriveArchetype(answers: Answers): Archetype {
-  const innovation = answers['innovation'];
-  const risk = answers['risk'];
-  const decision = answers['decision_style'];
-  const collaboration = answers['collaboration'];
-  const vision = answers['vision'];
+  const innovation = answers['innovation']?.choice;
+  const risk = answers['risk']?.choice;
+  const decision = answers['decision_style']?.choice;
+  const collaboration = answers['collaboration']?.choice;
+  const vision = answers['vision']?.choice;
 
   if (innovation === 'disruptive' && risk === 'high' && vision === 'industry_transformation') {
     return {
