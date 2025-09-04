@@ -81,13 +81,16 @@ export async function generateSticker(archetype: Archetype, selfieDataUrl?: stri
     try {
       const selfieBlob = selfieDataUrl ? await (await fetch(selfieDataUrl)).blob() : undefined;
       const url = await generateViaOpenAI(prompt, selfieBlob);
-      return { imageUrl: url, archetype, prompt };
-    } catch (e) {
+      return { imageUrl: url, archetype, prompt, source: 'openai' };
+    } catch (e: any) {
       // fall through to local generation
       console.error('Image generation failed:', e);
+      const errMsg = e?.message || String(e);
+      const dataUrl = svgDataUrl(archetype, selfieDataUrl);
+      return { imageUrl: dataUrl, archetype, prompt, source: 'fallback', providerError: errMsg };
     }
   }
 
   const dataUrl = svgDataUrl(archetype, selfieDataUrl);
-  return { imageUrl: dataUrl, archetype, prompt };
+  return { imageUrl: dataUrl, archetype, prompt, source: 'fallback' };
 }
