@@ -44,11 +44,11 @@ export async function generateArchetypeWithLLM(answers: Answers, variant?: strin
   const lines = Object.entries(answers)
     .map(([k, v]) => `- ${k}: ${v.choice}${v.intensity ? ` (intensity: ${v.intensity})` : ''}`)
     .join('\n');
-  const varNote = variant ? `Use style variation token: ${variant}. Slightly bias colors/composition based on this token to produce variant outputs.` : '';
+  const varNote = variant ? `StyleToken: ${variant}.` : '';
 
-  const instruction = `You are an assistant that maps a user's short answers into a creative AI archetype and a detailed image generation prompt for a circular sticker. ${varNote}
+  const instruction = `You are an assistant that maps a user's short answers into a creative AI archetype and a short, creative image prompt for a circular sticker. ${varNote}
 
-Be creative and vary outputs: even with similar inputs, return varied phrasing, color combinations, and micro-style hints. Add subtle variation so the resulting images can differ across requests.
+Be creative and free: do NOT produce rigid, prescriptive layout instructions. Instead, create a concise, imaginative prompt (1-2 sentences) that inspires diverse sticker outputs. The prompt should mention the archetype name and the general mood or palette inspiration derived from the user's answers, but leave detailed composition, background, and character interpretation to the image generator.
 
 User answers (each includes optional intensity from 1-10):
 ${lines}
@@ -57,22 +57,14 @@ Return a JSON object ONLY with the following fields:
 - name (string): short archetype name (e.g., "Trailblazer")
 - descriptor (string): one-sentence descriptor
 - valueLine (string): a short value/benefit line
-- backgroundStyle (string): short description of background style
-- robotType (string): short description of the robot character
-- robotPose (string): short description of the robot pose
-- colorPalette (string): color palette description
-- prompt (string): final single prompt to send to an image generation API. The prompt should be concise and include the above visual details and that the output is a high-quality circular sticker design. If an intensity is provided, weigh visual choices accordingly (e.g., higher intensity -> bolder colors, more dramatic lighting). Use neutral respectful wording regarding user's photo; do not include personal identifiable requests.
+- prompt (string): final short prompt (1-2 sentences) to send to an image generation API. Make it creative and non-prescriptive; the goal is to maximize visual variety across calls.
 
 Example output (JSON):
 {
   "name": "Trailblazer",
   "descriptor": "You challenge the status quo and architect bold futures.",
   "valueLine": "You ignite industry shifts with decisive, high-impact moves.",
-  "backgroundStyle": "neon gradient with subtle circuit patterns",
-  "robotType": "sleek explorer android",
-  "robotPose": "dynamic forward-leaning stance",
-  "colorPalette": "electric blue, vibrant violet, and white",
-  "prompt": "A high-quality, circular sticker design in electric blue and vibrant violet. The background should be a neon gradient with subtle circuit patterns. The central subject is a sleek explorer android in a dynamic forward-leaning stance. The style is futuristic, human-centered and friendly. Text on the sticker: 'Trailblazer'."
+  "prompt": "An expressive circular sticker evoking bold innovation and kinetic motion, featuring a charismatic futuristic explorer in electric blue and violet tones, with dynamic lighting and friendly personality."
 }
 
 Do not include any additional text outside the JSON object.`;
