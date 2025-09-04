@@ -3,7 +3,6 @@ import type { Archetype } from '../types';
 function createSVGMarkup(archetype: Archetype, selfieDataUrl?: string): string {
   const size = 1024;
   const gradientId = 'grad1';
-  const maskId = 'circleMask';
   const textColor = '#ffffff';
 
   const bg = archetype.colorPalette.includes('violet')
