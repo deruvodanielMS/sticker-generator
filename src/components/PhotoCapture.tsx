@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 type Props = {
   onConfirm: (dataUrl?: string) => void;
@@ -9,25 +9,32 @@ export default function PhotoCapture({ onConfirm, onSkip }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [snapshot, setSnapshot] = useState<string | null>(null);
+  const [stream, setStream] = useState<MediaStream | null>(null);
+  const [cameraStarted, setCameraStarted] = useState(false);
 
-  useEffect(() => {
-    let stream: MediaStream | null = null;
-    async function init() {
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          await videoRef.current.play();
-        }
-      } catch (e) {
-        setError('Camera access denied or unavailable.');
+  const startCamera = async () => {
+    setError(null);
+    try {
+      const s = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+      setStream(s);
+      if (videoRef.current) {
+        videoRef.current.srcObject = s;
+        // play may be blocked until user interacts
+        await videoRef.current.play();
       }
+      setCameraStarted(true);
+    } catch (e) {
+      setError('Camera access denied or unavailable. Please allow camera access.');
     }
-    init();
-    return () => {
-      if (stream) stream.getTracks().forEach(t => t.stop());
-    };
-  }, []);
+  };
+
+  const stopCamera = () => {
+    if (stream) {
+      stream.getTracks().forEach(t => t.stop());
+      setStream(null);
+    }
+    setCameraStarted(false);
+  };
 
   const takePhoto = () => {
     const video = videoRef.current;
@@ -41,6 +48,8 @@ export default function PhotoCapture({ onConfirm, onSkip }: Props) {
     ctx.drawImage(video, (video.videoWidth - size) / 2, (video.videoHeight - size) / 2, size, size, 0, 0, size, size);
     const data = canvas.toDataURL('image/png');
     setSnapshot(data);
+    // stop camera after capture to save resources
+    stopCamera();
   };
 
   const confirm = () => onConfirm(snapshot ?? undefined);
@@ -52,25 +61,37 @@ export default function PhotoCapture({ onConfirm, onSkip }: Props) {
 
       {error && <div className="error-banner">{error}</div>}
 
-      {!snapshot ? (
+      {!cameraStarted && !snapshot && (
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button className="primary-button" onClick={startCamera}>Allow camera</button>
+          <button className="ghost-button" onClick={onSkip}>Skip</button>
+        </div>
+      )}
+
+      {cameraStarted && !snapshot && (
         <div className="camera-frame">
           <video ref={videoRef} playsInline className="camera-video" />
           <div className="camera-overlay" />
         </div>
-      ) : (
+      )}
+
+      {snapshot && (
         <div className="photo-preview">
           <img src={snapshot} alt="Selfie preview" />
         </div>
       )}
 
       <div className="actions-row">
-        {!snapshot ? (
+        {!snapshot && cameraStarted ? (
           <button className="primary-button" onClick={takePhoto} disabled={!!error}>Take photo</button>
-        ) : (
-          <button className="secondary-button" onClick={() => setSnapshot(null)}>Retake</button>
-        )}
-        <button className="ghost-button" onClick={onSkip}>Skip</button>
+        ) : snapshot ? (
+          <button className="secondary-button" onClick={() => { setSnapshot(null); startCamera(); }}>Retake</button>
+        ) : null}
+
+        {snapshot && <button className="ghost-button" onClick={onSkip}>Skip</button>}
+
         <button className="primary-button" onClick={confirm}>Continue</button>
+
       </div>
     </div>
   );
