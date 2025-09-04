@@ -19,8 +19,14 @@ export default function PhotoCapture({ onConfirm, onSkip }: Props) {
       setStream(s);
       if (videoRef.current) {
         videoRef.current.srcObject = s;
-        // play may be blocked until user interacts
-        await videoRef.current.play();
+        videoRef.current.playsInline = true;
+        // wait for metadata so videoWidth/Height are available
+        await new Promise<void>((resolve) => {
+          const v = videoRef.current!;
+          const onLoaded = () => { v.removeEventListener('loadedmetadata', onLoaded); resolve(); };
+          v.addEventListener('loadedmetadata', onLoaded);
+          v.play().catch(() => {/* ignore play error */});
+        });
       }
       setCameraStarted(true);
     } catch (e) {
@@ -39,14 +45,19 @@ export default function PhotoCapture({ onConfirm, onSkip }: Props) {
   const takePhoto = () => {
     const video = videoRef.current;
     if (!video) return;
+    const vw = video.videoWidth || 640;
+    const vh = video.videoHeight || 480;
+    const size = Math.min(vw, vh);
     const canvas = document.createElement('canvas');
-    const size = Math.min(video.videoWidth || 640, video.videoHeight || 480);
     canvas.width = size;
     canvas.height = size;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    ctx.drawImage(video, (video.videoWidth - size) / 2, (video.videoHeight - size) / 2, size, size, 0, 0, size, size);
-    const data = canvas.toDataURL('image/png');
+    // center crop
+    const sx = Math.max(0, (vw - size) / 2);
+    const sy = Math.max(0, (vh - size) / 2);
+    ctx.drawImage(video, sx, sy, size, size, 0, 0, size, size);
+    const data = canvas.toDataURL('image/jpeg', 0.9);
     setSnapshot(data);
     // stop camera after capture to save resources
     stopCamera();
