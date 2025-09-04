@@ -7,7 +7,7 @@ type Props = {
 };
 
 const ResultScreen: FC<Props> = ({ result, onRestart }) => {
-  const { archetype, imageUrl } = result;
+  const { archetype, imageUrl, prompt, source, providerError } = result;
 
   const printSticker = () => {
     const w = window.open('', '_blank');
