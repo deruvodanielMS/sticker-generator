@@ -30,9 +30,10 @@ async function generateViaStability(prompt: string, selfieBlob?: Blob): Promise<
   return URL.createObjectURL(blob);
 }
 
-export async function generateSticker(archetype: Archetype, selfieDataUrl?: string): Promise<GenerationResult> {
+// Generate sticker - accepts optional promptOverride from the LLM
+export async function generateSticker(archetype: Archetype, selfieDataUrl?: string, promptOverride?: string): Promise<GenerationResult> {
   const includeSelfie = Boolean(selfieDataUrl);
-  const prompt = buildPrompt(archetype, includeSelfie);
+  const prompt = promptOverride ?? buildPrompt(archetype, includeSelfie);
   const online = typeof navigator !== 'undefined' ? navigator.onLine : true;
 
   if (API_KEY && online) {
