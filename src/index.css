@@ -5,7 +5,7 @@
   --secondary-main: #53C0D2;
   --gradient1-start: #0ECC7E;
   --gradient1-end: #53C0D2;
-  --gradient1-textContrast: #111210;
+  --gradient1-textContrast: #F7FAFC; /* light text for high contrast on dark background */
 
   font-family: 'Red Hat Display', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -13,7 +13,7 @@
 
   color-scheme: light dark;
   color: var(--gradient1-textContrast);
-  background-color: #242424;
+  background-color: #0B1220; /* deeper, cooler dark for better contrast */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
