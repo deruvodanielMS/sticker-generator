@@ -5,8 +5,9 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   // dev server middleware to proxy image requests to OpenAI securely
-  configureServer(server) {
-    server.middlewares.use('/api/generate-image', async (req, res, next) => {
+  // Note: Simple proxy for image generation (no multipart selfie support in this middleware).
+  configureServer: (server: any) => {
+    server.middlewares.use('/api/generate-image', async (req: any, res: any, next: any) => {
       if (req.method !== 'POST') return next();
       try {
         let body = '';
@@ -22,39 +23,12 @@ export default defineConfig({
         }
 
         if (selfieDataUrl) {
-          // extract base64 part
-          const match = selfieDataUrl.match(/data:(image\/[a-zA-Z+]+);base64,(.*)$/);
-          if (!match) {
-            res.statusCode = 400;
-            res.end(JSON.stringify({ error: 'Invalid selfie data URL' }));
-            return;
-          }
-          const mime = match[1];
-          const b64 = match[2];
-          // create blob from base64
-          const buffer = Buffer.from(b64, 'base64');
-          const blob = new Blob([buffer], { type: mime });
-          const form = new FormData();
-          form.append('image', blob, 'selfie.png');
-          form.append('prompt', prompt);
-          form.append('model', 'gpt-image-1');
-          form.append('size', '1024x1024');
-
-          const resp = await fetch('https://api.openai.com/v1/images/edits', {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${OPENAI_KEY}`,
-            },
-            body: form as any,
-          });
-
-          const j = await resp.json();
-          res.setHeader('Content-Type', 'application/json');
-          res.end(JSON.stringify(j));
-          return;
+          // For now, we don't support image edits via this simple proxy. Proceed without selfie.
+          console.warn('Selfie provided but will be ignored by proxy.');
         }
 
         // no selfie: image generation
+        // @ts-ignore - fetch available in Node 18+ runtime
         const genRes = await fetch('https://api.openai.com/v1/images/generations', {
           method: 'POST',
           headers: {
