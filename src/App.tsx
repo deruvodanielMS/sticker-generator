@@ -58,17 +58,27 @@ function App() {
     setError(null);
     try {
       if (!navigator.onLine) throw new Error('No internet connection. Please connect to continue.');
+
+      // Build a deterministic prompt from answers first so it always reflects user's choices
+      const fallbackArche = deriveArchetype(answers);
+      const variantToken = 'v' + Math.floor(Math.random() * 10000);
+      const localPrompt = buildPromptFromAnswers(fallbackArche, answers, variantToken);
+      setGeneratedArchetype(fallbackArche);
+      setGeneratedPrompt(localPrompt);
+
+      // Then ask LLM to refine/creative prompt; if LLM returns, use it, otherwise keep localPrompt
       try {
         const llm = await import('./services/llmService');
-        const out = await llm.generateArchetypeWithLLM(answers);
-        setGeneratedArchetype(out.archetype);
-        setGeneratedPrompt(out.prompt);
+        const out = await llm.generateArchetypeWithLLM(answers, variantToken);
+        // if the LLM produced a different prompt use it, otherwise keep local
+        if (out?.prompt && out.prompt.trim().length > 0 && out.prompt.trim() !== localPrompt.trim()) {
+          setGeneratedArchetype(out.archetype);
+          setGeneratedPrompt(out.prompt);
+        }
       } catch (llmErr) {
-        const fallback = deriveArchetype(answers);
-        setGeneratedArchetype(fallback);
-        const bp = buildPrompt(fallback, Boolean(maybeSelfie));
-        setGeneratedPrompt(bp);
+        // keep local prompt
       }
+
       setStep(STEPS.PromptPreview);
     } catch (e: any) {
       setError(e?.message || 'Failed to prepare prompt');
