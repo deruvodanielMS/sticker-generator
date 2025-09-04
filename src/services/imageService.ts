@@ -13,6 +13,10 @@ async function generateViaStability(prompt: string, selfieBlob?: Blob): Promise<
     form.append('image', selfieBlob, 'selfie.png');
   }
 
+  // attach a random seed to encourage varied outputs when supported by the provider
+  const seed = Math.floor(Math.random() * 1_000_000_000);
+  form.append('seed', String(seed));
+
   const res = await fetch('https://api.stability.ai/v2beta/stable-image/generate/core', {
     method: 'POST',
     headers: {
