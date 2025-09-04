@@ -23,8 +23,9 @@ export function buildPromptFromAnswers(archetype: Archetype, answers: Answers, v
     }
   }
 
-  const vibe = variant ? ` Use style variant token: ${variant}.` : '';
+  const vibe = variant ? `StyleToken:${variant};` : '';
 
-  const prompt = `A high-quality, circular sticker design in a ${archetype.colorPalette} theme. The background should be ${archetype.backgroundStyle}. The central subject is a robot character of type ${archetype.robotType}, with a ${archetype.robotPose}. Style: futuristic, human-centered, tactile and friendly.${vibe} Based on the user's answers: ${lines.join('; ')}. Text on the sticker: '${archetype.name}'.`;
+  // Less prescriptive prompt: ask for a creative, original sticker inspired by archetype + answers.
+  const prompt = `Create an original, unique circular sticker that embodies the archetype "${archetype.name}". ${vibe}Draw inspiration from the following traits: ${lines.join('; ')}. Produce a high-quality, visually engaging sticker concept — be creative with composition, colors, and character details. Include the archetype name subtly as part of the design.`;
   return prompt;
 }
