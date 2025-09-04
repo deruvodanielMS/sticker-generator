@@ -44,6 +44,8 @@ export async function generateArchetypeWithLLM(answers: Answers): Promise<{ arch
   const lines = Object.entries(answers).map(([k, v]) => `- ${k}: ${v}`).join('\n');
   const instruction = `You are an assistant that maps a user's short answers into a creative AI archetype and a detailed image generation prompt for a circular sticker.
 
+Be creative and vary outputs: even with similar inputs, return varied phrasing, color combinations, and micro-style hints. Add subtle variation so the resulting images can differ across requests.
+
 User answers:
 ${lines}
 
