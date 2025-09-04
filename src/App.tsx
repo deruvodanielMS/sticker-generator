@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import './App.css';
 import SplashScreen from './components/SplashScreen';
 import QuestionScreen from './components/QuestionScreen';
