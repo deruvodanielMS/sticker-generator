@@ -4,34 +4,71 @@ import type { Archetype, GenerationResult } from '../types';
 
 const API_KEY = import.meta.env.VITE_API_KEY_IMAGE_GENERATION as string | undefined;
 
-async function generateViaStability(prompt: string, selfieBlob?: Blob): Promise<string> {
-  const form = new FormData();
-  form.append('prompt', prompt);
-  form.append('output_format', 'png');
+async function b64ToObjectUrl(b64: string, mime = 'image/png') {
+  const binary = atob(b64);
+  const len = binary.length;
+  const bytes = new Uint8Array(len);
+  for (let i = 0; i < len; i++) bytes[i] = binary.charCodeAt(i);
+  const blob = new Blob([bytes], { type: mime });
+  return URL.createObjectURL(blob);
+}
+
+async function generateViaOpenAI(prompt: string, selfieBlob?: Blob): Promise<string> {
+  if (!API_KEY) throw new Error('No API key for image generation available');
+
   if (selfieBlob) {
-    // Many providers require a different endpoint for image-to-image; for simplicity we pass as reference
+    // Use the OpenAI image edits endpoint with multipart/form-data
+    const form = new FormData();
     form.append('image', selfieBlob, 'selfie.png');
+    form.append('prompt', prompt);
+    form.append('model', 'gpt-image-1');
+    form.append('size', '1024x1024');
+
+    const res = await fetch('https://api.openai.com/v1/images/edits', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${API_KEY}`,
+      },
+      body: form,
+    });
+
+    if (!res.ok) {
+      const txt = await res.text();
+      throw new Error(`OpenAI Images edit error ${res.status} ${txt}`);
+    }
+
+    const json = await res.json();
+    const b64 = json?.data?.[0]?.b64_json;
+    if (!b64) throw new Error('OpenAI returned no image data');
+    return await b64ToObjectUrl(b64);
   }
 
-  // attach a random seed to encourage varied outputs when supported by the provider
-  const seed = Math.floor(Math.random() * 1_000_000_000);
-  form.append('seed', String(seed));
+  // No selfie: use the generations endpoint
+  const body = {
+    model: 'gpt-image-1',
+    prompt,
+    size: '1024x1024',
+    n: 1,
+  } as any;
 
-  const res = await fetch('https://api.stability.ai/v2beta/stable-image/generate/core', {
+  const res = await fetch('https://api.openai.com/v1/images/generations', {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${API_KEY}`,
-      Accept: 'image/png',
+      'Content-Type': 'application/json',
     },
-    body: form,
+    body: JSON.stringify(body),
   });
 
   if (!res.ok) {
-    throw new Error(`Image API error ${res.status}`);
+    const txt = await res.text();
+    throw new Error(`OpenAI Images generation error ${res.status} ${txt}`);
   }
 
-  const blob = await res.blob();
-  return URL.createObjectURL(blob);
+  const json = await res.json();
+  const b64 = json?.data?.[0]?.b64_json;
+  if (!b64) throw new Error('OpenAI returned no image data');
+  return await b64ToObjectUrl(b64);
 }
 
 // Generate sticker - accepts optional promptOverride from the LLM
@@ -43,10 +80,11 @@ export async function generateSticker(archetype: Archetype, selfieDataUrl?: stri
   if (API_KEY && online) {
     try {
       const selfieBlob = selfieDataUrl ? await (await fetch(selfieDataUrl)).blob() : undefined;
-      const url = await generateViaStability(prompt, selfieBlob);
+      const url = await generateViaOpenAI(prompt, selfieBlob);
       return { imageUrl: url, archetype, prompt };
     } catch (e) {
       // fall through to local generation
+      console.error('Image generation failed:', e);
     }
   }
 
