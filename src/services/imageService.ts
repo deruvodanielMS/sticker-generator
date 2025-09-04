@@ -32,7 +32,7 @@ async function generateViaProxy(prompt: string, selfieDataUrl?: string): Promise
 // Generate sticker - accepts optional promptOverride from the LLM
 export async function generateSticker(archetype: Archetype, selfieDataUrl?: string, promptOverride?: string): Promise<GenerationResult> {
   const includeSelfie = Boolean(selfieDataUrl);
-  const prompt = promptOverride ?? buildPrompt(archetype, includeSelfie);
+  const prompt = promptOverride ?? buildPromptUtil(archetype, includeSelfie);
   const online = typeof navigator !== 'undefined' ? navigator.onLine : true;
 
   if (online) {
