@@ -9,7 +9,7 @@ export type Question = {
   options: QuestionOption[];
 };
 
-export type Answers = Record<string, string>;
+export type Answers = Record<string, { choice: string; intensity?: number }>;
 
 export type Archetype = {
   name: string;
