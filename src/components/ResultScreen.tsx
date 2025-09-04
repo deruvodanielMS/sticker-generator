@@ -56,6 +56,15 @@ const ResultScreen: FC<Props> = ({ result, onRestart }) => {
         <button className="ghost-button" onClick={onRestart}>Start Over</button>
       </div>
 
+      <div style={{ marginTop: 12, textAlign: 'left', width: '100%', maxWidth: 560 }}>
+        <div style={{ fontSize: 12, color: 'var(--muted)' }}><strong>Image source:</strong> {source ?? 'unknown'}</div>
+        {providerError && <div style={{ marginTop: 6, color: '#ffb4b4', fontSize: 13 }}><strong>Error:</strong> {providerError}</div>}
+        <details style={{ marginTop: 8, color: 'var(--muted)' }}>
+          <summary style={{ cursor: 'pointer' }}>View prompt</summary>
+          <pre style={{ whiteSpace: 'pre-wrap', fontSize: 13 }}>{prompt}</pre>
+        </details>
+      </div>
+
       <p className="privacy-note">We do not store your photo or answers after printing. Human-centered by design.</p>
     </div>
   );
