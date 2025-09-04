@@ -1,4 +1,3 @@
-import { buildPrompt } from '../utils/prompt';
 import { svgDataUrl } from '../utils/canvas';
 import { buildPrompt as buildPromptUtil } from '../utils/prompt';
 import type { Archetype, GenerationResult } from '../types';
