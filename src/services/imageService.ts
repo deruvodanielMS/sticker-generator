@@ -1,8 +1,7 @@
 import { buildPrompt } from '../utils/prompt';
 import { svgDataUrl } from '../utils/canvas';
+import { buildPrompt } from '../utils/prompt';
 import type { Archetype, GenerationResult } from '../types';
-
-const API_KEY = import.meta.env.VITE_API_KEY_IMAGE_GENERATION as string | undefined;
 
 async function b64ToObjectUrl(b64: string, mime = 'image/png') {
   const binary = atob(b64);
