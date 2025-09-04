@@ -1,6 +1,6 @@
 import { buildPrompt } from '../utils/prompt';
 import { svgDataUrl } from '../utils/canvas';
-import { buildPrompt } from '../utils/prompt';
+import { buildPrompt as buildPromptUtil } from '../utils/prompt';
 import type { Archetype, GenerationResult } from '../types';
 
 async function b64ToObjectUrl(b64: string, mime = 'image/png') {
