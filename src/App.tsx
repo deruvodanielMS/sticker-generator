@@ -29,8 +29,8 @@ function App() {
   const currentQuestion = QUESTIONS[questionIndex];
   const total = QUESTIONS.length;
 
-  const handleSelect = (optId: string) => {
-    setAnswers(prev => ({ ...prev, [currentQuestion.id]: optId }));
+  const handleSelect = (optId: string, intensity?: number) => {
+    setAnswers(prev => ({ ...prev, [currentQuestion.id]: { choice: optId, intensity } }));
   };
 
   const handleNext = () => {
