@@ -13,61 +13,20 @@ async function b64ToObjectUrl(b64: string, mime = 'image/png') {
   return URL.createObjectURL(blob);
 }
 
-async function generateViaOpenAI(prompt: string, selfieBlob?: Blob): Promise<string> {
-  if (!API_KEY) throw new Error('No API key for image generation available');
-
-  if (selfieBlob) {
-    // Use the OpenAI image edits endpoint with multipart/form-data
-    const form = new FormData();
-    form.append('image', selfieBlob, 'selfie.png');
-    form.append('prompt', prompt);
-    form.append('model', 'gpt-image-1');
-    form.append('size', '1024x1024');
-
-    const res = await fetch('https://api.openai.com/v1/images/edits', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${API_KEY}`,
-      },
-      body: form,
-    });
-
-    if (!res.ok) {
-      const txt = await res.text();
-      throw new Error(`OpenAI Images edit error ${res.status} ${txt}`);
-    }
-
-    const json = await res.json();
-    const b64 = json?.data?.[0]?.b64_json;
-    if (!b64) throw new Error('OpenAI returned no image data');
-    return await b64ToObjectUrl(b64);
-  }
-
-  // No selfie: use the generations endpoint
-  const body = {
-    model: 'gpt-image-1',
-    prompt,
-    size: '1024x1024',
-    n: 1,
-  } as any;
-
-  const res = await fetch('https://api.openai.com/v1/images/generations', {
+async function generateViaProxy(prompt: string, selfieDataUrl?: string): Promise<string> {
+  const res = await fetch('/api/generate-image', {
     method: 'POST',
-    headers: {
-      Authorization: `Bearer ${API_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt, selfieDataUrl }),
   });
-
   if (!res.ok) {
     const txt = await res.text();
-    throw new Error(`OpenAI Images generation error ${res.status} ${txt}`);
+    throw new Error(`Proxy image generation error ${res.status} ${txt}`);
   }
-
   const json = await res.json();
-  const b64 = json?.data?.[0]?.b64_json;
-  if (!b64) throw new Error('OpenAI returned no image data');
+  // openai returns data[0].b64_json
+  const b64 = json?.data?.[0]?.b64_json || json?.data?.[0]?.b64_json;
+  if (!b64) throw new Error('Proxy returned no image data');
   return await b64ToObjectUrl(b64);
 }
 
