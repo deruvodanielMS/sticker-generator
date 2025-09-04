@@ -15,8 +15,9 @@ const STEPS = {
   Splash: 0,
   Questions: 1,
   Photo: 2,
-  Generating: 3,
-  Result: 4,
+  PromptPreview: 3,
+  Generating: 4,
+  Result: 5,
 } as const;
 
 function App() {
@@ -25,6 +26,11 @@ function App() {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<GenerationResult | null>(null);
+
+  const [pendingSelfie, setPendingSelfie] = useState<string | undefined>(undefined);
+  const [generatedPrompt, setGeneratedPrompt] = useState<string | undefined>(undefined);
+  const [generatedArchetype, setGeneratedArchetype] = useState<any | null>(null);
+  const [promptLoading, setPromptLoading] = useState(false);
 
   const currentQuestion = QUESTIONS[questionIndex];
   const total = QUESTIONS.length;
@@ -43,31 +49,45 @@ function App() {
     }
   };
 
-  const startGeneration = async (maybeSelfie?: string) => {
+  // Prepare prompt using LLM (or fallback) and go to PromptPreview
+  const preparePrompt = async (maybeSelfie?: string) => {
+    setPendingSelfie(maybeSelfie);
+    setPromptLoading(true);
+    setError(null);
+    try {
+      if (!navigator.onLine) throw new Error('No internet connection. Please connect to continue.');
+      try {
+        const llm = await import('./services/llmService');
+        const out = await llm.generateArchetypeWithLLM(answers);
+        setGeneratedArchetype(out.archetype);
+        setGeneratedPrompt(out.prompt);
+      } catch (llmErr) {
+        const fallback = deriveArchetype(answers);
+        setGeneratedArchetype(fallback);
+        const bp = buildPrompt(fallback, Boolean(maybeSelfie));
+        setGeneratedPrompt(bp);
+      }
+      setStep(STEPS.PromptPreview);
+    } catch (e: any) {
+      setError(e?.message || 'Failed to prepare prompt');
+    } finally {
+      setPromptLoading(false);
+    }
+  };
+
+  const startGeneration = async () => {
     setStep(STEPS.Generating);
     setError(null);
     try {
       if (!navigator.onLine) throw new Error('No internet connection. Please connect to continue.');
-
-      // Try LLM to derive a rich archetype and prompt
-      let generatedArchetype = null;
-      let finalPrompt: string | undefined = undefined;
-      try {
-        const llm = await import('./services/llmService');
-        const out = await llm.generateArchetypeWithLLM(answers);
-        generatedArchetype = out.archetype;
-        finalPrompt = out.prompt;
-      } catch (llmErr) {
-        // fallback to local mapping
-        generatedArchetype = deriveArchetype(answers);
-      }
-
-      const res = await generateSticker(generatedArchetype, maybeSelfie, finalPrompt);
+      const promptToUse = generatedPrompt;
+      const arche = generatedArchetype ?? deriveArchetype(answers);
+      const res = await generateSticker(arche, pendingSelfie, promptToUse);
       setResult(res);
       setStep(STEPS.Result);
     } catch (e: any) {
       setError(e?.message || 'Something went wrong. Please try again.');
-      setStep(STEPS.Photo);
+      setStep(STEPS.PromptPreview);
     }
   };
 
