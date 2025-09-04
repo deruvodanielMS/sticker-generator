@@ -17,13 +17,13 @@ async function generateViaProxy(prompt: string, selfieDataUrl?: string): Promise
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ prompt, selfieDataUrl }),
   });
+  const text = await res.text();
   if (!res.ok) {
-    const txt = await res.text();
-    throw new Error(`Proxy image generation error ${res.status} ${txt}`);
+    throw new Error(`Proxy image generation error ${res.status} ${text}`);
   }
-  const json = await res.json();
-  // openai returns data[0].b64_json
-  const b64 = json?.data?.[0]?.b64_json || json?.data?.[0]?.b64_json;
+  let json: any;
+  try { json = JSON.parse(text); } catch (e) { throw new Error('Invalid JSON from proxy'); }
+  const b64 = json?.data?.[0]?.b64_json;
   if (!b64) throw new Error('Proxy returned no image data');
   return await b64ToObjectUrl(b64);
 }
