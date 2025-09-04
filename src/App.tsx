@@ -129,7 +129,8 @@ function App() {
             setPromptLoading(true);
             try {
               const llm = await import('./services/llmService');
-              const out = await llm.generateArchetypeWithLLM(answers);
+              const variant = 'v' + Math.floor(Math.random() * 10000);
+              const out = await llm.generateArchetypeWithLLM(answers, variant);
               setGeneratedArchetype(out.archetype);
               setGeneratedPrompt(out.prompt);
             } catch (e: any) {
