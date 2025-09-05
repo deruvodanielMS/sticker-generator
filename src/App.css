@@ -1231,10 +1231,61 @@ html[data-theme="dark"] .email-input::placeholder {
   justify-content: center;
   width: 100%;
   min-height: calc(100vh - var(--header-height) - var(--footer-height));
-  padding: 40px 24px;
+  padding: 200px 24px 40px 24px;
   box-sizing: border-box;
   animation: fadeIn 360ms ease both;
-  background: transparent; /* let theme-overlay paint whole viewport */
+  background: transparent;
+}
+
+.photo-capture-section {
+  display: flex;
+  width: 100%;
+  max-width: 690px;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+  padding-top: 24px;
+}
+
+.photo-capture-title {
+  color: var(--gradient1-textContrast);
+  text-align: center;
+  font-family: 'Red Hat Display', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 52px;
+  margin: 0;
+}
+
+.photo-capture-divider {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  width: 49px;
+  height: 4px;
+}
+
+.photo-capture-description {
+  color: var(--gradient1-textContrast);
+  text-align: center;
+  font-family: 'Red Hat Display', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 22px;
+  margin: 0;
+  align-self: stretch;
+}
+
+/* Outlined button style */
+.nav-button.outlined {
+  background: transparent;
+  border: 2px solid var(--primary-main);
+  color: var(--custom-2-main);
+  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.1);
+}
+
+.nav-button.outlined:hover {
+  background: rgba(14, 204, 126, 0.05);
 }
 
 /* Apply transparent background universally for centered screen containers */
