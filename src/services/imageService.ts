@@ -22,8 +22,25 @@ async function generateViaProxy(prompt: string, selfieDataUrl?: string): Promise
   let envelope: any = null;
   try {
     envelope = await res.json();
-  } catch (e) {
-    throw new Error(`Failed to parse proxy JSON response: ${String(e)}`);
+  } catch (e: any) {
+    // If response body was already read for some reason, try a fresh retry to the proxy once
+    const msg = String(e);
+    if (msg.includes('body already read') || msg.includes('Failed to execute \"json\" on \'Response\'')) {
+      // retry once
+      try {
+        const retryRes = await fetch('/api/generate-image', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt, selfieDataUrl }),
+          cache: 'no-store',
+        });
+        envelope = await retryRes.json();
+      } catch (retryErr) {
+        throw new Error(`Failed to parse proxy JSON response after retry: ${String(retryErr)}`);
+      }
+    } else {
+      throw new Error(`Failed to parse proxy JSON response: ${String(e)}`);
+    }
   }
 
   if (!envelope.ok) {
