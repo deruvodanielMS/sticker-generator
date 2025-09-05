@@ -3,10 +3,11 @@ import type { GenerationResult } from '../types';
 
 type Props = {
   result: GenerationResult;
+  userName?: string;
   onRestart: () => void;
 };
 
-const ResultScreen: FC<Props> = ({ result, onRestart }) => {
+const ResultScreen: FC<Props> = ({ result, userName, onRestart }) => {
   const { archetype, imageUrl, prompt, source, providerError } = result;
 
   const printSticker = () => {
