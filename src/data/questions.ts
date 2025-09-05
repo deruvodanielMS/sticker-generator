@@ -46,12 +46,13 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 'vision',
-    title: 'Primary focus',
+    title: 'When defining your vision for the future, which area is your primary focus?',
+    layout: 'radio-list',
     options: [
-      { id: 'operational_efficiency', label: 'Operational Efficiency' },
-      { id: 'market_trends', label: 'Market Trends' },
-      { id: 'tech_adoption', label: 'Technology Adoption' },
-      { id: 'industry_transformation', label: 'Industry Transformation' },
+      { id: 'operational_efficiency', label: 'Operational efficiency' },
+      { id: 'market_trends', label: 'Market trends' },
+      { id: 'tech_adoption', label: 'Technology adoption' },
+      { id: 'industry_transformation', label: 'Industry transformation' },
     ],
   },
 ];
