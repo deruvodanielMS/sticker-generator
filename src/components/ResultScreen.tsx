@@ -11,6 +11,8 @@ type Props = {
   onPrint: () => void;
 };
 
+import { useState } from 'react';
+
 const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint }) => {
   const { archetype, imageUrl, prompt, source, providerError } = result as any;
   const [showDebug, setShowDebug] = useState(false);
