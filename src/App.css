@@ -1692,6 +1692,68 @@ html[data-theme="dark"] .debug-info {
   }
 }
 
+/* Tablet range: ensure buttons remain side-by-side on tablets (481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .photo-intro-buttons,
+  .photo-capture-buttons,
+  .result-buttons,
+  .question-navigation {
+    flex-direction: row;
+    width: auto;
+    gap: 24px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .photo-intro-buttons .nav-button,
+  .photo-capture-buttons .nav-button,
+  .result-button,
+  .nav-button {
+    width: auto;
+    max-width: 320px;
+  }
+}
+
+/* Icon sizing: standardize to 40x40 and ensure they don't overflow buttons */
+.option-icon,
+.nav-button img,
+.nav-button svg,
+.result-button svg,
+.hero-button svg,
+.stepper-close svg,
+.action-icon {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+/* Button content containment */
+.nav-button,
+.result-button,
+.hero-button,
+.primary-button,
+.secondary-button,
+.ghost-button {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  align-items: center;
+}
+
+/* Ensure icon spacing */
+.nav-button svg,
+.result-button svg,
+.nav-button img,
+.hero-button svg {
+  margin-right: 12px;
+}
+
+/* Override option-icon sizes set earlier */
+.option-icon { width: 40px; height: 40px; }
+
+/* Keep mobile stacking at <= 480px as column (existing rules apply) */
+
 @media (max-width: 420px) {
   .options-grid { grid-template-columns: 1fr; }
 
