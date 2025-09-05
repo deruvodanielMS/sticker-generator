@@ -49,6 +49,12 @@ html[data-theme="dark"] .brand-sub { color: rgba(247,250,252,0.9); }
 .intro-copy { max-width: 48ch; margin: 6px 0 0; color: rgba(247,250,252,0.9); }
 .privacy-note { font-size: 12px; color: rgba(247,250,252,0.75); margin: 10px 0 0; }
 .brand-header { margin-bottom: 12px; }
+.app-header { position: absolute; top: calc(env(safe-area-inset-top) + 8px); left: 16px; right: 16px; display: flex; justify-content: center; pointer-events: none; }
+.persistent-logo { pointer-events: none; max-height: 56px; }
+
+button, .option-card { transition: box-shadow 160ms ease, transform 160ms ease; }
+button:focus-visible { outline: 3px solid rgba(100,108,255,0.9); outline-offset: 2px; }
+.primary-button, .secondary-button, .ghost-button { transition: background 220ms ease, transform 160ms ease; }
 
 .progress-indicator { font-size: 13px; color: rgba(247,250,252,0.7); }
 .question-title { margin: 0; font-size: 22px; color: var(--gradient1-textContrast); }
