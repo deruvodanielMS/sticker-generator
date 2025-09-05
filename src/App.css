@@ -15,7 +15,7 @@
 
 
 /* Smooth theme overlay that crossfades background */
-.theme-overlay { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0; transition: opacity 480ms ease; }
+.theme-overlay { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity 480ms ease; }
 html[data-theme="light"] .theme-overlay { opacity: 1; background: linear-gradient(180deg, var(--gradient1-start), var(--gradient1-end)); }
 html[data-theme="dark"] .theme-overlay { opacity: 0; background: linear-gradient(180deg, rgba(6,10,14,0.92), rgba(11,18,32,0.92)); }
 
