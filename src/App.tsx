@@ -40,10 +40,8 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<GenerationResult | null>(null);
 
-  const [pendingSelfie, setPendingSelfie] = useState<string | undefined>(undefined);
   const [generatedPrompt, setGeneratedPrompt] = useState<string | undefined>(undefined);
   const [generatedArchetype, setGeneratedArchetype] = useState<any | null>(null);
-  const [promptLoading, setPromptLoading] = useState(false);
 
   const currentQuestion = QUESTIONS[questionIndex];
   const total = QUESTIONS.length;
