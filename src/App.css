@@ -1798,13 +1798,14 @@ html[data-theme="dark"] .debug-info {
   transition: filter 180ms ease, opacity 180ms ease, transform 180ms ease;
 }
 
-/* Dark theme: tint raster & svg icons to light */
-html[data-theme="dark"] .option-icon,
-html[data-theme="dark"] .nav-button img,
-html[data-theme="dark"] .result-button img,
-html[data-theme="dark"] .nav-button svg,
-html[data-theme="dark"] .result-button svg {
-  filter: invert(1) brightness(1.2) contrast(1.05);
+/* Dark theme: preserve icon colors but ensure good contrast for button icons */
+html[data-theme="dark"] .result-button img.result-button-icon {
+  filter: none; /* keep original icon colors */
+}
+
+/* For option icons in dark theme - subtle glow for better visibility */
+html[data-theme="dark"] .option-icon {
+  filter: drop-shadow(0 2px 8px rgba(14,204,126,0.15));
 }
 
 /* Selected state: make icons more prominent and colored */
@@ -1820,6 +1821,12 @@ button.selected .nav-icon,
 /* If option-card is selected, ensure icon stands out on dark theme too */
 html[data-theme="dark"] .option-card.selected .option-icon {
   filter: drop-shadow(0 6px 18px rgba(14,204,126,0.28));
+}
+
+/* Navigation button icons in dark theme - ensure visibility without changing colors */
+html[data-theme="dark"] .nav-button img,
+html[data-theme="dark"] .nav-button svg {
+  filter: drop-shadow(0 2px 6px rgba(255,255,255,0.1));
 }
 
 /* Button content containment */
