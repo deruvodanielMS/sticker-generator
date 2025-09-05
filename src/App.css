@@ -145,11 +145,13 @@ html[data-theme="light"] .secondary-button { background: #ffffff; color: #071018
 html[data-theme="light"] .ghost-button { background: transparent; color: #071018; border: 1px solid rgba(3,6,9,0.08); }
 html[data-theme="light"] .brand-title { color: #111210; }
 
-/* Dark theme: make action buttons full width and high contrast */
-html[data-theme="dark"] .primary-button, html[data-theme="dark"] .secondary-button, html[data-theme="dark"] .ghost-button {
-  width: calc(100% - 32px);
-  max-width: none;
-  display: block;
+/* Dark theme: buttons full-width on small screens, constrained on larger screens */
+@media (max-width: 600px) {
+  html[data-theme="dark"] .primary-button, html[data-theme="dark"] .secondary-button, html[data-theme="dark"] .ghost-button {
+    width: calc(100% - 32px);
+    max-width: none;
+    display: block;
+  }
 }
 html[data-theme="dark"] .primary-button { background: linear-gradient(90deg, var(--primary-main), var(--secondary-main)); color: #fff; }
 html[data-theme="dark"] .secondary-button { background: rgba(255,255,255,0.04); color: var(--gradient1-textContrast); border: 1px solid rgba(255,255,255,0.06); }
