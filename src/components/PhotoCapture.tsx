@@ -15,17 +15,23 @@ export default function PhotoCapture({ onConfirm, onSkip }: Props) {
   const startCamera = async () => {
     setError(null);
     try {
-      const s = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+      const constraints: MediaStreamConstraints = {
+        video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 1280 } },
+        audio: false,
+      };
+      const s = await navigator.mediaDevices.getUserMedia(constraints);
       setStream(s);
       if (videoRef.current) {
-        videoRef.current.srcObject = s;
-        videoRef.current.playsInline = true;
+        const v = videoRef.current;
+        v.muted = true; // allow autoplay on mobile browsers
+        v.playsInline = true;
+        v.srcObject = s;
+
         // wait for metadata so videoWidth/Height are available
         await new Promise<void>((resolve) => {
-          const v = videoRef.current!;
           const onLoaded = () => { v.removeEventListener('loadedmetadata', onLoaded); resolve(); };
           v.addEventListener('loadedmetadata', onLoaded);
-          v.play().catch(() => {/* ignore play error */});
+          v.play().catch(() => { /* ignore play error */ });
         });
       }
       setCameraStarted(true);
@@ -45,20 +51,34 @@ export default function PhotoCapture({ onConfirm, onSkip }: Props) {
   const takePhoto = () => {
     const video = videoRef.current;
     if (!video) return;
+
+    // ensure we have fresh dimensions
     const vw = video.videoWidth || 640;
     const vh = video.videoHeight || 480;
+
+    // choose square crop based on the smaller dimension
     const size = Math.min(vw, vh);
     const canvas = document.createElement('canvas');
     canvas.width = size;
     canvas.height = size;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+
     // center crop
     const sx = Math.max(0, (vw - size) / 2);
     const sy = Math.max(0, (vh - size) / 2);
+
+    ctx.imageSmoothingEnabled = true;
     ctx.drawImage(video, sx, sy, size, size, 0, 0, size, size);
-    const data = canvas.toDataURL('image/jpeg', 0.9);
+
+    // Convert to jpeg data URL
+    const data = canvas.toDataURL('image/jpeg', 0.95);
     setSnapshot(data);
+
+    // quick shutter effect
+    if (videoRef.current) videoRef.current.style.opacity = '0.2';
+    setTimeout(() => { if (videoRef.current) videoRef.current.style.opacity = ''; }, 120);
+
     // stop camera after capture to save resources
     stopCamera();
   };
@@ -81,7 +101,7 @@ export default function PhotoCapture({ onConfirm, onSkip }: Props) {
 
       {cameraStarted && !snapshot && (
         <div className="camera-frame">
-          <video ref={videoRef} playsInline className="camera-video" />
+          <video ref={videoRef} playsInline className="camera-video" autoPlay />
           <div className="camera-overlay" />
         </div>
       )}
