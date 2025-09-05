@@ -104,7 +104,7 @@ function App() {
   };
 
 
-  // Prepare prompt using LLM (or fallback) and go to PromptPreview
+  // Prepare prompt using LLM (or fallback) and generate immediately (skip prompt preview)
   const preparePrompt = async (maybeSelfie?: string) => {
     setPendingSelfie(maybeSelfie);
     setPromptLoading(true);
@@ -132,27 +132,18 @@ function App() {
         // keep local prompt
       }
 
-      setStep(STEPS.PromptPreview);
-    } catch (e: any) {
-      setError(e?.message || 'Failed to prepare prompt');
-    } finally {
-      setPromptLoading(false);
-    }
-  };
-
-  const startGeneration = async () => {
-    setStep(STEPS.Generating);
-    setError(null);
-    try {
-      if (!navigator.onLine) throw new Error('No internet connection. Please connect to continue.');
-      const promptToUse = generatedPrompt;
-      const arche = generatedArchetype ?? deriveArchetype(answers);
-      const res = await generateSticker(arche, pendingSelfie, promptToUse);
+      // Skip PromptPreview and start generation immediately
+      setStep(STEPS.Generating);
+      const promptToUse = generatedPrompt ?? localPrompt;
+      const arche = generatedArchetype ?? fallbackArche;
+      const res = await generateSticker(arche, maybeSelfie, promptToUse);
       setResult(res);
       setStep(STEPS.Result);
     } catch (e: any) {
-      setError(e?.message || 'Something went wrong. Please try again.');
-      setStep(STEPS.PromptPreview);
+      setError(e?.message || 'Failed to prepare or generate sticker');
+      setStep(STEPS.Splash);
+    } finally {
+      setPromptLoading(false);
     }
   };
 
