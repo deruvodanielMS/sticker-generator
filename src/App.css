@@ -58,7 +58,7 @@ html[data-theme="dark"] .theme-overlay { opacity: 1; background-image: linear-gr
 
 /* Constrain on very large screens to keep comfortable reading width */
 @media (min-width: 900px) {
-  .screen-container { max-width: 720px; margin: 0 auto; }
+  .screen-container { max-width: 900px; margin: 0 auto; }
 }
 
 .brand-header { display: flex; flex-direction: column; gap: 6px; align-items: center; padding-top: 8px; }
