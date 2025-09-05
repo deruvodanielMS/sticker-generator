@@ -112,12 +112,12 @@ const QuestionScreen: FC<Props> = ({
               PREVIOUS
             </button>
             
-            <button 
+            <button
               className="nav-button primary"
               onClick={onNext}
               disabled={!selected}
             >
-              NEXT
+              {step === total ? 'FINISH' : 'NEXT'}
             </button>
           </div>
         </div>
