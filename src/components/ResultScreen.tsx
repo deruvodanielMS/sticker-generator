@@ -68,6 +68,7 @@ const ResultScreen: FC<Props> = ({ result, userName, onRestart }) => {
         </div>
         
         <div className="result-description">
+          {userName && <p className="result-user">Thanks, <strong>{userName}</strong></p>}
           <p className="result-line-1">{archetype.descriptor}</p>
           <p className="result-line-2">{archetype.valueLine}</p>
         </div>
