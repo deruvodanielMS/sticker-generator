@@ -12,7 +12,8 @@ type Props = {
 };
 
 const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint }) => {
-  const { archetype, imageUrl } = result;
+  const { archetype, imageUrl, prompt, source, providerError } = result as any;
+  const [showDebug, setShowDebug] = useState(false);
 
   const printSticker = () => {
     const w = window.open('', '_blank');
