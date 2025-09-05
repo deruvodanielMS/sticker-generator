@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     const { to, subject, text, imageUrl } = req.body || {};
     if (!to || !subject) return res.status(400).json({ error: 'Missing to or subject' });
 
-    const transporter = nodemailer.createTransporter({
+    const transporter = nodemailer.createTransport({
       host: SMTP_HOST,
       port: Number(SMTP_PORT),
       secure: Number(SMTP_PORT) === 465,
