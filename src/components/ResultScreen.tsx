@@ -92,8 +92,8 @@ const ResultScreen: FC<Props> = ({ result, onRestart }) => {
         </button>
       </div>
 
-      {/* Debug info - hidden by default */}
-      {(source === 'fallback' || providerError) && (
+      {/* Debug info - hidden in production */}
+      {false && (source === 'fallback' || providerError) && (
         <div className="result-debug">
           <div className="debug-info">
             <strong>Debug:</strong> {source} {providerError && `- ${providerError}`}
