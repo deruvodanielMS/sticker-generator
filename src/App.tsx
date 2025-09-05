@@ -161,6 +161,10 @@ function App() {
     }
   };
 
+  const goToThankYou = () => {
+    setStep(STEPS.ThankYou);
+  };
+
   const restart = () => {
     setStep(STEPS.Splash);
     setUserName('');
