@@ -5,7 +5,6 @@ import NameInput from './components/NameInput';
 import QuestionScreen from './components/QuestionScreen';
 import EmailCapture from './components/EmailCapture';
 import PhotoCapture from './components/PhotoCapture';
-import PromptPreview from './components/PromptPreview';
 import LoadingScreen from './components/LoadingScreen';
 import ResultScreen from './components/ResultScreen';
 import ThankYouScreen from './components/ThankYouScreen';
