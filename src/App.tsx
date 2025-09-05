@@ -37,8 +37,26 @@ function App() {
   const currentQuestion = QUESTIONS[questionIndex];
   const total = QUESTIONS.length;
 
+  const setThemeOnDocument = (theme: 'light' | 'dark') => {
+    try {
+      document.documentElement.setAttribute('data-theme', theme);
+    } catch (e) {}
+  };
+
+  // Ensure default theme on mount
+  useState(() => {
+    setThemeOnDocument('light');
+  });
+
   const handleSelect = (optId: string, intensity?: number) => {
     setAnswers(prev => ({ ...prev, [currentQuestion.id]: { choice: optId, intensity } }));
+
+    // When on the 'innovation' question (screen #2) and user chooses 'disruptive', switch to dark theme
+    if (currentQuestion.id === 'innovation' && optId === 'disruptive') {
+      setThemeOnDocument('dark');
+    } else if (currentQuestion.id === 'innovation') {
+      setThemeOnDocument('light');
+    }
   };
 
   const handleNext = () => {
