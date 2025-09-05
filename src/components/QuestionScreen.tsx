@@ -38,9 +38,10 @@ const QuestionScreen: FC<Props> = ({ question, selected, onSelect, onNext, step,
         ))}
       </div>
 
-      <div style={{ width: '100%', maxWidth: 420, display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
-        <label style={{ fontSize: 13, color: 'var(--muted)' }}>Intensity: {localIntensity}</label>
+      <div className="intensity-control">
+        <label className="intensity-label">Intensity: {localIntensity}</label>
         <input
+          className="intensity-range"
           type="range"
           min={1}
           max={10}
@@ -50,7 +51,6 @@ const QuestionScreen: FC<Props> = ({ question, selected, onSelect, onNext, step,
             setLocalIntensity(v);
             if (selected?.choice) onSelect(selected.choice, v);
           }}
-          style={{ width: '100%' }}
         />
       </div>
 

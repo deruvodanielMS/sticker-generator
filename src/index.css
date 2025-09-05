@@ -11,7 +11,7 @@ html[data-theme="dark"] {
   color-scheme: dark;
   color: var(--gradient1-textContrast);
   --muted: rgba(247,250,252,0.8);
-  background: linear-gradient(180deg, rgba(6,10,14,0.92), rgba(11,18,32,0.92)); /* deep subtle gradient */
+  background: linear-gradient(180deg, rgba(12,18,24,0.88), rgba(20,30,40,0.88)); /* softened subtle gradient */
 }
 
 html[data-theme="light"] {
