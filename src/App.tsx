@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 import SplashScreen from './components/SplashScreen';
+import NameInput from './components/NameInput';
 import QuestionScreen from './components/QuestionScreen';
 import PhotoCapture from './components/PhotoCapture';
 import PromptPreview from './components/PromptPreview';
@@ -15,11 +16,12 @@ import { generateSticker } from './services/imageService';
 
 const STEPS = {
   Splash: 0,
-  Questions: 1,
-  Photo: 2,
-  PromptPreview: 3,
-  Generating: 4,
-  Result: 5,
+  NameInput: 1,
+  Questions: 2,
+  Photo: 3,
+  PromptPreview: 4,
+  Generating: 5,
+  Result: 6,
 } as const;
 
 function App() {
@@ -27,6 +29,7 @@ function App() {
   const LOGO_DARK = 'https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F8a91974e9a9e4d5399b528034240d956?format=webp&width=800';
 
   const [step, setStep] = useState<number>(STEPS.Splash);
+  const [userName, setUserName] = useState<string>('');
   const [answers, setAnswers] = useState<Answers>({});
   const [questionIndex, setQuestionIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
@@ -126,6 +129,7 @@ function App() {
 
   const restart = () => {
     setStep(STEPS.Splash);
+    setUserName('');
     setAnswers({});
     setQuestionIndex(0);
     setError(null);
@@ -144,7 +148,8 @@ function App() {
 
       {error && <ErrorBanner>{error}</ErrorBanner>}
 
-      {step === STEPS.Splash && <SplashScreen onStart={() => setStep(STEPS.Questions)} />}
+      {step === STEPS.Splash && <SplashScreen onStart={() => setStep(STEPS.NameInput)} />}
+      {step === STEPS.NameInput && <NameInput onContinue={(name) => { setUserName(name); setStep(STEPS.Questions); }} />}
       {step === STEPS.Questions && (
         <QuestionScreen
           question={currentQuestion}
