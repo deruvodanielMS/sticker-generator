@@ -1795,6 +1795,31 @@ html[data-theme="dark"] .debug-info {
   height: 40px;
   flex-shrink: 0;
   object-fit: contain;
+  transition: filter 180ms ease, opacity 180ms ease, transform 180ms ease;
+}
+
+/* Dark theme: tint raster & svg icons to light */
+html[data-theme="dark"] .option-icon,
+html[data-theme="dark"] .nav-button img,
+html[data-theme="dark"] .result-button img,
+html[data-theme="dark"] .nav-button svg,
+html[data-theme="dark"] .result-button svg {
+  filter: invert(1) brightness(1.2) contrast(1.05);
+}
+
+/* Selected state: make icons more prominent and colored */
+.option-card.selected .option-icon,
+button.selected .nav-icon,
+.nav-button.selected img,
+.result-button.selected img {
+  filter: none;
+  transform: scale(1.02);
+  opacity: 1;
+}
+
+/* If option-card is selected, ensure icon stands out on dark theme too */
+html[data-theme="dark"] .option-card.selected .option-icon {
+  filter: drop-shadow(0 6px 18px rgba(14,204,126,0.28));
 }
 
 /* Button content containment */
