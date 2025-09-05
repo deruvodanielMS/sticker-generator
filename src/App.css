@@ -1649,15 +1649,15 @@ html[data-theme="dark"] .camera-frame {
 }
 
 .result-button svg {
-  width: 24px;
-  height: 24px;
+  width: 40px;
+  height: 40px;
   flex-shrink: 0;
 }
 
 /* Specific image icon sizing for result buttons (use the provided assets) */
 .result-button img.result-button-icon {
-  width: 24px;
-  height: 24px;
+  width: 40px;
+  height: 40px;
   flex-shrink: 0;
   object-fit: contain;
   margin-right: 12px;
