@@ -1,4 +1,5 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 import Webcam from 'react-webcam';
 
 type Props = {
@@ -21,7 +22,6 @@ export default function PhotoCapture({ onConfirm, onSkip }: Props) {
 
   useEffect(() => {
     return () => {
-      // cleanup if unmounted
       setCameraStarted(false);
     };
   }, []);
@@ -35,22 +35,38 @@ export default function PhotoCapture({ onConfirm, onSkip }: Props) {
     setCameraStarted(false);
   }, []);
 
+  // Capture a square centered crop from the underlying video element to avoid stretching
   const takePhoto = useCallback(() => {
     setError(null);
     setLoading(true);
     try {
-      const imageSrc = webcamRef.current?.getScreenshot({ width: 1024, height: 1024 }) ?? null;
-      if (!imageSrc) {
-        setError('Failed to capture photo. Please try again.');
+      const videoEl: HTMLVideoElement | undefined = (webcamRef.current as any)?.video ?? undefined;
+      if (!videoEl) {
+        setError('Camera not available');
         setLoading(false);
         return;
       }
-      setSnapshot(imageSrc);
+      const vw = videoEl.videoWidth || videoEl.clientWidth;
+      const vh = videoEl.videoHeight || videoEl.clientHeight;
+      const size = Math.min(vw, vh);
+      const sx = Math.max(0, (vw - size) / 2);
+      const sy = Math.max(0, (vh - size) / 2);
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        setError('Capture failed');
+        setLoading(false);
+        return;
+      }
+      ctx.drawImage(videoEl, sx, sy, size, size, 0, 0, size, size);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.95);
+      setSnapshot(dataUrl);
     } catch (e) {
       setError('Capture failed');
     } finally {
       setLoading(false);
-      // stop camera feed to save resources
       setCameraStarted(false);
     }
   }, []);
