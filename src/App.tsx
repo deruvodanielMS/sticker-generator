@@ -230,7 +230,7 @@ function App() {
 
       {step === STEPS.Generating && <LoadingScreen />}
       {step === STEPS.Result && result && <ResultScreen result={result} userName={userName} userEmail={userEmail} onShare={goToThankYou} onPrint={goToThankYou} />}
-      {step === STEPS.ThankYou && <ThankYouScreen userName={userName} onRestart={restart} />}
+      {step === STEPS.ThankYou && <ThankYouScreen onRestart={restart} />}
       <footer className="app-footer">Making Sense - 2025. All rights reserved.</footer>
     </div>
   );
