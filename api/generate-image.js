@@ -31,6 +31,7 @@ export default async function handler(req, res) {
         form.append('prompt', prompt);
         form.append('size', '1024x1024');
         form.append('n', '1');
+        form.append('response_format', 'b64_json');
 
         resp = await fetch('https://api.openai.com/v1/images/edits', {
           method: 'POST',
@@ -52,7 +53,8 @@ export default async function handler(req, res) {
             model: 'dall-e-2',
             prompt,
             size: '1024x1024',
-            n: 1
+            n: 1,
+            response_format: 'b64_json'
           }),
         });
       }
