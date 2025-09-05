@@ -4,6 +4,7 @@ export const QUESTIONS: Question[] = [
   {
     id: 'decision_style',
     title: 'Which best describes your approach to making business decisions?',
+    layout: 'icons',
     options: [
       { id: 'analytical', label: 'Analytical', icon: 'https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F326110f362024b59902872639764da83?format=webp&width=800' },
       { id: 'intuitive', label: 'Intuitive', icon: 'https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2Fa033e10c071a42e19ad172d6988aea79?format=webp&width=800' },
