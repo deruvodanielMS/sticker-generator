@@ -185,6 +185,7 @@ function App() {
 
       {step === STEPS.Generating && <LoadingScreen />}
       {step === STEPS.Result && result && <ResultScreen result={result} onRestart={restart} />}
+      <footer className="app-footer">Making Sense - 2025. All rights reserved.</footer>
     </div>
   );
 }
