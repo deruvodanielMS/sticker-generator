@@ -1828,7 +1828,45 @@ html[data-theme="dark"] .option-card.selected .option-icon {
 /* Navigation button icons in dark theme - ensure visibility without changing colors */
 html[data-theme="dark"] .nav-button img,
 html[data-theme="dark"] .nav-button svg {
-  filter: drop-shadow(0 2px 6px rgba(255,255,255,0.1));
+  filter: drop-shadow(0 2px 6px rgba(255,255,255,0.08));
+}
+
+/* Make inline SVGs follow button color for better theming */
+.nav-button svg path,
+.nav-button svg circle,
+.nav-button svg rect,
+.result-button svg path,
+.result-button svg circle,
+.result-button svg rect {
+  stroke: currentColor;
+  fill: currentColor;
+}
+
+/* Button color states */
+.nav-button.selected,
+.result-button.selected {
+  transform: translateY(-2px);
+}
+
+.nav-button.primary.selected,
+.result-button.primary.selected {
+  color: var(--gradient1-textContrast);
+}
+
+.nav-button.secondary.selected,
+.result-button.secondary.selected {
+  color: var(--primary-main);
+}
+
+/* Dark theme button colors: ensure contrast */
+html[data-theme="dark"] .nav-button,
+html[data-theme="dark"] .result-button {
+  color: #fff;
+}
+
+html[data-theme="dark"] .nav-button.secondary,
+html[data-theme="dark"] .result-button.secondary {
+  color: var(--primary-main);
 }
 
 /* Button content containment */
