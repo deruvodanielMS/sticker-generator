@@ -1992,16 +1992,19 @@ html[data-theme="dark"] .result-button.secondary {
   background: transparent;
 }
 
-/* When option is selected, highlight the icon background and ensure icon remains visible */
+/* When option is selected, use subtle background with border instead of gradient */
 .question-option.selected .option-icon-wrap {
-  background: linear-gradient(90deg, var(--primary-main), var(--secondary-main));
+  background: rgba(14, 204, 126, 0.1);
+  border: 2px solid var(--primary-main);
+  box-shadow: 0 4px 12px rgba(14, 204, 126, 0.2);
 }
 
-/* Ensure selected icons remain visible (don't invert raster images which can disappear) */
+/* Ensure selected icons remain visible and prominent */
 .question-option.selected .option-icon {
   filter: none;
   opacity: 1;
-  transform: scale(1.02);
+  transform: scale(1.05);
+  transition: transform 200ms ease, filter 200ms ease;
 }
 
 /* Dial linear control styles */
