@@ -118,11 +118,13 @@ function App() {
       setGeneratedPrompt(localPrompt);
 
       // Then ask LLM to refine/creative prompt; if LLM returns, use it, otherwise keep localPrompt
+      let finalPrompt = localPrompt;
       try {
         const llm = await import('./services/llmService');
         const out = await llm.generateArchetypeWithLLM(answers, variantToken);
         // if the LLM produced a different prompt use it, otherwise keep local
         if (out?.prompt && out.prompt.trim().length > 0 && out.prompt.trim() !== localPrompt.trim()) {
+          finalPrompt = out.prompt;
           setGeneratedArchetype(out.archetype);
           setGeneratedPrompt(out.prompt);
         }
@@ -132,7 +134,7 @@ function App() {
 
       // Skip PromptPreview and start generation immediately
       setStep(STEPS.Generating);
-      const promptToUse = generatedPrompt ?? localPrompt;
+      const promptToUse = finalPrompt;
       const arche = generatedArchetype ?? fallbackArche;
       const res = await generateSticker(arche, maybeSelfie, promptToUse);
       setResult(res);
