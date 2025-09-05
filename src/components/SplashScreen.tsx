@@ -2,11 +2,16 @@ import type { FC } from 'react';
 
 type Props = { onStart: () => void };
 
+// Logos provided by the user
+const LOGO_LIGHT = 'https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F361d511becfe4af99cffd14033941816?format=webp&width=800';
+const LOGO_DARK = 'https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F8a91974e9a9e4d5399b528034240d956?format=webp&width=800';
+
 const SplashScreen: FC<Props> = ({ onStart }) => {
   return (
     <div className="screen-container">
       <div className="brand-header">
-        <div className="brand-logo" aria-hidden />
+        <img className="brand-logo-img logo-light" src={LOGO_LIGHT} alt="Making Sense logo light" />
+        <img className="brand-logo-img logo-dark" src={LOGO_DARK} alt="Making Sense logo dark" />
         <h1 className="brand-title">Making Sense
           <span className="brand-sub">AI Archetype Sticker</span>
         </h1>
