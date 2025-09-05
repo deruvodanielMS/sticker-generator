@@ -3,6 +3,7 @@ import './App.css';
 import SplashScreen from './components/SplashScreen';
 import NameInput from './components/NameInput';
 import QuestionScreen from './components/QuestionScreen';
+import EmailCapture from './components/EmailCapture';
 import PhotoCapture from './components/PhotoCapture';
 import PromptPreview from './components/PromptPreview';
 import LoadingScreen from './components/LoadingScreen';
@@ -18,10 +19,11 @@ const STEPS = {
   Splash: 0,
   NameInput: 1,
   Questions: 2,
-  Photo: 3,
-  PromptPreview: 4,
-  Generating: 5,
-  Result: 6,
+  EmailCapture: 3,
+  Photo: 4,
+  PromptPreview: 5,
+  Generating: 6,
+  Result: 7,
 } as const;
 
 function App() {
@@ -30,6 +32,7 @@ function App() {
 
   const [step, setStep] = useState<number>(STEPS.Splash);
   const [userName, setUserName] = useState<string>('');
+  const [userEmail, setUserEmail] = useState<string>('');
   const [answers, setAnswers] = useState<Answers>({});
   const [questionIndex, setQuestionIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
@@ -71,7 +74,7 @@ function App() {
     if (questionIndex < total - 1) {
       setQuestionIndex(questionIndex + 1);
     } else {
-      setStep(STEPS.Photo);
+      setStep(STEPS.EmailCapture);
     }
   };
 
@@ -91,6 +94,15 @@ function App() {
     setQuestionIndex(0);
     setError(null);
     setThemeOnDocument('light');
+  };
+
+  const handleEmailSubmit = (email: string) => {
+    setUserEmail(email);
+    setStep(STEPS.Photo);
+  };
+
+  const handleEmailSkip = () => {
+    setStep(STEPS.Photo);
   };
 
   // Prepare prompt using LLM (or fallback) and go to PromptPreview
@@ -148,6 +160,7 @@ function App() {
   const restart = () => {
     setStep(STEPS.Splash);
     setUserName('');
+    setUserEmail('');
     setAnswers({});
     setQuestionIndex(0);
     setError(null);
@@ -179,6 +192,9 @@ function App() {
           step={questionIndex + 1}
           total={total}
         />
+      )}
+      {step === STEPS.EmailCapture && (
+        <EmailCapture onSubmit={handleEmailSubmit} onSkip={handleEmailSkip} />
       )}
       {step === STEPS.Photo && (
         <PhotoCapture onConfirm={(dataUrl?: string) => preparePrompt(dataUrl)} onSkip={() => preparePrompt(undefined)} />
