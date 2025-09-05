@@ -135,21 +135,6 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
         </div>
       </div>
 
-      {/* Debug info: show OpenAI/provider status and prompt */}
-      {(providerError || source) && (
-        <div className="result-debug" role="status" aria-live="polite">
-          <div className="debug-info">
-            <div style={{ fontWeight: 700, marginBottom: 6 }}>Provider status: {source}</div>
-            {providerError && (
-              <div style={{ color: '#b00', marginBottom: 6 }}><strong>Provider error:</strong> {providerError}</div>
-            )}
-            <div style={{ fontSize: 12, color: '#444' }}>
-              <strong>Prompt:</strong>
-              <div style={{ marginTop: 4, whiteSpace: 'pre-wrap', maxHeight: 120, overflow: 'auto' }}>{prompt}</div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
