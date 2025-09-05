@@ -831,6 +831,15 @@ html[data-theme="dark"] .nav-button.secondary {
   cursor: pointer;
 }
 
+@media (max-width: 768px) {
+  .dial-input::-webkit-slider-thumb {
+    width: 28px;
+    height: 28px;
+  }
+
+  .persistent-logo { max-height: 48px; margin-top: 8px; }
+}
+
 /* Radio List Question Styles */
 .radio-list-container {
   display: flex;
