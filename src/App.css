@@ -2205,6 +2205,19 @@ html[data-theme="dark"] .linear-slider-label-text {
   color: #9ca3af;
 }
 
+/* Mobile styles for PhotoCapture */
+@media (max-width: 480px) {
+  .photo-capture-title {
+    font-size: 28px;
+    line-height: 32px;
+  }
+
+  .photo-capture-description {
+    font-size: 14px;
+    line-height: 18px;
+  }
+}
+
 /* Thank You Screen Styles */
 .thankyou-screen {
   position: relative;
