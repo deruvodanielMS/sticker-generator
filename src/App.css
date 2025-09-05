@@ -193,6 +193,46 @@ html[data-theme="light"] .app-root::before {
   opacity: 1;
   pointer-events: none;
 }
+
+/* Dark theme: use a subtle dark variation plus green diffused spots */
+html[data-theme="dark"] .app-root::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(180deg, #071018 0%, #0b1220 100%);
+  opacity: 1;
+  pointer-events: none;
+}
+
+/* Add subtle green blurred spots in dark theme */
+html[data-theme="dark"] .app-root::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(closest-side at 10% 20%, rgba(14,204,126,0.18), transparent 25%),
+                    radial-gradient(closest-side at 90% 80%, rgba(83,192,210,0.12), transparent 20%),
+                    radial-gradient(closest-side at 60% 10%, rgba(14,204,126,0.09), transparent 18%);
+  background-repeat: no-repeat;
+  background-size: 40% 40%, 30% 30%, 25% 25%;
+  filter: blur(18px) saturate(1.2);
+}
+
+/* Also add blurred green spots in light theme but subtler */
+html[data-theme="light"] .app-root::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(closest-side at 5% 85%, rgba(14,204,126,0.08), transparent 30%),
+                    radial-gradient(closest-side at 95% 10%, rgba(83,192,210,0.06), transparent 25%);
+  background-repeat: no-repeat;
+  background-size: 30% 30%, 25% 25%;
+  filter: blur(16px) saturate(1.05);
+}
 html[data-theme="light"] .primary-button { background: linear-gradient(180deg, #0b1220, #071018); color: #fff; box-shadow: 0 10px 30px rgba(3,6,9,0.7); }
 html[data-theme="light"] .secondary-button { background: #ffffff; color: #071018; border: 1px solid rgba(3,6,9,0.08); box-shadow: 0 6px 16px rgba(3,6,9,0.12); }
 html[data-theme="light"] .ghost-button { background: transparent; color: #071018; border: 1px solid rgba(3,6,9,0.08); }
