@@ -2134,7 +2134,7 @@ html[data-theme="dark"] .result-button.secondary {
   margin-bottom: 8px;
 }
 
-/* Linear Slider Styles (replaces dial) */
+/* Linear Slider Styles based on Figma design */
 .linear-slider-container {
   display: flex;
   flex-direction: column;
@@ -2142,7 +2142,7 @@ html[data-theme="dark"] .result-button.secondary {
   gap: 24px;
   width: 100%;
   max-width: 673px;
-  padding: 0 29px 32px 29px;
+  padding: 0 28px 32px 28px;
   margin: 0 auto;
 }
 
@@ -2154,16 +2154,16 @@ html[data-theme="dark"] .result-button.secondary {
 }
 
 .linear-slider-percentage {
-  min-width: 72px;
-  padding: 6px 10px;
+  min-width: 66px;
+  height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'Red Hat Display', -apple-system, Roboto, Helvetica, sans-serif;
-  font-size: 56px;
+  font-size: 44px;
   font-weight: 700;
-  line-height: 1;
-  background: linear-gradient(90deg, var(--primary-main), var(--secondary-main));
+  line-height: 36px;
+  background: linear-gradient(90deg, #0ECC7E 0%, #53C0D2 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -2195,40 +2195,38 @@ html[data-theme="dark"] .result-button.secondary {
   position: relative;
   width: 100%;
   max-width: 616px;
-  height: 64px; /* increased to comfortably fit larger thumb */
+  height: 50px;
+  aspect-ratio: 49/4;
 }
 
 .linear-slider-track-bg {
   position: absolute;
   left: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 22px;
   width: 100%;
-  height: 8px;
-  opacity: 0.12;
-  background: linear-gradient(90deg, var(--primary-main), var(--secondary-main));
+  height: 7px;
+  opacity: 0.1;
+  background: linear-gradient(90deg, #0ECC7E 0%, #53C0D2 100%);
   filter: blur(10px);
 }
 
 .linear-slider-track-white {
   position: absolute;
   left: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 21px;
   width: 100%;
-  height: 10px;
+  height: 8px;
   border-radius: 6px;
-  background: #fff;
+  background: #FFF;
 }
 
 .linear-slider-track-filled {
   position: absolute;
   left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 8px;
-  border-radius: 4px;
-  background: linear-gradient(90deg, var(--primary-main), var(--secondary-main));
+  top: 22px;
+  height: 7px;
+  border-radius: 3.5px;
+  background: linear-gradient(90deg, #0ECC7E 0%, #53C0D2 100%);
   transition: width 200ms ease;
 }
 
@@ -2236,13 +2234,14 @@ html[data-theme="dark"] .result-button.secondary {
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 48px;
-  height: 48px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background: #F9F9F9;
-  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10.77px 21.55px rgba(0, 0, 0, 0.1), 0 0.9px 7.18px rgba(0, 0, 0, 0.1);
   transition: left 160ms ease, transform 160ms ease;
   pointer-events: none;
+  z-index: 2;
 }
 
 .linear-slider-input {
@@ -2250,11 +2249,12 @@ html[data-theme="dark"] .result-button.secondary {
   top: 0;
   left: 0;
   width: 100%;
-  height: 64px;
+  height: 50px;
   opacity: 0;
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
+  z-index: 3;
 }
 
 .linear-slider-labels {
