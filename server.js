@@ -30,17 +30,21 @@ app.post('/api/generate-image', async (req, res) => {
       body: JSON.stringify({ model: 'gpt-image-1', prompt, size: '1024x1024', n: 1 }),
     });
 
-    // Try to parse JSON response from OpenAI, but if parsing fails return raw text for debugging
-    let respText;
+    // Read response text once and return a structured JSON envelope so clients can always parse it
     try {
-      respText = await resp.text();
+      const respText = await resp.text();
+      let parsed = null;
       try {
-        const parsed = JSON.parse(respText);
-        return res.status(resp.status).json(parsed);
-      } catch (parseErr) {
-        // Not JSON, return raw text
-        return res.status(resp.status).type('text/plain').send(respText);
+        parsed = JSON.parse(respText);
+      } catch (_e) {
+        parsed = null;
       }
+      return res.status(resp.status).json({
+        status: resp.status,
+        ok: resp.ok,
+        bodyText: respText,
+        bodyJson: parsed,
+      });
     } catch (readErr) {
       return res.status(500).json({ error: String(readErr?.message || readErr) });
     }
