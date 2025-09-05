@@ -40,7 +40,13 @@ html[data-theme="dark"] .theme-overlay { opacity: 1; background-image: linear-gr
   justify-content: center;
   animation: fadeIn 360ms ease both;
   transition: opacity 260ms ease;
+  /* hide native scrollbars for a cleaner look */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
 }
+
+/* Webkit browsers */
+.screen-container::-webkit-scrollbar { display: none; width: 0; height: 0; }
 
 @keyframes fadeIn {
   from { opacity: 0; }
@@ -127,8 +133,10 @@ html[data-theme="dark"] .option-card { border-color: rgba(14,204,126,0.18); }
   background: linear-gradient(90deg, var(--primary-main), var(--secondary-main));
   color: #fff;
   border: none;
-  box-shadow: 0 14px 34px rgba(2,6,8,0.6);
+  box-shadow: 0 6px 16px rgba(2,6,8,0.45);
   min-width: 140px;
+  max-width: 320px;
+  width: auto;
   font-weight: 700;
   letter-spacing: .2px;
 }
@@ -154,7 +162,7 @@ html[data-theme="light"] .brand-title { color: #111210; }
   }
 }
 html[data-theme="dark"] .primary-button { background: linear-gradient(90deg, var(--primary-main), var(--secondary-main)); color: #fff; }
-html[data-theme="dark"] .secondary-button { background: rgba(255,255,255,0.04); color: var(--gradient1-textContrast); border: 1px solid rgba(255,255,255,0.06); }
+html[data-theme="dark"] .secondary-button { background: rgba(255,255,255,0.06); color: #F7FAFC; border: 1px solid rgba(255,255,255,0.12); box-shadow: none; }
 
 .camera-frame { position: relative; width: var(--media-size); height: var(--media-size); border-radius: 16px; overflow: hidden; border: 1px solid rgba(247,250,252,0.06); background: #000; margin: 16px auto; display: flex; align-items: center; justify-content: center; }
 .camera-video { width: 100%; height: 100%; object-fit: cover; display: block; }
