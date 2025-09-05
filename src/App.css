@@ -1,5 +1,5 @@
 .app-root {
-  --header-height: 80px;
+  --header-height: 64px; /* reduced header height to avoid overlap with stepper */
   position: relative;
   z-index: 2;
   width: 100%;
