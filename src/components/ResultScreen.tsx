@@ -138,10 +138,6 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
           {sendSuccess === true && <div className="email-success">Sent to {emailState}</div>}
           {sendSuccess === false && <div className="email-error">Failed to send</div>}
         </div>
-
-        <button className="result-start-over" onClick={onRestart}>
-          START OVER
-        </button>
       </div>
 
       {/* Debug info - hidden in production */}
