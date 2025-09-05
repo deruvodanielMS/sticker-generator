@@ -115,7 +115,6 @@ function App() {
       const variantToken = 'v' + Math.floor(Math.random() * 10000);
       const localPrompt = buildPromptFromAnswers(fallbackArche, answers, variantToken);
       setGeneratedArchetype(fallbackArche);
-      setGeneratedPrompt(localPrompt);
 
       // Then ask LLM to refine/creative prompt; if LLM returns, use it, otherwise keep localPrompt
       let finalPrompt = localPrompt;
