@@ -1,10 +1,8 @@
-import type { FC } from 'react';
-
-import React, { FC } from 'react';
+import React from 'react';
 
 type Props = { onStart: () => void };
 
-const SplashScreen: FC<Props> = ({ onStart }) => {
+const SplashScreen: React.FC<Props> = ({ onStart }) => {
   return (
     <div className="screen-container">
       <div className="brand-header">
