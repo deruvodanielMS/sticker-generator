@@ -1,4 +1,3 @@
-
 import type { FC } from 'react';
 
 type Props = {
@@ -12,7 +11,7 @@ const ThankYouScreen: FC<Props> = ({ userName, onRestart }) => {
       <div className="thankyou-section">
         <h1 className="thankyou-title">
           Leading digital transformation for<br />
-          mid-market companies{userName && `, ${userName}`}
+          mid-market companies
         </h1>
         
         <div className="thankyou-divider">
