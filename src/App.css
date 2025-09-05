@@ -725,12 +725,17 @@ html[data-theme="dark"] .nav-button.secondary {
 /* Dial Question Styles */
 .dial-container {
   display: flex;
+  flex-direction: column; /* stack dial and linear control vertically */
   justify-content: center;
   align-items: center;
   width: 100%;
   max-width: 330px;
   margin: 0 auto;
 }
+
+.dial-wrapper { margin-bottom: 12px; }
+
+.dial-linear-control { z-index: 6; pointer-events: auto; }
 
 .dial-wrapper {
   position: relative;
