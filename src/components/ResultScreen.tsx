@@ -47,6 +47,9 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
       }
     } catch {
       // no-op
+    } finally {
+      // Navigate to thank you after share attempt (success or failure)
+      setTimeout(() => onShare(), 500);
     }
   };
 
