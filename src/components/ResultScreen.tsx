@@ -6,7 +6,8 @@ type Props = {
   result: GenerationResult;
   userName?: string;
   userEmail?: string;
-  onRestart: () => void;
+  onShare: () => void;
+  onPrint: () => void;
 };
 
 const ResultScreen: FC<Props> = ({ result, userName, userEmail, onRestart }) => {
