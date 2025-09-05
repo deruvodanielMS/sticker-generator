@@ -112,4 +112,9 @@ app.get('*', (req, res) => {
 });
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Server listening on ${port}`));
+const server = app.listen(port, () => console.log(`Server listening on ${port}`));
+// Disable automatic timeouts so long-running provider requests can complete
+if (server && typeof server.setTimeout === 'function') {
+  server.setTimeout(0); // 0 = no timeout
+  console.log('Server timeout disabled to allow long-running provider requests');
+}
