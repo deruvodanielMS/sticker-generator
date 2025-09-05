@@ -4,10 +4,16 @@ const OPENAI_KEY = process.env.OPENAI_API_KEY || process.env.VITE_API_KEY_IMAGE_
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-  
+
   try {
+    console.log('🔑 OPENAI_KEY present:', !!OPENAI_KEY);
+    console.log('🔑 OPENAI_KEY first 10 chars:', OPENAI_KEY?.substring(0, 10));
+
     if (!OPENAI_KEY) return res.status(500).json({ error: 'Server missing OPENAI key' });
     const { prompt, selfieDataUrl } = req.body || {};
+    console.log('📝 Prompt received:', prompt?.substring(0, 100) + '...');
+    console.log('📸 Selfie provided:', !!selfieDataUrl);
+
     if (!prompt) return res.status(400).json({ error: 'Missing prompt' });
 
     let resp;
