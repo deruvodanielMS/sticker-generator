@@ -53,7 +53,7 @@ app.post('/api/generate-image', async (req, res) => {
             Authorization: `Bearer ${OPENAI_KEY}`,
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ model: 'gpt-image-1', prompt, size: '1024x1024', n: 1 }),
+          body: JSON.stringify({ model: 'dall-e-2', prompt, size: '1024x1024', n: 1 }),
         });
       }
     } catch (fetchErr) {
