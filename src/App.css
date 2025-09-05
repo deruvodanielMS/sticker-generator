@@ -791,25 +791,31 @@ html[data-theme="dark"] .nav-button.secondary {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 120px;
+  /* Use relative percentage width so handle remains correctly positioned across sizes */
+  width: 50%;
   height: 2px;
-  transform-origin: 0 50%;
+  transform-origin: 0 50%; /* rotate around left center so the dot travels around circle */
   z-index: 2;
   pointer-events: none;
-  margin-top: -1px;
-  margin-left: 0;
+  margin-top: 0;
 }
 
 .dial-handle-dot {
   position: absolute;
-  right: -4px;
-  top: -6px;
-  width: 8px;
-  height: 8px;
+  /* position the dot relative to the handle's right edge so it sits on the circumference */
+  right: -8px;
+  top: -7px;
+  width: 12px;
+  height: 12px;
   background: linear-gradient(137deg, #1EDD8E 21.41%, #53C0D2 58.8%);
   border-radius: 50%;
-  box-shadow: 0 16px 60px rgba(0, 0, 0, 0.23);
-  filter: drop-shadow(0 16px 60px rgba(0, 0, 0, 0.23));
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.18));
+}
+
+@media (max-width: 480px) {
+  .dial-handle { width: 58%; }
+  .dial-handle-dot { right: -6px; top: -6px; width: 10px; height: 10px; }
 }
 
 .dial-input {
