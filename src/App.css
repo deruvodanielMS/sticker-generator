@@ -639,10 +639,16 @@ html[data-theme="dark"] .secondary-button { background: rgba(255,255,255,0.06); 
   box-shadow: 0 4px 40px rgba(0, 0, 0, 0.1);
 }
 
-/* Dark theme adjustments for questions */
+/* Dark theme adjustments for questions and stepper */
+html[data-theme="dark"] .stepper-container {
+  background: rgba(16, 24, 32, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 html[data-theme="dark"] .question-option {
   background: rgba(255, 255, 255, 0.05);
   color: var(--gradient1-textContrast);
+  box-shadow: 0 50px 60px rgba(0, 0, 0, 0.3);
 }
 
 html[data-theme="dark"] .question-option.selected {
