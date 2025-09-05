@@ -5,6 +5,7 @@ import type { GenerationResult } from '../types';
 type Props = {
   result: GenerationResult;
   userName?: string;
+  userEmail?: string;
   onRestart: () => void;
 };
 
