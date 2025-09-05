@@ -34,14 +34,45 @@ app.post('/api/generate-image', async (req, res) => {
     let result;
     try {
       if (selfieDataUrl) {
-        // Skip selfie edit for now - just use generation
-        console.log('🚀 Skipping selfie edit, using generation instead...');
-        result = await openai.images.generate({
-          model: "gpt-image-1",
-          prompt: `${prompt} (incorporating user photo elements)`,
-          size: "1024x1024",
-          n: 1
+        // Use modern OpenAI API with photo input
+        console.log('🚀 Calling OpenAI with photo using gpt-4.1...');
+
+        const response = await openai.chat.completions.create({
+          model: "gpt-4o",
+          messages: [
+            {
+              role: "user",
+              content: [
+                {
+                  type: "text",
+                  text: `Generate a circular sticker image based on this prompt: ${prompt}. Use the person in the reference photo as inspiration for the character in the sticker. Make it creative and visually appealing.`
+                },
+                {
+                  type: "image_url",
+                  image_url: {
+                    url: selfieDataUrl,
+                    detail: "high"
+                  }
+                }
+              ]
+            }
+          ],
+          tools: [{ type: "dalle_3" }],
+          tool_choice: { type: "dalle_3" }
         });
+
+        console.log('📊 GPT-4o response:', JSON.stringify(response, null, 2).substring(0, 1000));
+
+        // Extract image from tool calls
+        const toolCall = response.choices[0]?.message?.tool_calls?.[0];
+        if (toolCall && toolCall.function) {
+          const imageData = JSON.parse(toolCall.function.arguments);
+          result = {
+            data: [{ b64_json: imageData.image || imageData.data }]
+          };
+        } else {
+          throw new Error('No image generated from GPT-4o');
+        }
       } else {
         console.log('🚀 Calling OpenAI image generation...');
         result = await openai.images.generate({
