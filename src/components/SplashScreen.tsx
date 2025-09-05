@@ -4,17 +4,26 @@ type Props = { onStart: () => void };
 
 const SplashScreen: React.FC<Props> = ({ onStart }) => {
   return (
-    <div className="screen-container">
-      <div className="brand-header">
-        <h1 className="brand-title">AI Archetype Sticker
-          <span className="brand-sub">Create your personalized sticker</span>
+    <div className="welcome-screen">
+      <div className="hero-section">
+        <h1 className="hero-title">
+          Use our AI-powered tool to pinpoint your unique tech attitude
         </h1>
+        
+        <div className="hero-divider">
+          <div className="divider-line"></div>
+          <div className="divider-dot"></div>
+        </div>
+        
+        <p className="hero-description">
+          Find out if you're a the Visionary, the Strategist,<br />
+          the Innovator, the Connector or the Trailblazer.
+        </p>
+        
+        <button className="hero-button" onClick={onStart}>
+          LET'S START
+        </button>
       </div>
-      <p className="intro-copy">Discover your AI archetype. Answer 5 quick questions and get your exclusive sticker.</p>
-      <button className="primary-button" onClick={onStart}>
-        Start
-      </button>
-      <p className="privacy-note">No data is stored after printing. Internet connection required.</p>
     </div>
   );
 };
