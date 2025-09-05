@@ -1745,10 +1745,34 @@ html[data-theme="dark"] .debug-info {
   }
 
   .result-buttons {
-    flex-direction: column;
-    width: 100%;
-    gap: 16px;
-  }
+  flex-direction: column;
+  width: 100%;
+  gap: 16px;
+}
+
+/* Email send controls */
+.result-email {
+  margin-top: 12px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.result-email-input {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.08);
+  min-width: 220px;
+}
+.result-button.tertiary {
+  background: transparent;
+  border: 1px solid rgba(16,37,50,0.08);
+  color: var(--gradient1-textContrast);
+  padding: 10px 16px;
+}
+.email-success { color: var(--primary-main); font-weight:700; }
+.email-error { color: #e04848; font-weight:700; }
 
   .result-button {
     width: 100%;
