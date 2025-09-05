@@ -44,9 +44,9 @@ function App() {
   };
 
   // Ensure default theme on mount
-  useState(() => {
+  useEffect(() => {
     setThemeOnDocument('light');
-  });
+  }, []);
 
   const handleSelect = (optId: string, intensity?: number) => {
     setAnswers(prev => ({ ...prev, [currentQuestion.id]: { choice: optId, intensity } }));
