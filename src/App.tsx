@@ -127,6 +127,7 @@ function App() {
     setQuestionIndex(0);
     setError(null);
     setResult(null);
+    setThemeOnDocument('light');
   };
 
   return (
