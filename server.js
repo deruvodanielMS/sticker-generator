@@ -17,18 +17,49 @@ const FROM_EMAIL = process.env.FROM_EMAIL || SMTP_USER || 'no-reply@example.com'
 app.post('/api/generate-image', async (req, res) => {
   try {
     if (!OPENAI_KEY) return res.status(500).json({ error: 'Server missing OPENAI key' });
-    const { prompt } = req.body || {};
+    const { prompt, selfieDataUrl } = req.body || {};
     if (!prompt) return res.status(400).json({ error: 'Missing prompt' });
 
-    // Simple generation (no selfie edits) using OpenAI Images Generations
-    const resp = await fetch('https://api.openai.com/v1/images/generations', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${OPENAI_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ model: 'gpt-image-1', prompt, size: '1024x1024', n: 1 }),
-    });
+    let resp;
+    try {
+      if (selfieDataUrl) {
+        // Use Images Edits endpoint and send multipart/form-data with the selfie
+        const FormData = (await import('form-data')).default;
+        const match = selfieDataUrl.match(/^data:(.*);base64,(.*)$/);
+        if (!match) return res.status(400).json({ error: 'Invalid selfie data URL' });
+        const mime = match[1];
+        const b64 = match[2];
+        const buffer = Buffer.from(b64, 'base64');
+
+        const form = new FormData();
+        form.append('image', buffer, { filename: 'selfie.png', contentType: mime });
+        form.append('prompt', prompt);
+        form.append('size', '1024x1024');
+        form.append('n', '1');
+
+        resp = await fetch('https://api.openai.com/v1/images/edits', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${OPENAI_KEY}`,
+            ...form.getHeaders(),
+          },
+          body: form,
+        });
+      } else {
+        // Simple generation (no selfie edits) using OpenAI Images Generations
+        resp = await fetch('https://api.openai.com/v1/images/generations', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${OPENAI_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ model: 'gpt-image-1', prompt, size: '1024x1024', n: 1 }),
+        });
+      }
+    } catch (fetchErr) {
+      console.error('Error calling OpenAI Images API', fetchErr);
+      return res.status(502).json({ error: String(fetchErr?.message || fetchErr) });
+    }
 
     // Read response text once and return a structured JSON envelope so clients can always parse it
     try {
