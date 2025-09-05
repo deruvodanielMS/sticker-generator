@@ -134,12 +134,12 @@ html[data-theme="dark"] .option-card { border-color: rgba(14,204,126,0.18); }
 /* Light theme: use vertical gradient background and dark buttons */
 html[data-theme="light"] .app-root { background: linear-gradient(180deg, var(--gradient1-start), var(--gradient1-end)); }
 html[data-theme="light"] .primary-button, html[data-theme="light"] .secondary-button, html[data-theme="light"] .ghost-button {
-  background: rgba(0,0,0,0.88);
+  background: linear-gradient(180deg, #071018, #0b1220);
   color: white;
-  border: none;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 10px 30px rgba(3,6,9,0.6);
 }
-html[data-theme="light"] .primary-button { background: linear-gradient(180deg, var(--primary-main), var(--secondary-main)); }
+html[data-theme="light"] .primary-button { background: linear-gradient(180deg, #071018, #0b1220); }
 html[data-theme="light"] .brand-title { color: #111210; }
 
 /* Dark theme: make action buttons full width and high contrast */
