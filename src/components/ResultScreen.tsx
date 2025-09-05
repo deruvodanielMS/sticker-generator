@@ -12,7 +12,7 @@ type Props = {
 };
 
 const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint }) => {
-  const { archetype, imageUrl, prompt, source, providerError } = result;
+  const { archetype, imageUrl } = result;
 
   const printSticker = () => {
     const w = window.open('', '_blank');
