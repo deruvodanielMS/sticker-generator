@@ -572,10 +572,12 @@ html[data-theme="dark"] .secondary-button { background: rgba(255,255,255,0.06); 
 }
 
 .option-icon {
-  width: 75px;
-  height: 75px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
   flex-shrink: 0;
+  display: block;
+  margin: 0 auto;
 }
 
 .option-label {
