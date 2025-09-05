@@ -14,8 +14,8 @@ export default function PhotoCapture({ onConfirm, onSkip }: Props) {
   const [loading, setLoading] = useState(false);
 
   const videoConstraints: MediaTrackConstraints = {
-    width: { ideal: 1280 },
-    height: { ideal: 1280 },
+    width: { ideal: 640 },
+    height: { ideal: 640 },
     facingMode: 'user',
   };
 
@@ -78,51 +78,81 @@ export default function PhotoCapture({ onConfirm, onSkip }: Props) {
   };
 
   return (
-    <div className="screen-container" role="region" aria-label="photo-capture">
-      <h2 className="question-title">Personalize your robot?</h2>
-      <p className="intro-copy">Optionally take a selfie to inspire the robot’s features. Use your device camera or choose an existing photo.</p>
-
-      {error && <div className="error-banner" role="alert">{error}</div>}
-
-      {!snapshot && !cameraStarted && (
-        <div style={{ display: 'flex', gap: 8, width: '100%', justifyContent: 'center' }}>
-          <button className="primary-button" onClick={startCamera} aria-label="Start camera">Open camera</button>
-          <button className="ghost-button" onClick={onSkip} aria-label="Skip photo">Skip</button>
+    <div className="photo-capture-screen">
+      <div className="photo-capture-section">
+        <h1 className="photo-capture-title">
+          Go beyond and<br />
+          personalize your robot
+        </h1>
+        
+        <div className="photo-capture-divider">
+          <div className="divider-line"></div>
+          <svg width="5" height="4" viewBox="0 0 5 4" fill="none" xmlns="http://www.w3.org/2000/svg" className="divider-dot">
+            <circle cx="2.5" cy="2" r="2" fill="url(#paint0_linear)"/>
+            <defs>
+              <linearGradient id="paint0_linear" x1="0.688744" y1="1.47298" x2="2.12203" y2="3.02577" gradientUnits="userSpaceOnUse">
+                <stop stopColor="#1EDD8E"/>
+                <stop offset="1" stopColor="#53C0D2"/>
+              </linearGradient>
+            </defs>
+          </svg>
         </div>
-      )}
+        
+        <p className="photo-capture-description">
+          Take a selfie to customize your robot's features to match your unique style.
+        </p>
+        
+        {error && <div className="error-banner" role="alert">{error}</div>}
 
-      {cameraStarted && !snapshot && (
-        <div className="camera-frame">
-          <Webcam
-            audio={false}
-            ref={webcamRef}
-            mirrored
-            screenshotFormat="image/jpeg"
-            videoConstraints={videoConstraints}
-            className="camera-video"
-          />
-          <div className="camera-overlay" />
+        <div className="camera-container">
+          {!cameraStarted && !snapshot && (
+            <div className="camera-placeholder"></div>
+          )}
+          
+          {cameraStarted && !snapshot && (
+            <div className="camera-frame">
+              <Webcam
+                audio={false}
+                ref={webcamRef}
+                mirrored
+                screenshotFormat="image/jpeg"
+                videoConstraints={videoConstraints}
+                className="camera-video"
+              />
+            </div>
+          )}
+
+          {snapshot && (
+            <div className="photo-preview">
+              <img src={snapshot} alt="Selfie preview" className="preview-image" />
+            </div>
+          )}
         </div>
-      )}
-
-      {snapshot && (
-        <div className="photo-preview">
-          <img src={snapshot} alt="Selfie preview" />
+        
+        <div className="photo-capture-buttons">
+          {!snapshot && !cameraStarted && (
+            <>
+              <button className="nav-button secondary" onClick={onSkip}>CLOSE</button>
+              <button className="nav-button primary" onClick={startCamera}>TAKE PHOTO</button>
+            </>
+          )}
+          
+          {cameraStarted && !snapshot && (
+            <>
+              <button className="nav-button secondary" onClick={stopCamera}>CLOSE</button>
+              <button className="nav-button primary" onClick={takePhoto} disabled={loading}>
+                {loading ? 'TAKING...' : 'TAKE PHOTO'}
+              </button>
+            </>
+          )}
+          
+          {snapshot && (
+            <>
+              <button className="nav-button secondary" onClick={retake}>RETAKE</button>
+              <button className="nav-button primary" onClick={confirm}>USE PHOTO</button>
+            </>
+          )}
         </div>
-      )}
-
-      <div className="actions-row" style={{ width: '100%', justifyContent: 'center' }}>
-        {!snapshot && cameraStarted ? (
-          <>
-            <button className="primary-button" onClick={takePhoto} aria-label="Take photo">Take photo</button>
-            <button className="ghost-button" onClick={stopCamera} aria-label="Close camera">Close</button>
-          </>
-        ) : snapshot ? (
-          <>
-            <button className="secondary-button" onClick={retake} aria-label="Retake photo">Retake</button>
-            <button className="primary-button" onClick={confirm} aria-label="Use photo">Use photo</button>
-          </>
-        ) : null}
       </div>
     </div>
   );
