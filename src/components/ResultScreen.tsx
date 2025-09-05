@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 
 import type { FC } from 'react';
@@ -90,16 +89,9 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
 
   return (
     <div className="result-screen">
-      {/* Decorative background elements */}
-      <div className="result-decoratives">
-        <div className="result-shape result-shape-1"></div>
-        <div className="result-shape result-shape-2"></div>
-        <div className="result-shape result-shape-3"></div>
-      </div>
-
       <div className="result-section">
-        <h1 className="result-title">You are {archetype.name}!</h1>
-        
+        <h1 className="result-title">{userName ? `${userName}, you are a ${archetype.name}!` : `You are ${archetype.name}!`}</h1>
+
         <div className="result-divider">
           <div className="divider-line"></div>
           <svg width="5" height="4" viewBox="0 0 5 4" fill="none" xmlns="http://www.w3.org/2000/svg" className="divider-dot">
