@@ -455,26 +455,44 @@ html[data-theme="dark"] .secondary-button { background: rgba(255,255,255,0.06); 
   left: 0;
   right: 0;
   height: 56px;
-  background: rgba(249, 249, 249, 0.95);
-  backdrop-filter: blur(8px);
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   padding: 8px 20px;
-  z-index: 9999; /* bring it above header */
+  z-index: 9999; /* ensure it is above header */
 
   box-sizing: border-box;
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-/* Make sure the stepper does not overlap content: push content down slightly */
-.question-content { padding: calc(var(--header-height) + 56px + 24px) 24px 40px; }
+/* Center the progress bar and make it taller for visibility */
+.stepper-progress {
+  display: flex;
+  flex: 1 1 auto;
+  max-width: 980px;
+  margin: 0 16px;
+  height: 12px; /* taller for better visibility */
+  background: #E8E8E8;
+  border-radius: 999px;
+  overflow: hidden;
+}
 
-/* Ensure completed step is clearly visible */
+.stepper-step {
+  flex: 1;
+  height: 100%;
+  background: #E8E8E8;
+  transition: background 300ms ease;
+}
+
 .stepper-step.completed {
   background: linear-gradient(90deg, var(--primary-main) 0%, var(--secondary-main) 100%) !important;
 }
+
+/* Make sure the stepper does not overlap content: push content down slightly */
+.question-content { padding: calc(var(--header-height) + 56px + 28px) 24px 40px; }
 
 /* Remove shadows and gradients from question options across themes */
 .question-option,
@@ -500,14 +518,18 @@ html[data-theme="dark"] .question-option.selected {
 .option-icon-wrap { background: transparent !important; border-radius: 0 !important; padding: 0 !important; }
 
 /* Slider responsiveness: ensure track fits tablet and smaller screens */
+.linear-slider-container { width: 100%; box-sizing: border-box; }
+.linear-slider-track-container { width: 100%; max-width: 100%; box-sizing: border-box; }
+.linear-slider-track-white, .linear-slider-track-bg, .linear-slider-track-filled { left: 0; right: 0; width: 100%; }
+
 @media (max-width: 900px) {
   .linear-slider-container { padding: 0 16px 24px 16px; }
-  .linear-slider-track-container { max-width: calc(100% - 32px); width: 100%; }
+  .linear-slider-track-container { max-width: 100%; width: 100%; }
   .linear-slider-thumb { width: clamp(32px, 8vw, 42px); height: clamp(32px, 8vw, 42px); }
 }
 
 @media (max-width: 480px) {
-  .linear-slider-track-container { height: 46px; }
+  .linear-slider-track-container { height: 56px; }
 }
 
 
