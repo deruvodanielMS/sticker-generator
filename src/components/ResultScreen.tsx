@@ -15,12 +15,17 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
 
   const printSticker = () => {
     const w = window.open('', '_blank');
-    if (!w) return;
+    if (!w) {
+      onPrint(); // Navigate even if print fails
+      return;
+    }
     w.document.write(`<html><head><title>${archetype.name} Sticker</title></head><body style="margin:0;display:flex;align-items:center;justify-content:center;background:#fff;">
       <img src="${imageUrl}" style="width:80vmin;height:80vmin;object-fit:contain;"/>
       <script>window.onload=function(){setTimeout(function(){window.print();}, 300)}<\/script>
     </body></html>`);
     w.document.close();
+    // Navigate to thank you after a short delay to allow print dialog
+    setTimeout(() => onPrint(), 1000);
   };
 
   const shareSticker = async () => {
