@@ -722,6 +722,237 @@ html[data-theme="dark"] .nav-button.secondary {
   }
 }
 
+/* Dial Question Styles */
+.dial-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 330px;
+  margin: 0 auto;
+}
+
+.dial-wrapper {
+  position: relative;
+  width: 330px;
+  height: 327px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dial-background {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.dial-center {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.dial-percentage {
+  font-family: 'Red Hat Display', system-ui, sans-serif;
+  font-size: 68px;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--primary-main) 0%, var(--secondary-main) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.dial-label {
+  font-family: 'Red Hat Display', system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--gradient1-textContrast);
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dial-handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120px;
+  height: 2px;
+  transform-origin: 0 50%;
+  z-index: 2;
+  pointer-events: none;
+  margin-top: -1px;
+  margin-left: 0;
+}
+
+.dial-handle-dot {
+  position: absolute;
+  right: -4px;
+  top: -6px;
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(137deg, #1EDD8E 21.41%, #53C0D2 58.8%);
+  border-radius: 50%;
+  box-shadow: 0 16px 60px rgba(0, 0, 0, 0.23);
+  filter: drop-shadow(0 16px 60px rgba(0, 0, 0, 0.23));
+}
+
+.dial-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 4;
+  border-radius: 50%;
+}
+
+.dial-input::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Radio List Question Styles */
+.radio-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 286px;
+  margin: 0 auto;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 16px 40px;
+  border-radius: 10px;
+  background: #fff;
+  border: none;
+  cursor: pointer;
+  transition: transform 200ms ease, box-shadow 200ms ease, background 200ms ease;
+  box-shadow: 0 50px 60px rgba(6, 6, 6, 0.1);
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.radio-option:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 60px 80px rgba(6, 6, 6, 0.15);
+}
+
+.radio-option.selected {
+  background: linear-gradient(180deg, rgba(14,204,126,0.08), rgba(83,192,210,0.06));
+  transform: translateY(-4px);
+  box-shadow: 0 60px 80px rgba(6, 6, 6, 0.2);
+}
+
+.radio-button {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid #616161;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 200ms ease, background 200ms ease;
+}
+
+.radio-button.checked {
+  border-color: var(--primary-main);
+  background: #fff;
+}
+
+.radio-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, var(--primary-main) 0%, var(--secondary-main) 100%);
+}
+
+.radio-label {
+  font-family: 'Red Hat Display', system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--gradient1-textContrast);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Dark theme adjustments for new components */
+html[data-theme="dark"] .radio-option {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--gradient1-textContrast);
+  box-shadow: 0 50px 60px rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme="dark"] .radio-option.selected {
+  background: linear-gradient(180deg, rgba(14,204,126,0.12), rgba(83,192,210,0.08));
+}
+
+html[data-theme="dark"] .radio-button {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+html[data-theme="dark"] .radio-button.checked {
+  border-color: var(--primary-main);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive adjustments for new layouts */
+@media (max-width: 768px) {
+  .dial-wrapper {
+    width: 280px;
+    height: 277px;
+  }
+
+  .dial-percentage {
+    font-size: 56px;
+  }
+
+  .dial-label {
+    font-size: 14px;
+  }
+
+  .radio-list-container {
+    max-width: 100%;
+  }
+
+  .radio-option {
+    padding: 12px 24px;
+    gap: 16px;
+  }
+
+  .radio-label {
+    font-size: 14px;
+  }
+}
+
 @media (max-width: 420px) {
   .options-grid { grid-template-columns: 1fr; }
+
+  .dial-wrapper {
+    width: 240px;
+    height: 237px;
+  }
+
+  .dial-percentage {
+    font-size: 48px;
+  }
 }
