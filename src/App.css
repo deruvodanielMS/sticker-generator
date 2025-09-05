@@ -67,9 +67,17 @@ html[data-theme="dark"] .brand-sub { color: rgba(247,250,252,0.9); }
   background: linear-gradient(180deg, rgba(14,204,126,0.06), rgba(83,192,210,0.04));
   color: var(--gradient1-textContrast);
   text-align: center;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background-color 180ms ease;
 }
-.option-card.selected { outline: 2px solid var(--primary-main); background: linear-gradient(180deg, rgba(14,204,126,0.12), rgba(83,192,210,0.08)); }
+.option-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+.option-card:focus-visible { outline: 3px solid var(--primary-main); outline-offset: 3px; }
+.option-card.selected { outline: 2px solid var(--primary-main); background: linear-gradient(180deg, rgba(14,204,126,0.12), rgba(83,192,210,0.08)); border-color: var(--primary-main); }
 .option-label { font-weight: 700; }
+
+/* Theme-aware option borders */
+html[data-theme="light"] .option-card { border-color: rgba(0,0,0,0.12); background: rgba(255,255,255,0.9); color: #111210; }
+html[data-theme="light"] .option-card.selected { background: rgba(0,0,0,0.06); }
+html[data-theme="dark"] .option-card { border-color: rgba(14,204,126,0.18); }
 
 .primary-button {
   border-radius: 9999px;
