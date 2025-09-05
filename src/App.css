@@ -1907,13 +1907,16 @@ html[data-theme="dark"] .result-button.secondary {
   background: transparent;
 }
 
-/* When option is selected, highlight the icon background and make icon contrast */
+/* When option is selected, highlight the icon background and ensure icon remains visible */
 .question-option.selected .option-icon-wrap {
   background: linear-gradient(90deg, var(--primary-main), var(--secondary-main));
 }
 
+/* Ensure selected icons remain visible (don't invert raster images which can disappear) */
 .question-option.selected .option-icon {
-  filter: brightness(0) invert(1); /* make icon white for contrast when selected */
+  filter: none;
+  opacity: 1;
+  transform: scale(1.02);
 }
 
 /* Dial linear control styles */
