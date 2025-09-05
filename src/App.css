@@ -468,28 +468,7 @@ html[data-theme="dark"] .secondary-button { background: rgba(255,255,255,0.06); 
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-/* Center the progress bar and make it taller for visibility */
-.stepper-progress {
-  display: flex;
-  flex: 1 1 auto;
-  max-width: 980px;
-  margin: 0 16px;
-  height: 12px; /* taller for better visibility */
-  background: #E8E8E8;
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-.stepper-step {
-  flex: 1;
-  height: 100%;
-  background: #E8E8E8;
-  transition: background 300ms ease;
-}
-
-.stepper-step.completed {
-  background: linear-gradient(90deg, var(--primary-main) 0%, var(--secondary-main) 100%) !important;
-}
+/* Remove duplicate stepper styles - they are defined below */
 
 /* Make sure the stepper does not overlap content: push content down slightly */
 .question-content { padding: calc(var(--header-height) + 56px + 28px) 24px 40px; }
@@ -518,17 +497,22 @@ html[data-theme="dark"] .question-option.selected {
 .option-icon-wrap { background: transparent !important; border-radius: 0 !important; padding: 0 !important; }
 
 /* Slider responsiveness: ensure track fits tablet and smaller screens */
-.linear-slider-container { width: 100%; box-sizing: border-box; }
+.linear-slider-container {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 24px 32px 24px; /* add horizontal padding to avoid edges */
+}
 .linear-slider-track-container { width: 100%; max-width: 100%; box-sizing: border-box; }
 .linear-slider-track-white, .linear-slider-track-bg, .linear-slider-track-filled { left: 0; right: 0; width: 100%; }
 
 @media (max-width: 900px) {
-  .linear-slider-container { padding: 0 16px 24px 16px; }
+  .linear-slider-container { padding: 0 20px 24px 20px; }
   .linear-slider-track-container { max-width: 100%; width: 100%; }
   .linear-slider-thumb { width: clamp(32px, 8vw, 42px); height: clamp(32px, 8vw, 42px); }
 }
 
 @media (max-width: 480px) {
+  .linear-slider-container { padding: 0 16px 24px 16px; }
   .linear-slider-track-container { height: 56px; }
 }
 
@@ -544,6 +528,7 @@ html[data-theme="dark"] .question-option.selected {
   overflow: hidden;
   margin-right: 16px;
   min-width: 0; /* allow flex children to shrink on narrow screens */
+  height: 8px; /* make it taller and visible */
 }
 
 /* ensure the visual bar takes full width inside the container */
@@ -551,13 +536,13 @@ html[data-theme="dark"] .question-option.selected {
 
 .stepper-step {
   flex: 1;
-  height: 4px;
+  height: 100%;
   background: #E0E0E0;
   transition: background 300ms ease;
 }
 
 .stepper-step.completed {
-  background: linear-gradient(90deg, var(--primary-main) 0%, var(--secondary-main) 100%);
+  background: linear-gradient(90deg, var(--primary-main) 0%, var(--secondary-main) 100%) !important;
 }
 
 .stepper-close {
