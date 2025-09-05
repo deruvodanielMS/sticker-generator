@@ -2,6 +2,7 @@ import type { FC } from 'react';
 import type { Question } from '../types';
 import Stepper from './Stepper';
 import LinearSlider from './LinearSlider';
+
 import RadioListQuestion from './RadioListQuestion';
 
 type Props = {
@@ -50,6 +51,7 @@ const QuestionScreen: FC<Props> = ({
       case 'dial':
         return (
           <LinearSlider
+
             value={getDialValue()}
             onChange={handleDialChange}
           />

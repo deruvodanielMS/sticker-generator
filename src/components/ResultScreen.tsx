@@ -1,4 +1,6 @@
+
 import { useState } from 'react';
+
 import type { FC } from 'react';
 import type { GenerationResult } from '../types';
 
@@ -54,6 +56,7 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
   };
 
   const emailState = (userEmail as string) || '';
+
   const [sending, setSending] = useState(false);
   const [sendSuccess, setSendSuccess] = useState<boolean | null>(null);
 
