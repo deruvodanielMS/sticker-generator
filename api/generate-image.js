@@ -42,11 +42,11 @@ export default async function handler(req, res) {
             Authorization: `Bearer ${OPENAI_KEY}`,
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ 
-            model: 'dall-e-3', 
-            prompt, 
-            size: '1024x1024', 
-            n: 1 
+          body: JSON.stringify({
+            model: 'dall-e-2',
+            prompt,
+            size: '1024x1024',
+            n: 1
           }),
         });
       }
