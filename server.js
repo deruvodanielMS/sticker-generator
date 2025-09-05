@@ -46,8 +46,7 @@ app.post('/api/generate-image', async (req, res) => {
           image: buffer,
           prompt: prompt,
           size: "1024x1024",
-          n: 1,
-          response_format: "b64_json"
+          n: 1
         });
       } else {
         console.log('🚀 Calling OpenAI image generation...');
@@ -55,8 +54,7 @@ app.post('/api/generate-image', async (req, res) => {
           model: "gpt-image-1",
           prompt: prompt,
           size: "1024x1024",
-          n: 1,
-          response_format: "b64_json"
+          n: 1
         });
       }
       

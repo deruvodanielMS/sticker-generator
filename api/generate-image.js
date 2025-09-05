@@ -36,8 +36,7 @@ export default async function handler(req, res) {
           image: buffer,
           prompt: prompt,
           size: "1024x1024",
-          n: 1,
-          response_format: "b64_json"
+          n: 1
         });
       } else {
         console.log('🚀 Calling OpenAI image generation...');
@@ -45,8 +44,7 @@ export default async function handler(req, res) {
           model: "gpt-image-1",
           prompt: prompt,
           size: "1024x1024",
-          n: 1,
-          response_format: "b64_json"
+          n: 1
         });
       }
       
