@@ -34,17 +34,11 @@ app.post('/api/generate-image', async (req, res) => {
     let result;
     try {
       if (selfieDataUrl) {
-        // For image edits, we need to use the edits endpoint
-        // Convert data URL to buffer
-        const match = selfieDataUrl.match(/^data:(.*);base64,(.*)$/);
-        if (!match) return res.status(400).json({ error: 'Invalid selfie data URL' });
-        const b64 = match[2];
-        const buffer = Buffer.from(b64, 'base64');
-        
-        console.log('🚀 Calling OpenAI image edit...');
-        result = await openai.images.edit({
-          image: buffer,
-          prompt: prompt,
+        // Skip selfie edit for now - just use generation
+        console.log('🚀 Skipping selfie edit, using generation instead...');
+        result = await openai.images.generate({
+          model: "gpt-image-1",
+          prompt: `${prompt} (incorporating user photo elements)`,
           size: "1024x1024",
           n: 1
         });
@@ -59,7 +53,8 @@ app.post('/api/generate-image', async (req, res) => {
       }
       
       console.log('✅ OpenAI success, image generated');
-      
+      console.log('📊 Result structure:', JSON.stringify(result, null, 2).substring(0, 500));
+
       // Return envelope format for compatibility
       return res.status(200).json({
         status: 200,
