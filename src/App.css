@@ -1595,7 +1595,75 @@ html[data-theme="dark"] .camera-frame {
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  display: none; /* removed decorative background per request */
+  display: none; /* hidden by default */
+}
+
+/* Show decorative shapes only in dark theme */
+html[data-theme="dark"] .result-decoratives {
+  display: block;
+}
+
+/* Debug toggle and panel */
+.result-debug-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 9999;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.result-debug-panel {
+  position: fixed;
+  top: 56px;
+  right: 16px;
+  width: 320px;
+  max-height: 60vh;
+  overflow: auto;
+  background: rgba(255,255,255,0.96);
+  color: #111;
+  border-radius: 8px;
+  padding: 12px;
+  z-index: 9998;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+  font-size: 12px;
+}
+
+/* Dark theme variant for debug panel */
+html[data-theme="dark"] .result-debug-panel {
+  background: rgba(8,12,16,0.92);
+  color: #fff;
+}
+
+/* Remove box-shadow from option cards / radio options */
+.question-option,
+.option-card {
+  box-shadow: none !important;
+}
+
+/* Keep selected state but without shadow */
+.question-option.selected,
+.option-card.selected {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: none !important;
+}
+
+/* Solid background behind icons when buttons are selected to improve visibility */
+.nav-button.selected img,
+.result-button.selected img {
+  background: #fff;
+  border-radius: 8px;
+  padding: 6px;
+}
+
+html[data-theme="dark"] .nav-button.selected img,
+html[data-theme="dark"] .result-button.selected img {
+  background: rgba(255,255,255,0.06);
 }
 
 .result-shape {
