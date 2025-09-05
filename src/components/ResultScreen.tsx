@@ -9,7 +9,7 @@ type Props = {
   onRestart: () => void;
 };
 
-const ResultScreen: FC<Props> = ({ result, userName, onRestart }) => {
+const ResultScreen: FC<Props> = ({ result, userName, userEmail, onRestart }) => {
   const { archetype, imageUrl, prompt, source, providerError } = result;
 
   const printSticker = () => {
