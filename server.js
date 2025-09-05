@@ -37,6 +37,57 @@ app.post('/api/generate-image', async (req, res) => {
   }
 });
 
+// Email send endpoint: expects { to, subject, text, imageUrl }
+app.post('/api/send-sticker-email', async (req, res) => {
+  try {
+    if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASS) {
+      return res.status(500).json({ error: 'SMTP credentials not configured on server.' });
+    }
+
+    const { to, subject, text, imageUrl } = req.body || {};
+    if (!to || !subject) return res.status(400).json({ error: 'Missing to or subject' });
+
+    // Create transporter
+    const transporter = nodemailer.createTransport({
+      host: SMTP_HOST,
+      port: Number(SMTP_PORT),
+      secure: Number(SMTP_PORT) === 465,
+      auth: { user: SMTP_USER, pass: SMTP_PASS },
+    });
+
+    // Retrieve image as buffer
+    let attachment;
+    if (imageUrl && imageUrl.startsWith('data:')) {
+      // Data URL
+      const match = imageUrl.match(/^data:(.*);base64,(.*)$/);
+      if (match) {
+        const mime = match[1];
+        const data = Buffer.from(match[2], 'base64');
+        attachment = { filename: 'sticker.png', content: data, contentType: mime };
+      }
+    } else if (imageUrl) {
+      const resp = await fetch(imageUrl);
+      const buf = await resp.arrayBuffer();
+      const contentType = resp.headers.get('content-type') || 'image/png';
+      attachment = { filename: 'sticker.png', content: Buffer.from(buf), contentType };
+    }
+
+    const mailOpts = {
+      from: FROM_EMAIL,
+      to,
+      subject,
+      text: text || '',
+      attachments: attachment ? [attachment] : undefined,
+    };
+
+    await transporter.sendMail(mailOpts);
+    return res.json({ success: true });
+  } catch (err) {
+    console.error('send email error', err);
+    return res.status(500).json({ error: String(err?.message || err) });
+  }
+});
+
 // Serve static built site
 const distPath = path.join(process.cwd(), 'dist');
 app.use(express.static(distPath));
