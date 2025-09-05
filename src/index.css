@@ -24,7 +24,7 @@ html[data-theme="light"] {
   color-scheme: light;
   color: var(--gradient1-textContrast);
   --muted: rgba(17,18,16,0.6);
-  background: linear-gradient(180deg, var(--gradient1-start), var(--gradient1-end));
+  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(14,204,126,0.15), rgba(83,192,210,0.25));
 }
 
 /* Smooth theme transition */
