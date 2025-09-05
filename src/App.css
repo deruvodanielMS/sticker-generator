@@ -1437,7 +1437,7 @@ html[data-theme="dark"] .camera-frame {
   padding: 40px 24px;
   box-sizing: border-box;
   animation: fadeIn 360ms ease both;
-  background: #F9F9F9;
+  background: transparent; /* make screen background transparent so theme-overlay paints full viewport */
   overflow: hidden;
 }
 
