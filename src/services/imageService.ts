@@ -17,22 +17,24 @@ async function generateViaProxy(prompt: string, selfieDataUrl?: string): Promise
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ prompt, selfieDataUrl }),
   });
-  // Parse response safely without assuming clone() is available
+
+  // Read response body using a clone to avoid "body already read" errors
   let text: string | null = null;
   let json: any = null;
   try {
-    text = await res.text();
+    // clone() is supported in modern browsers and lets us safely read the body
+    text = await (res.clone ? res.clone().text() : res.text());
     try {
-      json = JSON.parse(text);
+      json = JSON.parse(text as string);
     } catch (parseErr) {
-      // not JSON
-      json = null;
+      json = null; // not JSON
     }
   } catch (e) {
     throw new Error(`Failed to read proxy response body: ${String(e)}`);
   }
 
   if (!res.ok) {
+    // include status and any response text for debugging
     throw new Error(`Proxy image generation error ${res.status} ${String(text ?? '')}`);
   }
 
