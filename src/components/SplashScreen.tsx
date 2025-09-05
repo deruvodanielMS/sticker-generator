@@ -10,8 +10,6 @@ const SplashScreen: FC<Props> = ({ onStart }) => {
   return (
     <div className="screen-container">
       <div className="brand-header">
-        <img className="brand-logo-img logo-light" src={LOGO_LIGHT} alt="Making Sense logo light" />
-        <img className="brand-logo-img logo-dark" src={LOGO_DARK} alt="Making Sense logo dark" />
         <h1 className="brand-title">Making Sense
           <span className="brand-sub">AI Archetype Sticker</span>
         </h1>
