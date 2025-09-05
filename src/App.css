@@ -83,9 +83,9 @@ html[data-theme="dark"] .brand-sub { color: rgba(247,250,252,0.9); }
 .persistent-logo { pointer-events: none; max-height: 56px; margin-top: 14px; }
 
 /* media container size used for camera and preview (responsive but fixed) */
-:root { --media-size: clamp(260px, 46vw, 560px); }
-.camera-frame { width: var(--media-size); height: var(--media-size); }
-.photo-preview { width: var(--media-size); height: var(--media-size); margin: 16px auto; display: flex; align-items: center; justify-content: center; }
+:root { --media-size: clamp(260px, 46vw, 560px); --header-height: 96px; --footer-height: 40px; }
+.camera-frame { width: var(--media-size); height: var(--media-size); flex-shrink: 0; }
+.photo-preview { width: var(--media-size); height: var(--media-size); margin: 16px auto; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
 button, .option-card { transition: box-shadow 160ms ease, transform 160ms ease; }
 button:focus-visible { outline: 3px solid rgba(100,108,255,0.9); outline-offset: 2px; }
