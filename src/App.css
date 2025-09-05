@@ -1895,6 +1895,62 @@ html[data-theme="dark"] .result-button.secondary {
 
 /* Keep mobile stacking at <= 480px as column (existing rules apply) */
 
+/* Option icon wrapper for consistent circular backgrounds */
+.option-icon-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+/* When option is selected, highlight the icon background and make icon contrast */
+.question-option.selected .option-icon-wrap {
+  background: linear-gradient(90deg, var(--primary-main), var(--secondary-main));
+}
+
+.question-option.selected .option-icon {
+  filter: brightness(0) invert(1); /* make icon white for contrast when selected */
+}
+
+/* Dial linear control styles */
+.dial-linear-control {
+  margin-top: 18px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.dial-linear {
+  width: min(320px, 86%);
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: linear-gradient(90deg, var(--primary-main), var(--secondary-main));
+  border-radius: 9999px;
+  outline: none;
+}
+.dial-linear::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(2,6,8,0.25);
+  border: 2px solid rgba(0,0,0,0.08);
+}
+
+/* Reduce global spacings slightly for denser layout */
+.screen-container, .question-section, .photo-capture-section, .result-section {
+  gap: 20px;
+}
+
+/* Reduce title margins and description spacing */
+.question-title, .result-title {
+  margin-bottom: 8px;
+}
+
 @media (max-width: 420px) {
   .options-grid { grid-template-columns: 1fr; }
 
