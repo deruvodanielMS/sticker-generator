@@ -92,6 +92,18 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
 
   return (
     <div className="result-screen">
+      <button className="result-debug-toggle" onClick={() => setShowDebug(s => !s)}>{showDebug ? 'Hide debug' : 'Show debug'}</button>
+      {showDebug && (
+        <div className="result-debug-panel" role="status" aria-live="polite">
+          <div style={{ fontWeight: 700, marginBottom: 6 }}>Provider: {source || 'n/a'}</div>
+          {providerError && <div style={{ color: '#b00', marginBottom: 6 }}><strong>Provider error:</strong> {providerError}</div>}
+          <div style={{ fontSize: 12, color: '#444' }}>
+            <strong>Prompt:</strong>
+            <pre style={{ marginTop: 6, whiteSpace: 'pre-wrap', fontSize: 12 }}>{prompt || ''}</pre>
+          </div>
+        </div>
+      )}
+
       <div className="result-section">
         <h1 className="result-title">{userName ? `${userName}, you are a ${archetype.name}!` : `You are ${archetype.name}!`}</h1>
 
