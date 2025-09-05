@@ -2,20 +2,15 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 
 type Props = {
-  onSkip: () => void;
   onSubmit: (email: string) => void;
 };
 
-const EmailCapture = ({ onSkip, onSubmit }: Props) => {
+const EmailCapture = ({ onSubmit }: Props) => {
   const [email, setEmail] = useState('');
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (email.trim()) {
-      onSubmit(email.trim());
-    } else {
-      onSkip();
-    }
+    onSubmit(email.trim());
   };
 
   return (
