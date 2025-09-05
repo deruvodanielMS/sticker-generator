@@ -29,7 +29,7 @@ html[data-theme="light"] {
 
 /* Smooth theme transition */
 html {
-  transition: background 420ms ease, color 300ms ease;
+  transition: background 900ms ease-in-out, color 600ms ease-in-out;
 }
 
 /* Header overlay for better logo visibility in light theme */
