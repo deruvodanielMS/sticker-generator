@@ -84,7 +84,7 @@ html[data-theme="dark"] .brand-sub { color: rgba(247,250,252,0.9); }
 .persistent-logo { pointer-events: none; max-height: 56px; margin-top: 14px; }
 
 /* media container size used for camera and preview (responsive but fixed) */
-:root { --media-size: clamp(260px, 46vw, 560px); --header-height: 96px; --footer-height: 40px; }
+:root { --media-size: clamp(220px, 42vw, 480px); --header-height: 96px; --footer-height: 40px; }
 .camera-frame { width: var(--media-size); height: var(--media-size); flex-shrink: 0; }
 .photo-preview { width: var(--media-size); height: var(--media-size); margin: 16px auto; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
