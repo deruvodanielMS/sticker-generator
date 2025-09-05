@@ -4,6 +4,7 @@ import SplashScreen from './components/SplashScreen';
 import NameInput from './components/NameInput';
 import QuestionScreen from './components/QuestionScreen';
 import EmailCapture from './components/EmailCapture';
+import PhotoIntro from './components/PhotoIntro';
 import PhotoCapture from './components/PhotoCapture';
 import PromptPreview from './components/PromptPreview';
 import LoadingScreen from './components/LoadingScreen';
@@ -20,10 +21,11 @@ const STEPS = {
   NameInput: 1,
   Questions: 2,
   EmailCapture: 3,
-  Photo: 4,
-  PromptPreview: 5,
-  Generating: 6,
-  Result: 7,
+  PhotoIntro: 4,
+  Photo: 5,
+  PromptPreview: 6,
+  Generating: 7,
+  Result: 8,
 } as const;
 
 function App() {
@@ -98,11 +100,19 @@ function App() {
 
   const handleEmailSubmit = (email: string) => {
     setUserEmail(email);
-    setStep(STEPS.Photo);
+    setStep(STEPS.PhotoIntro);
   };
 
   const handleEmailSkip = () => {
+    setStep(STEPS.PhotoIntro);
+  };
+
+  const handlePhotoIntroCamera = () => {
     setStep(STEPS.Photo);
+  };
+
+  const handlePhotoIntroSkip = () => {
+    preparePrompt(undefined);
   };
 
   // Prepare prompt using LLM (or fallback) and go to PromptPreview
@@ -195,6 +205,9 @@ function App() {
       )}
       {step === STEPS.EmailCapture && (
         <EmailCapture onSubmit={handleEmailSubmit} onSkip={handleEmailSkip} />
+      )}
+      {step === STEPS.PhotoIntro && (
+        <PhotoIntro onOpenCamera={handlePhotoIntroCamera} onSkip={handlePhotoIntroSkip} />
       )}
       {step === STEPS.Photo && (
         <PhotoCapture onConfirm={(dataUrl?: string) => preparePrompt(dataUrl)} onSkip={() => preparePrompt(undefined)} />
