@@ -75,6 +75,24 @@ function App() {
     }
   };
 
+  const handlePrevious = () => {
+    setError(null);
+    if (questionIndex > 0) {
+      setQuestionIndex(questionIndex - 1);
+    } else {
+      setStep(STEPS.NameInput);
+    }
+  };
+
+  const handleCloseQuestions = () => {
+    setStep(STEPS.Splash);
+    setUserName('');
+    setAnswers({});
+    setQuestionIndex(0);
+    setError(null);
+    setThemeOnDocument('light');
+  };
+
   // Prepare prompt using LLM (or fallback) and go to PromptPreview
   const preparePrompt = async (maybeSelfie?: string) => {
     setPendingSelfie(maybeSelfie);
@@ -156,6 +174,8 @@ function App() {
           selected={answers[currentQuestion.id]}
           onSelect={handleSelect}
           onNext={handleNext}
+          onPrevious={handlePrevious}
+          onClose={handleCloseQuestions}
           step={questionIndex + 1}
           total={total}
         />
