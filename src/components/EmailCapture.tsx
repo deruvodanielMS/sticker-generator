@@ -54,14 +54,7 @@ const EmailCapture = ({ onSubmit }: Props) => {
             SUBMIT
           </button>
 
-          <button
-            type="button"
-            className="hero-button"
-            onClick={onSkip}
-          >
-            SKIP
-          </button>
-        </form>
+          </form>
       </div>
     </div>
   );
