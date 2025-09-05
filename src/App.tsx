@@ -135,7 +135,13 @@ function App() {
 
   return (
     <div className="app-root">
+      <header className="app-header" aria-hidden>
+        <img className="brand-logo-img logo-light persistent-logo" src={LOGO_LIGHT} alt="Making Sense logo light" />
+        <img className="brand-logo-img logo-dark persistent-logo" src={LOGO_DARK} alt="Making Sense logo dark" />
+      </header>
+
       {error && <ErrorBanner>{error}</ErrorBanner>}
+
       {step === STEPS.Splash && <SplashScreen onStart={() => setStep(STEPS.Questions)} />}
       {step === STEPS.Questions && (
         <QuestionScreen
