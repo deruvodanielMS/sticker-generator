@@ -44,7 +44,7 @@ const ResultScreen: FC<Props> = ({ result, userName, onRestart }) => {
     }
   };
 
-  const [emailState, setEmailState] = useState<string>(userEmail || '');
+  const [emailState, setEmailState] = useState<string>((userEmail as string) || '');
   const [sending, setSending] = useState(false);
   const [sendSuccess, setSendSuccess] = useState<boolean | null>(null);
 
