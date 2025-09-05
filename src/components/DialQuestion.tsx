@@ -68,6 +68,18 @@ const DialQuestion: React.FC<Props> = ({ value, onChange }) => {
           aria-label="Risk tolerance percentage"
         />
       </div>
+      {/* Linear slider control below the dial for precise adjustments */}
+      <div className="dial-linear-control">
+        <input
+          type="range"
+          min={0}
+          max={100}
+          value={localValue}
+          onChange={(e) => handleChange(Number(e.target.value))}
+          className="dial-linear"
+          aria-label="Adjust intensity"
+        />
+      </div>
     </div>
   );
 };
