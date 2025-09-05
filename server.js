@@ -33,6 +33,13 @@ app.post('/api/generate-image', async (req, res) => {
     // Read response text once and return a structured JSON envelope so clients can always parse it
     try {
       const respText = await resp.text();
+      // log full response for debugging (trim if very long)
+      try {
+        console.log('OpenAI response status:', resp.status);
+        console.log('OpenAI response body (truncated 2000 chars):', respText.slice ? respText.slice(0, 2000) : respText);
+      } catch (logErr) {
+        console.error('Failed to log OpenAI response', logErr);
+      }
       let parsed = null;
       try {
         parsed = JSON.parse(respText);
