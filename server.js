@@ -34,46 +34,51 @@ app.post('/api/generate-image', async (req, res) => {
     let result;
     try {
       if (selfieDataUrl) {
-        // Use modern OpenAI API with photo input
-        console.log('🚀 Calling OpenAI with photo using gpt-4.1...');
-
-        const response = await openai.chat.completions.create({
-          model: "gpt-4o",
-          messages: [
+        // Use new Responses API with photo input
+        console.log('🚀 Calling OpenAI Responses API with photo using gpt-4.1...');
+        
+        const response = await openai.responses.create({
+          model: "gpt-4.1",
+          input: [
             {
               role: "user",
               content: [
-                {
-                  type: "text",
-                  text: `Generate a circular sticker image based on this prompt: ${prompt}. Use the person in the reference photo as inspiration for the character in the sticker. Make it creative and visually appealing.`
+                { 
+                  type: "input_text", 
+                  text: `Generate a circular sticker image based on this prompt: ${prompt}. Use the person in the reference photo as inspiration for the character in the sticker. Make it creative and visually appealing as a circular sticker design.`
                 },
                 {
-                  type: "image_url",
-                  image_url: {
-                    url: selfieDataUrl,
-                    detail: "high"
-                  }
+                  type: "input_image",
+                  image_url: selfieDataUrl
                 }
               ]
             }
           ],
-          tools: [{ type: "dalle_3" }],
-          tool_choice: { type: "dalle_3" }
+          tools: [{ type: "image_generation" }]
         });
+        
+        console.log('📊 Responses API response structure:', JSON.stringify(response, null, 2).substring(0, 1000));
+        
+        // Extract image from response output
+        const imageData = response.output
+          .filter((output) => output.type === "image_generation_call")
+          .map((output) => output.result);
 
-        console.log('📊 GPT-4o response:', JSON.stringify(response, null, 2).substring(0, 1000));
-
-        // Extract image from tool calls
-        const toolCall = response.choices[0]?.message?.tool_calls?.[0];
-        if (toolCall && toolCall.function) {
-          const imageData = JSON.parse(toolCall.function.arguments);
+        if (imageData.length > 0) {
+          const imageBase64 = imageData[0];
+          console.log('✅ Image generated with photo, base64 length:', imageBase64?.length);
+          
+          // Format to match expected structure
           result = {
-            data: [{ b64_json: imageData.image || imageData.data }]
+            data: [{ b64_json: imageBase64 }]
           };
         } else {
-          throw new Error('No image generated from GPT-4o');
+          console.log('📝 No image generated, response content:', response.output.map(o => o.content || o.type));
+          throw new Error('No image generated from Responses API');
         }
+        
       } else {
+        // Use regular image generation for no photo
         console.log('🚀 Calling OpenAI image generation...');
         result = await openai.images.generate({
           model: "gpt-image-1",
@@ -84,8 +89,10 @@ app.post('/api/generate-image', async (req, res) => {
       }
       
       console.log('✅ OpenAI success, image generated');
-      console.log('📊 Result structure:', JSON.stringify(result, null, 2).substring(0, 500));
-
+      console.log('📊 Result structure keys:', Object.keys(result));
+      console.log('📊 Result data length:', result.data?.length);
+      console.log('📊 Has b64_json:', !!result.data?.[0]?.b64_json);
+      
       // Return envelope format for compatibility
       return res.status(200).json({
         status: 200,
