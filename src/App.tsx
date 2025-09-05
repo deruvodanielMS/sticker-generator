@@ -194,29 +194,6 @@ function App() {
         <PhotoCapture onConfirm={(dataUrl?: string) => preparePrompt(dataUrl)} onSkip={() => preparePrompt(undefined)} />
       )}
 
-      {step === STEPS.PromptPreview && generatedPrompt && generatedArchetype && (
-        <PromptPreview
-          archetype={generatedArchetype}
-          prompt={generatedPrompt}
-          onChange={(p) => setGeneratedPrompt(p)}
-          onGenerate={startGeneration}
-          onRegenerate={async () => {
-            setPromptLoading(true);
-            try {
-              const llm = await import('./services/llmService');
-              const variant = 'v' + Math.floor(Math.random() * 10000);
-              const out = await llm.generateArchetypeWithLLM(answers, variant);
-              setGeneratedArchetype(out.archetype);
-              setGeneratedPrompt(out.prompt);
-            } catch (e: any) {
-              setError('Regenerate failed');
-            } finally {
-              setPromptLoading(false);
-            }
-          }}
-          loading={promptLoading}
-        />
-      )}
 
       {step === STEPS.Generating && <LoadingScreen />}
       {step === STEPS.Result && result && <ResultScreen result={result} userName={userName} userEmail={userEmail} onShare={goToThankYou} onPrint={goToThankYou} />}
