@@ -1423,10 +1423,17 @@ html[data-theme="dark"] .camera-frame {
 
   .photo-capture-section {
     gap: 32px;
+    padding-top: 16px;
+  }
+
+  .photo-capture-title {
+    font-size: 36px;
+    line-height: 40px;
   }
 
   .photo-capture-description {
     font-size: 16px;
+    line-height: 20px;
   }
 
   .camera-container {
