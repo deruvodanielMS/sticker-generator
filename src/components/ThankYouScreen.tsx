@@ -1,11 +1,10 @@
 import type { FC } from 'react';
 
 type Props = {
-  userName?: string;
   onRestart: () => void;
 };
 
-const ThankYouScreen: FC<Props> = ({ userName, onRestart }) => {
+const ThankYouScreen: FC<Props> = ({ onRestart }) => {
   return (
     <div className="thankyou-screen">
       <div className="thankyou-section">
