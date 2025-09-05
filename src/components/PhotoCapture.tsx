@@ -6,81 +6,39 @@ type Props = {
 };
 
 export default function PhotoCapture({ onConfirm, onSkip }: Props) {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [snapshot, setSnapshot] = useState<string | null>(null);
-  const [stream, setStream] = useState<MediaStream | null>(null);
-  const [cameraStarted, setCameraStarted] = useState(false);
 
-  const startCamera = async () => {
+  const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setError(null);
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      setError('Please select an image file');
+      return;
+    }
     try {
-      const constraints: MediaStreamConstraints = {
-        video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 1280 } },
-        audio: false,
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = String(reader.result ?? '');
+        setSnapshot(dataUrl);
       };
-      const s = await navigator.mediaDevices.getUserMedia(constraints);
-      setStream(s);
-      if (videoRef.current) {
-        const v = videoRef.current;
-        v.muted = true; // allow autoplay on mobile browsers
-        v.playsInline = true;
-        v.srcObject = s;
-
-        // wait for metadata so videoWidth/Height are available
-        await new Promise<void>((resolve) => {
-          const onLoaded = () => { v.removeEventListener('loadedmetadata', onLoaded); resolve(); };
-          v.addEventListener('loadedmetadata', onLoaded);
-          v.play().catch(() => { /* ignore play error */ });
-        });
-      }
-      setCameraStarted(true);
-    } catch (e) {
-      setError('Camera access denied or unavailable. Please allow camera access.');
+      reader.onerror = () => setError('Failed to read the image file');
+      reader.readAsDataURL(file);
+    } catch (err) {
+      setError('Could not load image');
     }
   };
 
-  const stopCamera = () => {
-    if (stream) {
-      stream.getTracks().forEach(t => t.stop());
-      setStream(null);
-    }
-    setCameraStarted(false);
+  const triggerCamera = () => {
+    setError(null);
+    if (inputRef.current) inputRef.current.click();
   };
 
-  const takePhoto = () => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    // ensure we have fresh dimensions
-    const vw = video.videoWidth || 640;
-    const vh = video.videoHeight || 480;
-
-    // choose square crop based on the smaller dimension
-    const size = Math.min(vw, vh);
-    const canvas = document.createElement('canvas');
-    canvas.width = size;
-    canvas.height = size;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    // center crop
-    const sx = Math.max(0, (vw - size) / 2);
-    const sy = Math.max(0, (vh - size) / 2);
-
-    ctx.imageSmoothingEnabled = true;
-    ctx.drawImage(video, sx, sy, size, size, 0, 0, size, size);
-
-    // Convert to jpeg data URL
-    const data = canvas.toDataURL('image/jpeg', 0.95);
-    setSnapshot(data);
-
-    // quick shutter effect
-    if (videoRef.current) videoRef.current.style.opacity = '0.2';
-    setTimeout(() => { if (videoRef.current) videoRef.current.style.opacity = ''; }, 120);
-
-    // stop camera after capture to save resources
-    stopCamera();
+  const retake = () => {
+    setSnapshot(null);
+    if (inputRef.current) inputRef.current.value = '';
   };
 
   const confirm = () => onConfirm(snapshot ?? undefined);
@@ -88,21 +46,23 @@ export default function PhotoCapture({ onConfirm, onSkip }: Props) {
   return (
     <div className="screen-container">
       <h2 className="question-title">Personalize your robot?</h2>
-      <p className="intro-copy">Optionally take a selfie to inspire the robot’s features.</p>
+      <p className="intro-copy">Optionally take a selfie to inspire the robot’s features. Use your device camera or choose an existing photo.</p>
 
       {error && <div className="error-banner">{error}</div>}
 
-      {!cameraStarted && !snapshot && (
-        <div style={{ display: 'flex', gap: 8 }}>
-          <button className="primary-button" onClick={startCamera}>Allow camera</button>
-          <button className="ghost-button" onClick={onSkip}>Skip</button>
-        </div>
-      )}
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        capture="user"
+        style={{ display: 'none' }}
+        onChange={onFileChange}
+      />
 
-      {cameraStarted && !snapshot && (
-        <div className="camera-frame">
-          <video ref={videoRef} playsInline className="camera-video" autoPlay />
-          <div className="camera-overlay" />
+      {!snapshot && (
+        <div style={{ display: 'flex', gap: 8, width: '100%', justifyContent: 'center' }}>
+          <button className="primary-button" onClick={triggerCamera}>Take photo</button>
+          <button className="ghost-button" onClick={onSkip}>Skip</button>
         </div>
       )}
 
@@ -112,17 +72,13 @@ export default function PhotoCapture({ onConfirm, onSkip }: Props) {
         </div>
       )}
 
-      <div className="actions-row">
-        {!snapshot && cameraStarted ? (
-          <button className="primary-button" onClick={takePhoto} disabled={!!error}>Take photo</button>
-        ) : snapshot ? (
-          <button className="secondary-button" onClick={() => { setSnapshot(null); startCamera(); }}>Retake</button>
+      <div className="actions-row" style={{ width: '100%', justifyContent: 'center' }}>
+        {snapshot ? (
+          <>
+            <button className="secondary-button" onClick={retake}>Retake</button>
+            <button className="primary-button" onClick={confirm}>Continue</button>
+          </>
         ) : null}
-
-        {snapshot && <button className="ghost-button" onClick={onSkip}>Skip</button>}
-
-        <button className="primary-button" onClick={confirm}>Continue</button>
-
       </div>
     </div>
   );
