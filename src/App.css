@@ -36,6 +36,7 @@ html[data-theme="dark"] .theme-overlay { opacity: 0; background: linear-gradient
   padding: 0 16px; /* internal horizontal padding for small devices */
   box-sizing: border-box;
   animation: fadeIn 360ms ease both;
+  transition: opacity 260ms ease;
 }
 
 @keyframes fadeIn {
