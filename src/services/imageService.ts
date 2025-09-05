@@ -17,12 +17,15 @@ async function generateViaProxy(prompt: string, selfieDataUrl?: string): Promise
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ prompt, selfieDataUrl }),
   });
-  // Read JSON directly to avoid reading the body stream more than once
+  // Try to safely parse JSON. Use a clone to avoid "body stream already read" errors
   let json: any;
   try {
-    json = await res.json();
+    // clone allows reading the body even if another consumer already read the original
+    json = await (res.clone().json());
   } catch (e) {
-    const txt = await res.text().catch(() => null);
+    // last resort: try to read text to surface server message
+    let txt: string | null = null;
+    try { txt = await res.text(); } catch {}
     throw new Error(`Invalid JSON from proxy: ${String(txt || e)}`);
   }
 
