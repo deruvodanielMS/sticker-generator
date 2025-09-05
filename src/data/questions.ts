@@ -13,21 +13,23 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 'innovation',
-    title: 'Approach to innovation',
+    title: 'Which mindset do you most identify with when new technologies emerge?',
+    layout: 'radio-list',
     options: [
       { id: 'conservative', label: 'Conservative' },
       { id: 'experimental', label: 'Experimental' },
-      { id: 'early_adopter', label: 'Early Adopter' },
+      { id: 'early_adopter', label: 'Early adopter' },
       { id: 'disruptive', label: 'Disruptive' },
     ],
   },
   {
     id: 'risk',
-    title: 'Risk tolerance',
+    title: 'With new opportunities, how would you describe your risk tolerance?',
+    layout: 'dial',
     options: [
-      { id: 'low', label: 'Low' },
-      { id: 'medium', label: 'Medium' },
-      { id: 'high', label: 'High' },
+      { id: 'low', label: 'Low', value: 0 },
+      { id: 'medium', label: 'Medium', value: 50 },
+      { id: 'high', label: 'High', value: 100 },
     ],
   },
   {
