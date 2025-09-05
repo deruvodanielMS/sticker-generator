@@ -147,7 +147,7 @@ html[data-theme="dark"] .primary-button, html[data-theme="dark"] .secondary-butt
   display: block;
 }
 
-.camera-frame { position: relative; width: var(--media-size); height: var(--media-size); border-radius: 16px; overflow: hidden; border: 1px solid rgba(247,250,252,0.06); background: #000; }
+.camera-frame { position: relative; width: var(--media-size); height: var(--media-size); border-radius: 16px; overflow: hidden; border: 1px solid rgba(247,250,252,0.06); background: #000; margin: 16px auto; display: flex; align-items: center; justify-content: center; }
 .camera-video { width: 100%; height: 100%; object-fit: cover; display: block; }
 .camera-overlay { position: absolute; inset: 0; border: 2px dashed rgba(255,255,255,0.08); border-radius: 16px; pointer-events: none; }
 .photo-preview { width: var(--media-size); height: var(--media-size); }
