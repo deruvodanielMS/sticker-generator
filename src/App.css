@@ -1911,18 +1911,11 @@ html[data-theme="dark"] .debug-info {
 /* Icon sizing: standardize to 40x40 and ensure they don't overflow buttons */
 .option-icon,
 .nav-button img,
-  .nav-button svg,
-  .result-button svg,
-  .hero-button svg,
-  .stepper-close svg,
-  .action-icon {
-
 .nav-button svg,
 .result-button svg,
 .hero-button svg,
 .stepper-close svg,
 .action-icon {
-
   width: 40px;
   height: 40px;
   flex-shrink: 0;
@@ -2062,6 +2055,7 @@ html[data-theme="dark"] .result-button.secondary {
   opacity: 1;
   transform: scale(1.05);
   transition: transform 200ms ease, filter 200ms ease;
+}
 /* When option is selected, highlight the icon background and ensure icon remains visible */
 .question-option.selected .option-icon-wrap {
   background: linear-gradient(90deg, var(--primary-main), var(--secondary-main));
