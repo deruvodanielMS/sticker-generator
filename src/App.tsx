@@ -104,7 +104,6 @@ function App() {
 
   // Prepare prompt using LLM (or fallback) and generate immediately (skip prompt preview)
   const preparePrompt = async (maybeSelfie?: string) => {
-    setPendingSelfie(maybeSelfie);
     setPromptLoading(true);
     setError(null);
     try {
