@@ -49,7 +49,7 @@ const QuestionScreen: FC<Props> = ({
     switch (layout) {
       case 'dial':
         return (
-          <DialQuestion
+          <LinearSlider
             value={getDialValue()}
             onChange={handleDialChange}
           />
