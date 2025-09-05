@@ -4,7 +4,6 @@ import SplashScreen from './components/SplashScreen';
 import NameInput from './components/NameInput';
 import QuestionScreen from './components/QuestionScreen';
 import EmailCapture from './components/EmailCapture';
-import PhotoIntro from './components/PhotoIntro';
 import PhotoCapture from './components/PhotoCapture';
 import PromptPreview from './components/PromptPreview';
 import LoadingScreen from './components/LoadingScreen';
