@@ -3,12 +3,12 @@ import type { Question } from '../types';
 export const QUESTIONS: Question[] = [
   {
     id: 'decision_style',
-    title: 'Decision-making style',
+    title: 'Which best describes your approach to making business decisions?',
     options: [
-      { id: 'analytical', label: 'Analytical' },
-      { id: 'intuitive', label: 'Intuitive' },
-      { id: 'collaborative', label: 'Collaborative' },
-      { id: 'opportunistic', label: 'Opportunistic' },
+      { id: 'analytical', label: 'Analytical', icon: 'https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F326110f362024b59902872639764da83?format=webp&width=800' },
+      { id: 'intuitive', label: 'Intuitive', icon: 'https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2Fa033e10c071a42e19ad172d6988aea79?format=webp&width=800' },
+      { id: 'collaborative', label: 'Collaborative', icon: 'https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F734d99d9b7254347863862923d3961aa?format=webp&width=800' },
+      { id: 'opportunistic', label: 'Opportunistic', icon: 'https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2Ff37d8c00cdd648fa870715933cd5e8d0?format=webp&width=800' },
     ],
   },
   {
