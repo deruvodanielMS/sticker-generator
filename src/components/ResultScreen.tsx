@@ -122,6 +122,21 @@ const ResultScreen: FC<Props> = ({ result, userName, onRestart }) => {
           </button>
         </div>
 
+        <div className="result-email">
+          <input
+            type="email"
+            className="result-email-input"
+            placeholder="Send to email"
+            value={emailState}
+            onChange={(e) => setEmailState(e.target.value)}
+          />
+          <button className="result-button tertiary" onClick={sendByEmail} disabled={sending}>
+            {sending ? 'SENDING…' : 'EMAIL'}
+          </button>
+          {sendSuccess === true && <div className="email-success">Sent!</div>}
+          {sendSuccess === false && <div className="email-error">Failed to send</div>}
+        </div>
+
         <button className="result-start-over" onClick={onRestart}>
           START OVER
         </button>
