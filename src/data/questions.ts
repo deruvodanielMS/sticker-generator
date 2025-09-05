@@ -35,12 +35,13 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 'collaboration',
-    title: 'Collaboration style',
+    title: 'When working on a team project, which approach best describes your style?',
+    layout: 'icons',
     options: [
-      { id: 'independent', label: 'Independent' },
-      { id: 'team_player', label: 'Team Player' },
-      { id: 'networker', label: 'Networker' },
-      { id: 'xfunctional_lead', label: 'Cross-functional Leader' },
+      { id: 'independent', label: 'Independent', icon: 'https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F0f924d10a9004ece81801170ff3120bc?format=webp&width=800' },
+      { id: 'team_player', label: 'Team player', icon: 'https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F3ea631f044214ea694881dbdc7cb09c0?format=webp&width=800' },
+      { id: 'networker', label: 'Networker', icon: 'https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2Fc8a134459f504ebc902e82a27543cbd9?format=webp&width=800' },
+      { id: 'xfunctional_lead', label: 'Cross-functional leader', icon: 'https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2Fbd297adeb12f421fa4fea943a15e0a4d?format=webp&width=800' },
     ],
   },
   {
