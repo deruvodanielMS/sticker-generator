@@ -1940,6 +1940,31 @@ html[data-theme="dark"] .result-button img.result-button-icon {
   filter: none; /* keep original icon colors */
 }
 
+/* Ensure button icons remain visible in all states */
+.result-button img.result-button-icon,
+.nav-button img,
+.hero-button img {
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+/* Ensure SVG icons in buttons remain visible */
+.result-button svg,
+.nav-button svg,
+.hero-button svg,
+.stepper-close svg {
+  opacity: 1 !important;
+}
+
+/* For selected button states, ensure icons remain visible */
+.result-button.selected img,
+.nav-button.selected img,
+.result-button.selected svg,
+.nav-button.selected svg {
+  filter: none !important;
+  opacity: 1 !important;
+}
+
 /* For option icons in dark theme - subtle glow for better visibility */
 html[data-theme="dark"] .option-icon {
   filter: drop-shadow(0 2px 8px rgba(14,204,126,0.15));
@@ -1967,15 +1992,20 @@ html[data-theme="dark"] .nav-button svg {
   filter: drop-shadow(0 2px 6px rgba(255,255,255,0.08));
 }
 
-/* Make inline SVGs follow button color for better theming */
+/* Make inline SVGs follow button color for better theming, but preserve icon visibility */
 .nav-button svg path,
 .nav-button svg circle,
 .nav-button svg rect,
 .result-button svg path,
 .result-button svg circle,
 .result-button svg rect {
-  stroke: currentColor;
-  fill: currentColor;
+  /* Only apply currentColor to non-icon SVGs */
+}
+
+/* Stepper close icon should remain dark/visible */
+.stepper-close svg path {
+  fill: #666;
+  stroke: #666;
 }
 
 /* Button color states */
