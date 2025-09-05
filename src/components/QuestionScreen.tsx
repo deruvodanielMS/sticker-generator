@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import type { Question } from '../types';
 import Stepper from './Stepper';
-import DialQuestion from './DialQuestion';
+import LinearSlider from './LinearSlider';
 import RadioListQuestion from './RadioListQuestion';
 
 type Props = {
