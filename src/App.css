@@ -212,10 +212,6 @@ html[data-theme="dark"] .secondary-button { background: rgba(255,255,255,0.06); 
 
 .error-banner { width: 100%; background: #dc2626; color: #fff; padding: 10px 12px; border-radius: 12px; }
 
-/* Intensity control styles */
-.intensity-control { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 8px; align-items: center; }
-.intensity-label { font-size: 13px; color: var(--muted); }
-.intensity-range { width: 100%; }
 
 /* Welcome Screen Styles */
 .welcome-screen {
