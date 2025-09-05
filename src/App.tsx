@@ -198,9 +198,6 @@ function App() {
       {step === STEPS.EmailCapture && (
         <EmailCapture onSubmit={handleEmailSubmit} onSkip={handleEmailSkip} />
       )}
-      {step === STEPS.PhotoIntro && (
-        <PhotoIntro onOpenCamera={handlePhotoIntroCamera} onSkip={handlePhotoIntroSkip} />
-      )}
       {step === STEPS.Photo && (
         <PhotoCapture onConfirm={(dataUrl?: string) => preparePrompt(dataUrl)} onSkip={() => preparePrompt(undefined)} />
       )}
