@@ -1595,6 +1595,7 @@ html[data-theme="dark"] .camera-frame {
   inset: 0;
   z-index: 1;
   pointer-events: none;
+  display: none; /* removed decorative background per request */
 }
 
 .result-shape {
