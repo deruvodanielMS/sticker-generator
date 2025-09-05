@@ -45,7 +45,9 @@ html[data-theme="dark"] .theme-overlay { opacity: 1; background-image: linear-gr
   -ms-overflow-style: auto; /* IE 10+ */
   margin: 0 auto;
   border-radius: 14px;
-  backdrop-filter: saturate(1.05) blur(6px);
+  background: transparent; /* ensure centered container is transparent so full viewport background is painted by theme-overlay */
+  backdrop-filter: none;
+  box-shadow: none;
 }
 
 /* Webkit browsers */
