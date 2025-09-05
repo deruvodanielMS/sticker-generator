@@ -112,6 +112,7 @@ button:focus-visible { outline: 3px solid rgba(100,108,255,0.9); outline-offset:
 }
 
 .option-card {
+  position: relative;
   padding: 16px;
   border-radius: 14px;
   border: 1px solid rgba(14,204,126,0.12);
@@ -125,10 +126,27 @@ button:focus-visible { outline: 3px solid rgba(100,108,255,0.9); outline-offset:
   justify-content: center;
   padding-left: 20px;
   padding-right: 20px;
+  overflow: visible;
 }
 .option-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
 .option-card:focus-visible { outline: 3px solid var(--primary-main); outline-offset: 3px; }
-.option-card.selected { outline: none; transform: translateY(-6px) scale(1.02); box-shadow: 0 18px 40px rgba(2,10,8,0.35); background: linear-gradient(180deg, rgba(14,204,126,0.18), rgba(83,192,210,0.12)); border: 2px solid transparent; border-image: linear-gradient(90deg, rgba(14,204,126,1), rgba(83,192,210,1)) 1; position: relative; }
+.option-card.selected {
+  outline: none;
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 18px 40px rgba(2,10,8,0.35);
+  border-radius: 14px;
+  border: 2px solid transparent;
+  /* layered backgrounds: inner card + outer gradient border */
+  background-image: linear-gradient(180deg, rgba(14,204,126,0.18), rgba(83,192,210,0.12)), linear-gradient(90deg, var(--primary-main), var(--secondary-main));
+  background-origin: padding-box, border-box;
+  background-clip: padding-box, border-box;
+  position: relative;
+}
+
+.option-card.selected .option-label {
+  position: relative;
+  z-index: 1;
+}
 .option-label { font-weight: 700; }
 
 /* Theme-aware option borders */
