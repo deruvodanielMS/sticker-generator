@@ -1331,6 +1331,99 @@ html[data-theme="dark"] .camera-frame {
   }
 }
 
+/* Loading Screen Styles */
+.loading-screen {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: calc(100vh - var(--header-height) - var(--footer-height));
+  padding: 40px 24px;
+  box-sizing: border-box;
+  animation: fadeIn 360ms ease both;
+}
+
+.loading-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 690px;
+  width: 100%;
+  gap: 100px;
+  padding-top: 24px;
+}
+
+.loading-title {
+  margin: 0;
+  color: var(--gradient1-textContrast);
+  font-family: 'Red Hat Display', system-ui, sans-serif;
+  font-size: clamp(32px, 4.5vw, 48px);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+.loading-divider {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  width: 49px;
+  height: 4px;
+  position: relative;
+}
+
+.loading-description {
+  margin: 0;
+  color: var(--gradient1-textContrast);
+  font-family: 'Red Hat Display', system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.22;
+  opacity: 0.9;
+  white-space: pre-line;
+}
+
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+}
+
+.spinner-circle {
+  animation: spin 1.5s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive adjustments for loading screen */
+@media (max-width: 768px) {
+  .loading-screen {
+    padding: 20px 16px;
+  }
+
+  .loading-section {
+    gap: 80px;
+  }
+
+  .loading-description {
+    font-size: 16px;
+  }
+}
+
 @media (max-width: 420px) {
   .options-grid { grid-template-columns: 1fr; }
 
@@ -1364,5 +1457,9 @@ html[data-theme="dark"] .camera-frame {
   .photo-preview {
     width: 240px;
     height: 240px;
+  }
+
+  .loading-section {
+    gap: 60px;
   }
 }
