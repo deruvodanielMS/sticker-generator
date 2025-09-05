@@ -99,20 +99,13 @@ function App() {
 
   const handleEmailSubmit = (email: string) => {
     setUserEmail(email);
-    setStep(STEPS.PhotoIntro);
-  };
-
-  const handleEmailSkip = () => {
-    setStep(STEPS.PhotoIntro);
-  };
-
-  const handlePhotoIntroCamera = () => {
     setStep(STEPS.Photo);
   };
 
-  const handlePhotoIntroSkip = () => {
-    preparePrompt(undefined);
+  const handleEmailSkip = () => {
+    setStep(STEPS.Photo);
   };
+
 
   // Prepare prompt using LLM (or fallback) and go to PromptPreview
   const preparePrompt = async (maybeSelfie?: string) => {
