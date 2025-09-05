@@ -125,7 +125,6 @@ function App() {
         if (out?.prompt && out.prompt.trim().length > 0 && out.prompt.trim() !== localPrompt.trim()) {
           finalPrompt = out.prompt;
           setGeneratedArchetype(out.archetype);
-          setGeneratedPrompt(out.prompt);
         }
       } catch (llmErr) {
         // keep local prompt
