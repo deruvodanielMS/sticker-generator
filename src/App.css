@@ -55,8 +55,12 @@ html[data-theme="dark"] .brand-sub { color: rgba(247,250,252,0.9); }
 .intro-copy { max-width: 48ch; margin: 6px 0 0; color: rgba(247,250,252,0.9); }
 .privacy-note { font-size: 12px; color: rgba(247,250,252,0.75); margin: 10px 0 0; }
 .brand-header { margin-bottom: 12px; }
-.app-header { position: absolute; top: calc(env(safe-area-inset-top) + 8px); left: 16px; right: 16px; display: flex; justify-content: center; pointer-events: none; }
-.persistent-logo { pointer-events: none; max-height: 56px; }
+.app-header { position: fixed; top: 0; left: 0; right: 0; display: flex; justify-content: center; pointer-events: none; padding: env(safe-area-inset-top) 0; border-radius: 0; }
+.persistent-logo { pointer-events: none; max-height: 56px; margin-top: 6px; }
+
+/* media container size used for camera and preview (responsive but fixed) */
+:root { --media-size: clamp(260px, 46vw, 560px); }
+.camera-frame, .photo-preview { width: var(--media-size); height: var(--media-size); }
 
 button, .option-card { transition: box-shadow 160ms ease, transform 160ms ease; }
 button:focus-visible { outline: 3px solid rgba(100,108,255,0.9); outline-offset: 2px; }
