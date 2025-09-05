@@ -104,10 +104,6 @@ function App() {
     setStep(STEPS.Photo);
   };
 
-  const handleEmailSkip = () => {
-    setStep(STEPS.Photo);
-  };
-
 
   // Prepare prompt using LLM (or fallback) and go to PromptPreview
   const preparePrompt = async (maybeSelfie?: string) => {
