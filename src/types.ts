@@ -1,6 +1,7 @@
 export type QuestionOption = {
   id: string;
   label: string;
+  icon?: string;
 };
 
 export type Question = {
