@@ -1708,7 +1708,10 @@ html[data-theme="dark"] .debug-info {
   .photo-intro-buttons .nav-button,
   .photo-capture-buttons .nav-button,
   .result-button,
-  .nav-button {
+  .nav-button,
+  .primary-button,
+  .secondary-button,
+  .ghost-button {
     width: auto;
     max-width: 320px;
   }
