@@ -10,7 +10,7 @@ type Props = {
   onPrint: () => void;
 };
 
-const ResultScreen: FC<Props> = ({ result, userName, userEmail, onRestart }) => {
+const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint }) => {
   const { archetype, imageUrl, prompt, source, providerError } = result;
 
   const printSticker = () => {
