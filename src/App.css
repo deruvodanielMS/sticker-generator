@@ -1627,6 +1627,15 @@ html[data-theme="dark"] .camera-frame {
   flex-shrink: 0;
 }
 
+/* Specific image icon sizing for result buttons (use the provided assets) */
+.result-button img.result-button-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  object-fit: contain;
+  margin-right: 12px;
+}
+
 .result-start-over {
   background: none;
   border: none;
