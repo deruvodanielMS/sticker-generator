@@ -42,6 +42,38 @@ const ResultScreen: FC<Props> = ({ result, userName, onRestart }) => {
     }
   };
 
+  const [emailState, setEmailState] = useState<string>(userEmail || '');
+  const [sending, setSending] = useState(false);
+  const [sendSuccess, setSendSuccess] = useState<boolean | null>(null);
+
+  const sendByEmail = async () => {
+    if (!emailState || !/[^@\s]+@[^@\s]+\.[^@\s]+/.test(emailState)) {
+      setSendSuccess(false);
+      return;
+    }
+    setSending(true);
+    setSendSuccess(null);
+    try {
+      const resp = await fetch('/api/send-sticker-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: emailState,
+          subject: `${archetype.name} Sticker for ${userName || 'you'}`,
+          text: archetype.valueLine,
+          imageUrl,
+        }),
+      });
+      const json = await resp.json();
+      if (json && json.success) setSendSuccess(true);
+      else setSendSuccess(false);
+    } catch (e) {
+      setSendSuccess(false);
+    } finally {
+      setSending(false);
+    }
+  };
+
   return (
     <div className="result-screen">
       {/* Decorative background elements */}
