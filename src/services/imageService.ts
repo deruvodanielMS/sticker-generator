@@ -17,12 +17,19 @@ async function generateViaProxy(prompt: string, selfieDataUrl?: string): Promise
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ prompt, selfieDataUrl }),
   });
-  const text = await res.text();
-  if (!res.ok) {
-    throw new Error(`Proxy image generation error ${res.status} ${text}`);
-  }
+  // Read JSON directly to avoid reading the body stream more than once
   let json: any;
-  try { json = JSON.parse(text); } catch (e) { throw new Error('Invalid JSON from proxy'); }
+  try {
+    json = await res.json();
+  } catch (e) {
+    const txt = await res.text().catch(() => null);
+    throw new Error(`Invalid JSON from proxy: ${String(txt || e)}`);
+  }
+
+  if (!res.ok) {
+    throw new Error(`Proxy image generation error ${res.status} ${JSON.stringify(json)}`);
+  }
+
   const b64 = json?.data?.[0]?.b64_json;
   if (!b64) throw new Error('Proxy returned no image data');
   return await b64ToObjectUrl(b64);
