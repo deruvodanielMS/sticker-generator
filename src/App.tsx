@@ -138,7 +138,6 @@ function App() {
       setError(e?.message || 'Failed to prepare or generate sticker');
       setStep(STEPS.Splash);
     } finally {
-      setPromptLoading(false);
     }
   };
 
