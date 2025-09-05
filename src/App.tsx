@@ -26,6 +26,7 @@ const STEPS = {
   PromptPreview: 6,
   Generating: 7,
   Result: 8,
+  ThankYou: 9,
 } as const;
 
 function App() {
