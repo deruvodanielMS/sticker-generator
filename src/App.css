@@ -99,8 +99,9 @@ html[data-theme="light"] .brand-title { color: #111210; }
 
 /* Dark theme: make action buttons full width and high contrast */
 html[data-theme="dark"] .primary-button, html[data-theme="dark"] .secondary-button, html[data-theme="dark"] .ghost-button {
-  width: 100%;
-  max-width: 720px;
+  width: calc(100% - 32px);
+  max-width: none;
+  display: block;
 }
 
 .camera-frame { position: relative; width: 100%; max-width: 560px; aspect-ratio: 3/4; border-radius: 16px; overflow: hidden; border: 1px solid rgba(247,250,252,0.06); background: #000; }
