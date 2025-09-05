@@ -1812,6 +1812,7 @@ html[data-theme="dark"] .option-icon {
 
 /* Selected state: make icons more prominent and colored */
 .option-card.selected .option-icon,
+.question-option.selected .option-icon,
 button.selected .nav-icon,
 .nav-button.selected img,
 .result-button.selected img {
