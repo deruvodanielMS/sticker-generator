@@ -451,22 +451,25 @@ html[data-theme="dark"] .secondary-button { background: rgba(255,255,255,0.06); 
 /* Stepper Styles */
 .stepper-container {
   position: fixed;
-  top: var(--header-height);
+  top: calc(var(--header-height)); /* sit directly below header */
   left: 0;
   right: 0;
-  height: 64px;
+  height: 56px;
   background: rgba(249, 249, 249, 0.95);
   backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  padding: 12px 20px;
-  z-index: 12;
+  padding: 8px 20px;
+  z-index: 50; /* ensure it sits above header and overlays */
 
   box-sizing: border-box;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
+
+/* Make sure the stepper does not overlap content: push content down slightly */
+.question-content { padding: calc(var(--header-height) + 56px + 24px) 24px 40px; }
 
 
 /* Make sure the stepper pushes content and occupies full available width */
