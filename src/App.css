@@ -2133,41 +2133,30 @@ html[data-theme="dark"] .result-button.secondary {
 
 /* Keep mobile stacking at <= 480px as column (existing rules apply) */
 
-/* Option icon wrapper for consistent circular backgrounds */
+/* Option icon wrapper: remove circular container to show icons clearly */
 .option-icon-wrap {
-  width: 56px;
-  height: 56px;
-  border-radius: 9999px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: auto;
+  height: auto;
+  border-radius: 0;
   background: transparent;
+  padding: 0;
 }
 
-/* When option is selected, use subtle background with border instead of gradient */
-.question-option.selected .option-icon-wrap {
-  background: rgba(14, 204, 126, 0.1);
-  border: 2px solid var(--primary-main);
-  box-shadow: 0 4px 12px rgba(14, 204, 126, 0.2);
+/* When option is selected, do not use gradient backgrounds on the option card; use subtle border only */
+.question-option.selected {
+  background: transparent;
+  border: 2px solid rgba(14,204,126,0.12);
 }
 
-/* Ensure selected icons remain visible and prominent */
+/* Ensure selected icons remain visible and slightly larger but without background */
 .question-option.selected .option-icon {
   filter: none;
   opacity: 1;
   transform: scale(1.05);
   transition: transform 200ms ease, filter 200ms ease;
-}
-/* When option is selected, highlight the icon background and ensure icon remains visible */
-.question-option.selected .option-icon-wrap {
-  background: linear-gradient(90deg, var(--primary-main), var(--secondary-main));
-}
-
-/* Ensure selected icons remain visible (don't invert raster images which can disappear) */
-.question-option.selected .option-icon {
-  filter: none;
-  opacity: 1;
-  transform: scale(1.02);
 }
 
 /* Dial linear control styles */
