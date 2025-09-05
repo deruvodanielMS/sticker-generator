@@ -747,13 +747,20 @@ html[data-theme="dark"] .nav-button.secondary {
 
 .dial-center {
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 3;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
+  pointer-events: none; /* center content is decorative/non-interactive */
 }
+
+/* Ensure inner text remains interactive focus-wise if needed */
+.dial-center * { pointer-events: auto; }
 
 .dial-percentage {
   font-family: 'Red Hat Display', system-ui, sans-serif;
