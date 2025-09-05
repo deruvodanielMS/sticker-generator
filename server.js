@@ -5,6 +5,14 @@ const app = express();
 app.use(express.json({ limit: '10mb' }));
 
 const OPENAI_KEY = process.env.OPENAI_API_KEY || process.env.VITE_API_KEY_IMAGE_GENERATION;
+import nodemailer from 'nodemailer';
+
+// Email transporter configuration expects SMTP_* env vars
+const SMTP_HOST = process.env.SMTP_HOST;
+const SMTP_PORT = process.env.SMTP_PORT;
+const SMTP_USER = process.env.SMTP_USER;
+const SMTP_PASS = process.env.SMTP_PASS;
+const FROM_EMAIL = process.env.FROM_EMAIL || SMTP_USER || 'no-reply@example.com';
 
 app.post('/api/generate-image', async (req, res) => {
   try {
