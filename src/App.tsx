@@ -103,7 +103,6 @@ function App() {
 
   // Prepare prompt using LLM (or fallback) and generate immediately (skip prompt preview)
   const preparePrompt = async (maybeSelfie?: string) => {
-    setPromptLoading(true);
     setError(null);
     try {
       if (!navigator.onLine) throw new Error('No internet connection. Please connect to continue.');
