@@ -19,7 +19,14 @@
   gap: 20px;
   align-items: center;
   width: 100%;
-  max-width: 720px;
+  max-width: none; /* allow full width so the UI can be fullscreen/responsive */
+  padding: 0 16px; /* internal horizontal padding for small devices */
+  box-sizing: border-box;
+}
+
+/* Constrain on very large screens to keep comfortable reading width */
+@media (min-width: 900px) {
+  .screen-container { max-width: 720px; margin: 0 auto; }
 }
 
 .brand-header { display: flex; flex-direction: column; gap: 8px; align-items: center; }
