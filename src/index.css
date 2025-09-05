@@ -11,7 +11,7 @@ html[data-theme="dark"] {
   color-scheme: dark;
   color: var(--gradient1-textContrast);
   --muted: rgba(247,250,252,0.8);
-  background-color: #0B1220; /* deeper, cooler dark for better contrast */
+  background: linear-gradient(180deg, rgba(6,10,14,0.92), rgba(11,18,32,0.92)); /* deep subtle gradient */
 }
 
 html[data-theme="light"] {
@@ -24,7 +24,7 @@ html[data-theme="light"] {
   color-scheme: light;
   color: var(--gradient1-textContrast);
   --muted: rgba(17,18,16,0.6);
-  background-color: #ffffff;
+  background: linear-gradient(180deg, var(--gradient1-start), var(--gradient1-end));
 }
 
 :root {
