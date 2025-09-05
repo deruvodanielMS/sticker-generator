@@ -17,24 +17,27 @@ async function generateViaProxy(prompt: string, selfieDataUrl?: string): Promise
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ prompt, selfieDataUrl }),
   });
-  // Try to safely parse JSON. Use a clone to avoid "body stream already read" errors
-  let json: any;
+  // Parse response safely without assuming clone() is available
+  let text: string | null = null;
+  let json: any = null;
   try {
-    // clone allows reading the body even if another consumer already read the original
-    json = await (res.clone().json());
+    text = await res.text();
+    try {
+      json = JSON.parse(text);
+    } catch (parseErr) {
+      // not JSON
+      json = null;
+    }
   } catch (e) {
-    // last resort: try to read text to surface server message
-    let txt: string | null = null;
-    try { txt = await res.text(); } catch {}
-    throw new Error(`Invalid JSON from proxy: ${String(txt || e)}`);
+    throw new Error(`Failed to read proxy response body: ${String(e)}`);
   }
 
   if (!res.ok) {
-    throw new Error(`Proxy image generation error ${res.status} ${JSON.stringify(json)}`);
+    throw new Error(`Proxy image generation error ${res.status} ${String(text ?? '')}`);
   }
 
   const b64 = json?.data?.[0]?.b64_json;
-  if (!b64) throw new Error('Proxy returned no image data');
+  if (!b64) throw new Error(`Proxy returned no image data: ${String(text ?? '')}`);
   return await b64ToObjectUrl(b64);
 }
 
