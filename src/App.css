@@ -1185,6 +1185,27 @@ html[data-theme="dark"] .email-input::placeholder {
   padding: 40px 24px;
   box-sizing: border-box;
   animation: fadeIn 360ms ease both;
+  background: transparent; /* let theme-overlay paint whole viewport */
+}
+
+/* Apply transparent background universally for centered screen containers */
+.screen-container,
+.welcome-screen,
+.name-input-screen,
+.email-capture-screen,
+.photo-intro-screen,
+.photo-capture-screen,
+.prompt-preview-screen,
+.loading-screen,
+.result-screen {
+  background: transparent !important;
+}
+
+/* Ensure start-over button is visible and clickable */
+.result-start-over {
+  position: relative;
+  z-index: 6;
+  pointer-events: auto;
 }
 
 .photo-capture-section {
