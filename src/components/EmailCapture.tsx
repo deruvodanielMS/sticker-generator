@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import type { FormEvent } from 'react';
 
 type Props = {
   onSkip: () => void;
   onSubmit: (email: string) => void;
 };
 
-const EmailCapture: React.FC<Props> = ({ onSkip, onSubmit }) => {
+const EmailCapture = ({ onSkip, onSubmit }: Props) => {
   const [email, setEmail] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (email.trim()) {
       onSubmit(email.trim());
@@ -56,14 +57,14 @@ const EmailCapture: React.FC<Props> = ({ onSkip, onSubmit }) => {
             className="hero-button"
           >
             SUBMIT
+          </button>
 
-          <button 
+          <button
             type="button"
             className="hero-button"
             onClick={onSkip}
           >
             SKIP
-
           </button>
         </form>
       </div>
