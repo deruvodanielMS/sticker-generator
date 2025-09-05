@@ -78,9 +78,11 @@ html[data-theme="light"] .logo-dark { display: none; }
 
 .next-button { margin-top: 4px; }
 
-.camera-frame { position: relative; width: 100%; max-width: 420px; aspect-ratio: 3/4; border-radius: 16px; overflow: hidden; border: 1px solid rgba(247,250,252,0.06); }
-.camera-video { width: 100%; height: 100%; object-fit: cover; }
+.camera-frame { position: relative; width: 100%; max-width: 560px; aspect-ratio: 3/4; border-radius: 16px; overflow: hidden; border: 1px solid rgba(247,250,252,0.06); background: #000; }
+.camera-video { width: 100%; height: 100%; object-fit: cover; display: block; }
 .camera-overlay { position: absolute; inset: 0; border: 2px dashed rgba(255,255,255,0.08); border-radius: 16px; pointer-events: none; }
+.photo-preview { width: 100%; max-width: 560px; }
+.photo-preview img { width: 100%; height: auto; border-radius: 16px; border: 1px solid rgba(247,250,252,0.06); }
 .photo-preview { width: 100%; max-width: 420px; }
 .photo-preview img { width: 100%; height: auto; border-radius: 16px; border: 1px solid rgba(247,250,252,0.06); }
 
