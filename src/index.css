@@ -27,6 +27,26 @@ html[data-theme="light"] {
   background: linear-gradient(180deg, var(--gradient1-start), var(--gradient1-end));
 }
 
+/* Smooth theme transition */
+html {
+  transition: background 420ms ease, color 300ms ease;
+}
+
+/* Header overlay for better logo visibility in light theme */
+.app-header {
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.6));
+  padding: 8px 12px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+html[data-theme="dark"] .app-header {
+  background: linear-gradient(180deg, rgba(8,12,18,0.4), rgba(8,12,18,0.2));
+}
+
+.app-header { transition: background 420ms ease, transform 360ms ease; }
+
+
 :root {
   font-family: 'Red Hat Display', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
