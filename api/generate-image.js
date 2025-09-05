@@ -63,8 +63,13 @@ export default async function handler(req, res) {
 
     try {
       const respText = await resp.text();
-      console.log('OpenAI response status:', resp.status);
-      console.log('OpenAI response body (truncated):', respText.slice(0, 2000));
+      console.log('🚀 OpenAI response status:', resp.status);
+      console.log('🚀 OpenAI response headers:', Object.fromEntries(resp.headers.entries()));
+      console.log('🚀 OpenAI response body (truncated):', respText.slice(0, 2000));
+
+      if (!resp.ok) {
+        console.error('❌ OpenAI API error:', respText);
+      }
       
       let parsed = null;
       try { 
