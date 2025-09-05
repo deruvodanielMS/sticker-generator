@@ -18,26 +18,21 @@ async function generateViaProxy(prompt: string, selfieDataUrl?: string): Promise
     body: JSON.stringify({ prompt, selfieDataUrl }),
   });
 
-  // Read response body using a clone to avoid "body already read" errors
-  let text: string | null = null;
-  let json: any = null;
+  // Server returns a JSON envelope with { status, ok, bodyText, bodyJson }
+  let envelope: any = null;
   try {
-    // clone() is supported in modern browsers and lets us safely read the body
-    text = await (res.clone ? res.clone().text() : res.text());
-    try {
-      json = JSON.parse(text as string);
-    } catch (parseErr) {
-      json = null; // not JSON
-    }
+    envelope = await res.json();
   } catch (e) {
-    throw new Error(`Failed to read proxy response body: ${String(e)}`);
+    throw new Error(`Failed to parse proxy JSON response: ${String(e)}`);
   }
 
-  if (!res.ok) {
-    // include status and any response text for debugging
-    throw new Error(`Proxy image generation error ${res.status} ${String(text ?? '')}`);
+  if (!envelope.ok) {
+    // include status and bodyText for debugging
+    throw new Error(`Proxy image generation error ${String(envelope.status)} ${String(envelope.bodyText ?? '')}`);
   }
 
+  const json = envelope.bodyJson ?? null;
+  const text = envelope.bodyText ?? null;
   const b64 = json?.data?.[0]?.b64_json;
   if (!b64) throw new Error(`Proxy returned no image data: ${String(text ?? '')}`);
   return await b64ToObjectUrl(b64);
