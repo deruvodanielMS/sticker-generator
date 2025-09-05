@@ -41,7 +41,6 @@ function App() {
   const [result, setResult] = useState<GenerationResult | null>(null);
 
   const [generatedArchetype, setGeneratedArchetype] = useState<any | null>(null);
-  const [promptLoading, setPromptLoading] = useState(false);
 
   const currentQuestion = QUESTIONS[questionIndex];
   const total = QUESTIONS.length;
