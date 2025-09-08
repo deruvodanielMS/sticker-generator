@@ -161,15 +161,17 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
           <p className="result-line-2">{archetype.valueLine}</p>
         </div>
 
-        <div className="result-image-container">
-          {/* Prefer server-provided resized data URL (imageDataUrl), then composedUrl, then raw imageUrl */}
-          <img src={(result as any)?.imageDataUrl || composedUrl || imageUrl} alt={`${archetype.name} sticker`} className="result-image" />
+        {/* Archetype label layer (text) */}
+        <div className="archetype-label">{archetype?.name}</div>
 
-          {/* Overlay archetype label and site URL inside frame area */}
-          <div className="result-frame-overlay" aria-hidden>
-            <div className="frame-archetype">{archetype?.name}</div>
-            <div className="frame-site">www.makingsense.com</div>
-          </div>
+        {/* Frame image (the frame contains the site url visually) */}
+        <div className="frame-only">
+          <img src={FRAME_URL} alt="Frame" className="frame-image" />
+        </div>
+
+        {/* Sticker result shown below the frame */}
+        <div className="result-image-container">
+          <img src={(result as any)?.imageDataUrl || composedUrl || imageUrl} alt={`${archetype.name} sticker`} className="result-image" />
         </div>
 
         <div className="result-buttons">
