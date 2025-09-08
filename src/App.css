@@ -2543,7 +2543,7 @@ html[data-theme="dark"] .result-button.secondary {
   flex-direction: column;
   align-items: center;
   gap: 24px;
-  width: 80%;
+  width: 100%;
 }
 
 .linear-slider-track-container {
