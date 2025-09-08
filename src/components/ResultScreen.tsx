@@ -156,10 +156,10 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
         {/* Archetype label layer (text) */}
         <div className="archetype-label">{archetype?.name}</div>
 
-        {/* Frame image (the frame contains the site url visually) */}
-        <div className="frame-only">
-          {/* Show composed frame+sticker if available; otherwise fall back to frame or sticker */}
-          <img src={composedUrl || (result as any)?.imageDataUrl || imageUrl || FRAME_URL} alt="Framed sticker" className="frame-image" />
+        {/* Sticker displayed as provided by the generator (no pre-composition to avoid pixelation). Frame is overlaid on top. */}
+        <div className="sticker-raw-container">
+          <img src={stickerSource || FRAME_URL} alt="Sticker" className="sticker-raw-img" />
+          <img src={FRAME_URL} alt="Frame overlay" className="sticker-frame-overlay" />
         </div>
 
         <div className="result-buttons">
