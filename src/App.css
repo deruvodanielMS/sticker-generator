@@ -862,6 +862,17 @@ html[data-theme="dark"] .step-pending {
   gap: 8px;
 }
 
+/* Make share icon explicitly white in dark theme for max contrast */
+html[data-theme="dark"] .result-button.secondary .result-button-icon {
+  filter: invert(1) brightness(1.8) saturate(0.6);
+}
+
+/* Ensure SVGs render crisply */
+.result-button-icon {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
 html[data-theme="dark"] .question-option {
   background: rgba(255, 255, 255, 0.05);
   color: var(--gradient1-textContrast);
