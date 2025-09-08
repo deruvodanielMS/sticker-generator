@@ -3,6 +3,7 @@ import type { FormEvent } from 'react';
 
 type Props = {
   onSubmit: (email: string) => void;
+  onSkip?: () => void;
 };
 
 const EmailCapture = ({ onSubmit }: Props) => {
