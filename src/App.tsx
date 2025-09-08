@@ -132,26 +132,28 @@ function App() {
     setThemeOnDocument('light');
   };
 
-  const handleEmailSubmit = async (email: string) => {
+  const handleEmailSubmit = (email: string) => {
     setUserEmail(email);
-    // If we have a generated result, attempt to send the sticker and then show Thank You
-    try {
-      if (result?.imageUrl) {
-        await fetch('/api/send-sticker-email', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            to: email,
-            subject: `${result.archetype?.name || 'Your'} Sticker`,
-            text: result.archetype?.valueLine || '',
-            imageUrl: result.imageUrl,
-          }),
-        });
-      }
-    } catch (e) {
-      // ignore errors but still proceed to Thank You
-    }
     setStep(STEPS.ThankYou);
+  };
+
+  const submitUserData = async () => {
+    try {
+      await fetch('/api/submit-user-data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nombre: userName,
+          email: userEmail,
+          respuestas: answers,
+          arquetipo: generatedArchetype || result?.archetype,
+          imagenGenerada: result?.imageUrl
+        })
+      });
+    } catch (error) {
+      console.error('Error submitting user data:', error);
+      // Don't block the user experience if submission fails
+    }
   };
 
 
@@ -196,7 +198,8 @@ function App() {
     }
   };
 
-  const goToThankYou = () => {
+  const goToThankYou = async () => {
+    await submitUserData();
     setStep(STEPS.ThankYou);
   };
 
