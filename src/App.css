@@ -1952,11 +1952,12 @@ html[data-theme="dark"] .debug-info {
 
   .result-image-container {
     max-width: 280px;
+    aspect-ratio: 1 / 1;
   }
 
   .result-image {
-    width: 280px;
-    height: 280px;
+    width: 100%;
+    height: 100%;
   }
 
   .result-buttons {
