@@ -139,6 +139,11 @@ function App() {
         releaseTimer = null;
       }
       try { window.removeEventListener('load', onLoad); } catch (e) {}
+      if (enableAnimationsTimer) {
+        window.clearTimeout(enableAnimationsTimer);
+        enableAnimationsTimer = null;
+      }
+      try { document.documentElement.classList.remove(disableAnimationsClass); } catch (e) {}
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
       document.documentElement.classList.remove(reducedClass);
     };
