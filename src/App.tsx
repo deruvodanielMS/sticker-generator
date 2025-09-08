@@ -52,97 +52,23 @@ function App() {
     } catch (e) {}
   };
 
-  // Ensure default theme on mount and setup fullscreen
+  // Simplified: set default theme and enable overlay after a short delay
   useEffect(() => {
     setThemeOnDocument('light');
 
-    // Unified animation startup: keep animations reduced until the page has loaded or a short fallback
-    const reducedClass = 'reduced-animations';
-    const overlayReadyClass = 'overlay-ready';
-
-    document.documentElement.classList.add(reducedClass);
-    document.documentElement.classList.remove(overlayReadyClass);
-
-    let releaseTimer: number | null = null;
-
-    const enableOverlay = () => {
-      if (releaseTimer) {
-        window.clearTimeout(releaseTimer);
-        releaseTimer = null;
-      }
-      document.documentElement.classList.remove(reducedClass);
-      document.documentElement.classList.add(overlayReadyClass);
-    };
-
-    const onLoad = () => {
-      // small buffer to allow initial paints to settle
-      releaseTimer = window.setTimeout(() => enableOverlay(), 250);
-    };
-
-    if (document.readyState === 'complete') {
-      onLoad();
-    } else {
-      window.addEventListener('load', onLoad, { once: true });
-      // fallback if load doesn't fire
-      releaseTimer = window.setTimeout(() => enableOverlay(), 800);
-    }
-
-    // Try to enter fullscreen mode once (guarded to avoid repeated prompts or reload-like behavior)
-    const fullscreenAttemptedRef = { current: false } as { current: boolean };
-    const requestFullscreen = async () => {
-      if (fullscreenAttemptedRef.current) return;
-      fullscreenAttemptedRef.current = true;
-      try {
-        if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
-          await document.documentElement.requestFullscreen();
-          localStorage.setItem('fullscreenPreference', 'enabled');
-        }
-      } catch (error) {
-        // avoid noisy console logs
-      }
-    };
-
-    // Only request fullscreen if user hasn't explicitly disabled it previously
-    const fullscreenPref = localStorage.getItem('fullscreenPreference');
-    if (fullscreenPref === 'enabled') {
-      // try once to restore fullscreen
-      requestFullscreen();
-    }
-
-    // Listen for fullscreen changes to maintain preference
-    const handleFullscreenChange = () => {
-      if (document.fullscreenElement) {
-        localStorage.setItem('fullscreenPreference', 'enabled');
-      } else {
-        localStorage.setItem('fullscreenPreference', 'disabled');
-      }
-    };
-
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    // ensure overlay starts hidden, then show after a small timeout
+    document.documentElement.classList.remove('overlay-ready');
+    const t = window.setTimeout(() => {
+      document.documentElement.classList.add('overlay-ready');
+    }, 300);
 
     return () => {
-      if (releaseTimer) {
-        window.clearTimeout(releaseTimer);
-        releaseTimer = null;
-      }
-      try { window.removeEventListener('load', onLoad); } catch (e) {}
-      document.removeEventListener('fullscreenchange', handleFullscreenChange);
-      document.documentElement.classList.remove(reducedClass);
+      window.clearTimeout(t);
+      document.documentElement.classList.remove('overlay-ready');
     };
   }, []);
 
-  // Reduce heavy background animations when on the Result screen to avoid flicker
-  useEffect(() => {
-    const className = 'reduced-animations';
-    if (step === STEPS.Result) {
-      document.documentElement.classList.add(className);
-    } else {
-      document.documentElement.classList.remove(className);
-    }
-    return () => {
-      document.documentElement.classList.remove(className);
-    };
-  }, [step]);
+  // NOTE: removed all reduced-animations toggles and fullscreen logic to keep animation handling minimal and deterministic
 
   const handleSelect = (optId: string, intensity?: number) => {
     setAnswers(prev => ({ ...prev, [currentQuestion.id]: { choice: optId, intensity } }));
