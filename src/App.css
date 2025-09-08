@@ -725,11 +725,39 @@ html[data-theme="dark"] .stepper-navigation {
 }
 
 html[data-theme="dark"] .stepper-steps {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 html[data-theme="dark"] .step-pending {
   background: rgba(255, 255, 255, 0.2);
+}
+
+/* Result buttons icon sizing and theme-aware contrast */
+.result-button-icon {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+html[data-theme="light"] .result-button-icon {
+  filter: none;
+  opacity: 0.95;
+}
+
+html[data-theme="dark"] .result-button-icon {
+  /* invert + increase brightness for dark backgrounds to ensure contrast */
+  filter: invert(1) brightness(1.4) contrast(1.1);
+  opacity: 0.95;
+}
+
+/* Ensure result buttons keep same interactive behavior */
+.result-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 html[data-theme="dark"] .question-option {
