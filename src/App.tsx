@@ -122,7 +122,11 @@ function App() {
     document.addEventListener('fullscreenchange', handleFullscreenChange);
 
     return () => {
-      window.clearTimeout(releaseTimer);
+      if (releaseTimer) {
+        window.clearTimeout(releaseTimer);
+        releaseTimer = null;
+      }
+      try { window.removeEventListener('load', onLoad); } catch (e) {}
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
       document.documentElement.classList.remove(reducedClass);
     };
