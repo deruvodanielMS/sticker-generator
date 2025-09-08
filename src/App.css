@@ -2021,17 +2021,46 @@ html[data-theme="dark"] .result-button.selected img {
 }
 
 .result-image-container {
-  position: relative; /* allow overlay positioning */
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 420px; /* allow larger frame */
+  max-width: 420px;
   margin: 0 auto;
-  border-radius: 12px; /* slight rounding to match new frame */
+  border-radius: 12px;
   overflow: visible;
-  aspect-ratio: 1 / 1; /* ensure square container */
+  aspect-ratio: 1 / 1;
 }
+
+/* Frame-only visual shown above the sticker */
+.frame-only {
+  width: 100%;
+  max-width: 420px;
+  margin: 12px auto 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.frame-image {
+  width: 100%;
+  height: auto;
+  max-height: 420px;
+  object-fit: contain;
+  display: block;
+}
+
+.archetype-label {
+  margin-top: 10px;
+  margin-bottom: 6px;
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--gradient1-textContrast);
+}
+
+/* Remove old overlay styles (site URL is part of the frame image) */
+.result-frame-overlay { display: none; }
 
 .result-image {
   width: 100%;
