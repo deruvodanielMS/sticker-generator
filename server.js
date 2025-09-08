@@ -24,16 +24,15 @@ try {
 
 app.post('/api/generate-image', async (req, res) => {
   try {
-    console.log('🔑 OPENAI_KEY present:', !!OPENAI_KEY);
-    console.log('🔑 OPENAI_KEY first 10 chars:', OPENAI_KEY?.substring(0, 10));
-    
+    // Only accept generation requests from the UI to avoid accidental CLI usage and credit consumption
+    // Client must include header: 'x-source': 'ui'
+    if ((req.headers['x-source'] || req.headers['x-source'] === '') && String(req.headers['x-source']) !== 'ui') {
+      return res.status(403).json({ error: 'Image generation only allowed from UI' });
+    }
+
     if (!OPENAI_KEY) return res.status(500).json({ error: 'Server missing OPENAI key' });
-    
+
     const { prompt, selfieDataUrl, photoStep } = req.body || {};
-    console.log('📝 Prompt received:', prompt?.substring(0, 100) + '...');
-    console.log('📸 Selfie provided:', !!selfieDataUrl);
-    console.log('🧭 photoStep:', photoStep);
-    
     if (!prompt) return res.status(400).json({ error: 'Missing prompt' });
 
     try {
