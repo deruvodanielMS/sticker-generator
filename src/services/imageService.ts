@@ -145,9 +145,9 @@ async function generateViaOpenAI(prompt: string, selfieDataUrl?: string, photoSt
     throw new Error(`OpenAI images.edit returned no image data. Response: ${JSON.stringify(json)}`);
   }
 
-  // Otherwise generate from text using dall-e-3
+  // Otherwise generate from text using gpt-image-1
   const payload = {
-    model: 'dall-e-3',
+    model: 'gpt-image-1',
     prompt,
     size: '1024x1024',
     n: 1,
