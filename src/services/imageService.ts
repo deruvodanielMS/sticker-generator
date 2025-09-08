@@ -87,7 +87,23 @@ async function generateViaServer(prompt: string, selfieDataUrl?: string): Promis
         // otherwise return a data URL to avoid object URL/CORS issues when drawing into canvas
         return `data:image/png;base64,${found.value}`;
       }
-      if (found.type === 'url') return found.value;
+      if (found.type === 'url') {
+        // If server returned an external URL, proxy it through our backend to avoid CORS when compositing on canvas
+        try {
+          const p = await fetch('/api/proxy-image', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url: found.value }),
+          });
+          if (p.ok) {
+            const pj = await p.json();
+            if (pj?.dataUrl) return pj.dataUrl;
+          }
+        } catch (e) {
+          // ignore and fallback to returning original url
+        }
+        return found.value;
+      }
     }
 
     // fallback: attempt to stringify response for easier debugging
