@@ -11,6 +11,7 @@ export default function PhotoCapture({ onConfirm, onSkip }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [snapshot, setSnapshot] = useState<string | null>(null);
   const [cameraStarted, setCameraStarted] = useState(false);
+  const [cameraReady, setCameraReady] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const videoConstraints: MediaTrackConstraints = {
