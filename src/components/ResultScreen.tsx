@@ -195,7 +195,8 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
         </div>
 
         <div className="result-image-container">
-          <img src={composedUrl || imageUrl} alt={`${archetype.name} sticker`} className="result-image" />
+          {/* Prefer server-provided resized data URL (imageDataUrl), then composedUrl, then raw imageUrl */}
+          <img src={(result as any)?.imageDataUrl || composedUrl || imageUrl} alt={`${archetype.name} sticker`} className="result-image" />
 
           {/* Overlay archetype label and site URL inside frame area */}
           <div className="result-frame-overlay" aria-hidden>
