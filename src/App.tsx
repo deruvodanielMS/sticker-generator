@@ -61,13 +61,55 @@ function App() {
       document.documentElement.classList.add('overlay-ready');
     }, 300);
 
+    // ONE-TIME fullscreen attempt triggered by first user interaction (gesture required by browsers)
+    let attemptedFull = false;
+    const tryFullscreen = async () => {
+      if (attemptedFull) return;
+      attemptedFull = true;
+      try {
+        const el = document.documentElement as any;
+        if (el.requestFullscreen) await el.requestFullscreen();
+        else if (el.webkitRequestFullscreen) await el.webkitRequestFullscreen();
+        else if (el.msRequestFullscreen) await el.msRequestFullscreen();
+        // when fullscreen entered, the browser chrome will be hidden on supported devices
+      } catch (e) {
+        // ignore errors ��� many browsers will refuse or require user gesture
+      }
+      // remove listener after attempt
+      window.removeEventListener('pointerdown', tryFullscreen);
+    };
+    window.addEventListener('pointerdown', tryFullscreen, { once: true });
+
     return () => {
       window.clearTimeout(t);
       document.documentElement.classList.remove('overlay-ready');
+      try { window.removeEventListener('pointerdown', tryFullscreen); } catch (e) {}
     };
   }, []);
 
-  // NOTE: removed all reduced-animations toggles and fullscreen logic to keep animation handling minimal and deterministic
+  // Particle background: generate deterministic particle config on mount to avoid reflows
+  const particleConfig = useMemo(() => {
+    const amount = 18;
+    const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const colors = dark
+      ? ['#2a3450', '#0ECC7E', '#53C0D2']
+      : ['#583C87', '#E45A84', '#FFACAC'];
+
+    const arr = new Array(amount).fill(0).map((_, i) => {
+      const sizeVw = 8 + Math.floor(Math.random() * 18); // between 8vw and 26vw roughly
+      const top = Math.floor(Math.random() * 100);
+      const left = Math.floor(Math.random() * 100);
+      const duration = (4 + Math.random() * 8).toFixed(2) + 's';
+      const delay = '-' + (Math.random() * 12).toFixed(2) + 's';
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      const blur = Math.floor(8 + Math.random() * 30);
+      const x = Math.random() > 0.5 ? -1 : 1;
+      const boxShadow = `${sizeVw * 2 * x}px 0 ${blur}px ${color}`;
+      const transformOrigin = `${Math.floor((Math.random() - 0.5) * 50)}vw ${Math.floor((Math.random() - 0.5) * 50)}vh`;
+      return { sizeVw, top, left, duration, delay, color, boxShadow, transformOrigin, key: `p-${i}` };
+    });
+    return arr;
+  }, []);
 
   const handleSelect = (optId: string, intensity?: number) => {
     setAnswers(prev => ({ ...prev, [currentQuestion.id]: { choice: optId, intensity } }));
