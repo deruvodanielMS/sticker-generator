@@ -16,7 +16,7 @@ async function dataUrlToBlob(dataUrl: string) {
 }
 
 // Try requesting generation from server-side endpoint first (more reliable)
-async function generateViaServer(prompt: string, selfieDataUrl?: string): Promise<string> {
+async function generateViaServer(prompt: string, selfieDataUrl?: string, email?: string): Promise<string> {
   try {
     const resp = await fetch('/api/generate-image', {
       method: 'POST',
@@ -24,7 +24,7 @@ async function generateViaServer(prompt: string, selfieDataUrl?: string): Promis
         'Content-Type': 'application/json',
         'x-source': 'ui'
       },
-      body: JSON.stringify({ prompt, selfieDataUrl }),
+      body: JSON.stringify({ prompt, selfieDataUrl, email }),
     });
 
     const json = await resp.json();
@@ -209,7 +209,7 @@ async function generateViaOpenAI(prompt: string, selfieDataUrl?: string, photoSt
 }
 
 // Generate sticker - accepts optional promptOverride from the LLM
-export async function generateSticker(archetype: Archetype, selfieDataUrl?: string, promptOverride?: string, photoStepParam?: string): Promise<GenerationResult> {
+export async function generateSticker(archetype: Archetype, selfieDataUrl?: string, promptOverride?: string, photoStepParam?: string, email?: string): Promise<GenerationResult> {
   const includeSelfie = Boolean(selfieDataUrl);
   const prompt = promptOverride ?? buildPromptUtil(archetype, includeSelfie);
   const photoStep = photoStepParam ?? (selfieDataUrl ? 'sent' : 'skipped');
@@ -218,7 +218,7 @@ export async function generateSticker(archetype: Archetype, selfieDataUrl?: stri
   if (online) {
     // Prefer server-side generation to avoid client-side CORS and key issues
     try {
-      const url = await generateViaServer(prompt, selfieDataUrl);
+      const url = await generateViaServer(prompt, selfieDataUrl, email);
       return { imageUrl: url, archetype, prompt, source: 'server' };
     } catch (serverErr: any) {
       // If server fails, fall back to client-side direct OpenAI call
