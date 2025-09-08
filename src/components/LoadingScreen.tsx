@@ -1,8 +1,6 @@
 import type { FC } from 'react';
 
-type Props = { message?: string };
-
-const LoadingScreen: FC<Props> = ({ message }) => {
+const LoadingScreen = () => {
   return (
     <div className="loading-screen">
       <div className="loading-section">
