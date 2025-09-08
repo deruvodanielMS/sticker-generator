@@ -1907,11 +1907,12 @@ html[data-theme="dark"] .camera-frame {
   }
 
   .loading-section {
-    gap: 80px;
+    gap: 60px;
+    padding: 0 16px;
   }
 
   .loading-description {
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 
