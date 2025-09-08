@@ -131,3 +131,16 @@ if (server && typeof server.setTimeout === 'function') {
   server.setTimeout(0); // 0 = no timeout
   console.log('Server timeout disabled to allow long-running provider requests');
 }
+
+// In development, attempt to spawn Vite dev server so preview works (only if not already running)
+if (process.env.NODE_ENV !== 'production') {
+  try {
+    const { spawn } = await import('child_process');
+    console.log('Starting Vite dev server as child process...');
+    const viteProcess = spawn('npm', ['run', 'dev:vite'], { stdio: 'inherit', shell: true });
+    viteProcess.on('error', (err) => console.warn('Failed to start Vite dev server:', err));
+    viteProcess.on('exit', (code) => console.log('Vite dev server exited with code', code));
+  } catch (e) {
+    console.warn('Could not spawn Vite dev server:', e);
+  }
+}
