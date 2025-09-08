@@ -91,9 +91,10 @@ function App() {
   const particleConfig = useMemo(() => {
     const amount = 18;
     const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    // Greens only: darker palette for dark theme, lighter palette for light theme
     const colors = dark
-      ? ['#2a3450', '#0ECC7E', '#53C0D2']
-      : ['#583C87', '#E45A84', '#FFACAC'];
+      ? ['#042f28', '#0a6b55', '#0ecc7e'] // dark greens -> deep, mid, bright
+      : ['#bff7eb', '#73e6c9', '#0ecc7e']; // light greens -> soft, mid, bright
 
     const arr = new Array(amount).fill(0).map((_, i) => {
       const sizeVw = 8 + Math.floor(Math.random() * 18); // between 8vw and 26vw roughly
