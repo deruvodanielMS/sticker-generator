@@ -26,8 +26,18 @@
 html.overlay-ready .theme-overlay {
   visibility: visible;
   opacity: 1;
-  transition: opacity 900ms ease-in-out, background-position 900ms ease-in-out, transform 900ms cubic-bezier(.2,.8,.2,1);
-  backdrop-filter: blur(8px) saturate(1.02);
+  transition: opacity 300ms linear, background-position 900ms ease-in-out, transform 900ms cubic-bezier(.2,.8,.2,1);
+  backdrop-filter: blur(6px) saturate(1.02);
+}
+
+/* Particle background */
+.theme-overlay { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.theme-overlay .particle { position: absolute; border-radius: 50%; will-change: transform, opacity; opacity: 0.95; animation-name: particleMove; animation-timing-function: linear; animation-iteration-count: infinite; }
+
+@keyframes particleMove {
+  0% { transform: translate3d(0,0,0) rotate(0deg); }
+  50% { transform: translate3d(6vw, -3vh, 0) rotate(180deg); }
+  100% { transform: translate3d(0,0,0) rotate(360deg); }
 }
 
 /* Use moving radial "manchas" layers so they look like blobs that drift */
