@@ -126,11 +126,6 @@ export default function PhotoCapture({ onConfirm, onSkip }: Props) {
           )}
         </div>
 
-        <div style={{ marginTop: 8, color: 'var(--gradient1-textContrast)', fontSize: 12 }}>
-          <div>cameraStarted: {String(cameraStarted)}</div>
-          <div>cameraReady: {String(cameraReady)}</div>
-          <div>snapshot: {snapshot ? 'yes' : 'no'}</div>
-        </div>
 
         <div className="photo-capture-buttons">
           {!snapshot && !cameraStarted && (
