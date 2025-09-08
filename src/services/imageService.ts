@@ -37,6 +37,8 @@ async function generateViaOpenAI(prompt: string, selfieDataUrl?: string, photoSt
     fd.append('prompt', personalizedPrompt);
     fd.append('size', '1024x1024');
     fd.append('n', '1');
+    // Request base64 JSON so we can construct an object URL in-browser
+    fd.append('response_format', 'b64_json');
 
     const resp = await fetch('https://api.openai.com/v1/images/edits', {
       method: 'POST',
