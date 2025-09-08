@@ -14,24 +14,31 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
   const { archetype, imageUrl, prompt, source, providerError } = result as any;
   const [composedUrl, setComposedUrl] = useState<string | null>(null);
 
-  // Frame image to center sticker into (updated frame with extra space for overlay)
-  const FRAME_URL = "https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F92f6eacc93034c8dae850519b88047aa?format=webp&width=800";
+  // Frame image to center sticker into — using the provided frame asset
+  const FRAME_URL = "https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F010f4a48978b4a8484a4a294233d5a95?format=webp&width=800";
+
+  // Choose sticker source (prefer server-provided resized data URL)
+  const stickerSource = (result as any)?.imageDataUrl || imageUrl;
 
   // Compose the generated sticker centered into the frame
   useEffect(() => {
     let cancelled = false;
     async function compose() {
       try {
-        if (!imageUrl) {
+        if (!stickerSource) {
           setComposedUrl(null);
           return;
         }
         const loadImg = (src: string) => new Promise<HTMLImageElement>((resolve, reject) => {
           const img = new Image();
+          img.crossOrigin = 'anonymous';
           img.onload = () => resolve(img);
           img.onerror = reject;
           img.src = src;
         });
+
+        // Proxy the frame image to a data URL to avoid CORS issues and allow safe canvas composition
+        let proxiedFrameSrc = FRAME_URL;
 
         // Proxy the frame image to a data URL to avoid CORS issues and allow safe canvas composition
         let proxiedFrameSrc = FRAME_URL;
@@ -49,7 +56,7 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
           // fallback to FRAME_URL on failure
         }
 
-        const [frameImg, stickerImg] = await Promise.all([loadImg(proxiedFrameSrc), loadImg(imageUrl)]);
+        const [frameImg, stickerImg] = await Promise.all([loadImg(proxiedFrameSrc), loadImg(stickerSource)]);
 
         // Use frame dimensions as canvas size
         const canvas = document.createElement('canvas');
@@ -93,7 +100,7 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
     }
     compose();
     return () => { cancelled = true; };
-  }, [imageUrl]);
+  }, [stickerSource]);
 
   const printSticker = () => {
     const w = window.open('', '_blank');
