@@ -12,7 +12,6 @@ type Props = {
 
 const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint }) => {
   const { archetype, imageUrl, prompt, source, providerError } = result as any;
-  const [showDebug, setShowDebug] = useState(false);
   const [composedUrl, setComposedUrl] = useState<string | null>(null);
 
   // Frame image to center sticker into
