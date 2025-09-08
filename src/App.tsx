@@ -55,8 +55,11 @@ function App() {
   useEffect(() => {
     setThemeOnDocument('light');
 
-    // Try to enter fullscreen mode
+    // Try to enter fullscreen mode once (guarded to avoid repeated prompts or reload-like behavior)
+    const fullscreenAttemptedRef = { current: false } as { current: boolean };
     const requestFullscreen = async () => {
+      if (fullscreenAttemptedRef.current) return;
+      fullscreenAttemptedRef.current = true;
       try {
         if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
           await document.documentElement.requestFullscreen();
@@ -67,12 +70,10 @@ function App() {
       }
     };
 
-    // Check if user previously enabled fullscreen
+    // Only request fullscreen if user hasn't explicitly disabled it previously
     const fullscreenPref = localStorage.getItem('fullscreenPreference');
     if (fullscreenPref === 'enabled') {
-      requestFullscreen();
-    } else {
-      // Request on first visit
+      // try once to restore fullscreen
       requestFullscreen();
     }
 
