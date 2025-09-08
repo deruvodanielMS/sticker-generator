@@ -1,11 +1,12 @@
 import type { Archetype } from '../types';
 import { QUESTIONS } from '../data/questions';
-import type { Answers } from '../types';
+import type { Answers, Archetype } from '../types';
 
 export function buildPrompt(archetype: Archetype, includeSelfie: boolean): string {
-  const base = `A high-quality, circular sticker design in a ${archetype.colorPalette} theme. The background should be ${archetype.backgroundStyle}. The central subject is a robot character of type ${archetype.robotType}, with a ${archetype.robotPose}. The style is futuristic and human-centered. Text on the sticker: '${archetype.name}'.`;
+  // Core prompt for gpt-image-1 generation: 2x2 inch sticker, no text, photorealistic/illustrative guidance
+  const base = `Create a high-quality 2x2 inch sticker image (square) suitable for printing. The composition should be centered and fill the canvas. Use the following visual guidance: color palette - ${archetype.colorPalette}; background style - ${archetype.backgroundStyle}; subject - a ${archetype.robotType} in a ${archetype.robotPose}. Avoid any textual elements, labels, or logos in the image. Produce a single, clean image with no borders or rounded masks.`;
   const selfie = includeSelfie
-    ? " The robot has personal features from the user's selfie, like glasses or a hairstyle, subtly integrated in a respectful way."
+    ? " If a selfie is provided, subtly integrate the person's facial features into the design (e.g., hairstyle or glasses) while keeping the overall sticker aesthetic and respecting likeness."
     : '';
   return base + selfie;
 }
