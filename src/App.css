@@ -18,7 +18,13 @@
 
 
 /* Smooth theme overlay that crossfades background. We animate background-position + opacity for a more noticeable, 'magical' change. */
-.theme-overlay { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 1; background-size: cover; background-position: center center; background-repeat: no-repeat; transform: scale(1); transition: opacity 900ms ease-in-out, background-position 900ms ease-in-out, transform 900ms cubic-bezier(.2,.8,.2,1); backdrop-filter: blur(8px) saturate(1.02); }
+.theme-overlay { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 1; background-size: cover; background-position: center center; background-repeat: no-repeat; transform: scale(1); /* Do not enable heavy filters by default to avoid initial paint flicker */ transition: none; backdrop-filter: none; }
+
+/* Enable full effects only when animations are allowed */
+html:not(.reduced-animations) .theme-overlay {
+  transition: opacity 900ms ease-in-out, background-position 900ms ease-in-out, transform 900ms cubic-bezier(.2,.8,.2,1);
+  backdrop-filter: blur(8px) saturate(1.02);
+}
 
 /* When reduced-animations class is present, pause intensive background animations to reduce repaint and potential flicker */
 html.reduced-animations .theme-overlay,
@@ -27,6 +33,7 @@ html.reduced-animations .theme-overlay::after {
   animation-play-state: paused !important;
   transition: none !important;
   will-change: auto !important;
+  backdrop-filter: none !important;
 }
 
 /* Use moving radial "manchas" layers so they look like blobs that drift */
