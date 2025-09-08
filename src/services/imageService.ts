@@ -156,7 +156,6 @@ async function generateViaOpenAI(prompt: string, selfieDataUrl?: string, photoSt
     prompt,
     size: '1024x1024',
     n: 1,
-    response_format: 'b64_json',
   };
 
   const genResp = await fetch('https://api.openai.com/v1/images/generations', {
