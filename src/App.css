@@ -1760,9 +1760,11 @@ html[data-theme="dark"] .result-button.selected img {
   text-align: center;
   max-width: 690px;
   width: 100%;
-  gap: 60px;
+  gap: 28px; /* reduced spacing */
   padding-top: 24px;
 }
+
+.stepper-close { margin-left: 12px; }
 
 .result-title {
   margin: 0;
