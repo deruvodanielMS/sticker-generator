@@ -23,9 +23,36 @@ export function buildPromptFromAnswers(archetype: Archetype, answers: Answers, v
     }
   }
 
-  const vibe = variant ? `StyleToken:${variant};` : '';
+  const inspiration = `Background / Color palette: ${archetype.colorPalette}. Background style: ${archetype.backgroundStyle}. Robot type: ${archetype.robotType}. Robot pose: ${archetype.robotPose}. Tone: ${archetype.descriptor} ${archetype.valueLine}`;
 
-  // Less prescriptive prompt: ask for a creative, original sticker inspired by archetype + answers.
-  const prompt = `Create an original, unique circular sticker that embodies the archetype "${archetype.name}". ${vibe}Draw inspiration from the following traits: ${lines.join('; ')}. Produce a high-quality, visually engaging sticker concept — be creative with composition, colors, and character details. Include the archetype name subtly as part of the design.`;
+  // Build detailed prompt following the requested template, but do NOT include the archetype name literally and avoid textual elements in the image.
+  const prompt = `Create a high-quality image of a futuristic robot sized 2x2 inches showcasing the following characteristics. Use the archetype traits as inspiration but do not mention the archetype name in the image or include any text in the design.
+
+Primary description:
+- A ${archetype.robotType} in a ${archetype.robotPose}.
+- Visual texture and detail: metallic surfaces with ${archetype.backgroundStyle}, ${archetype.colorPalette} color accents.
+
+Stylistic guidance and inspiration:
+${inspiration}
+
+Traits derived from responses: ${lines.join('; ')}.
+
+Robot type / pose guidance:
+- Visionary: looking ahead, viewfinder, connecting lines.
+- Strategist: with gears, planning board.
+- Innovator: gadgets and sparks of energy.
+- Connector: antennas and subtle network icons.
+- Trailblazer: holding a beacon or illuminating a path.
+
+Texture and detail guidance:
+- Metallic / smooth; sparks or glowing elements for energetic variants; network lines for connector-like variants.
+
+Additional constraints:
+- No text should appear anywhere in the image.
+- Do not include or print the archetype name or any label.
+- Focus on a clean composition suitable for a circular sticker.
+
+Output: produce a single, high-quality image suitable for a 2x2 inch sticker.`;
+
   return prompt;
 }
