@@ -62,10 +62,31 @@ function App() {
     document.documentElement.classList.add(reducedClass);
     // Keep the overlay hidden until the app has settled
     document.documentElement.classList.remove(overlayReadyClass);
-    const releaseTimer = window.setTimeout(() => {
+
+    // Enable overlay only after page assets are loaded (fonts/images) or after a short fallback
+    let releaseTimer: number | null = null;
+    const enableOverlay = () => {
+      if (releaseTimer) {
+        window.clearTimeout(releaseTimer);
+        releaseTimer = null;
+      }
       document.documentElement.classList.remove(reducedClass);
       document.documentElement.classList.add(overlayReadyClass);
-    }, 700);
+    };
+
+    const onLoad = () => {
+      // give a small buffer to ensure paints have settled
+      releaseTimer = window.setTimeout(() => enableOverlay(), 250);
+    };
+
+    if (document.readyState === 'complete') {
+      // already loaded
+      onLoad();
+    } else {
+      window.addEventListener('load', onLoad, { once: true });
+      // fallback in case load doesn't fire
+      releaseTimer = window.setTimeout(() => enableOverlay(), 1200);
+    }
 
     // Try to enter fullscreen mode once (guarded to avoid repeated prompts or reload-like behavior)
     const fullscreenAttemptedRef = { current: false } as { current: boolean };
