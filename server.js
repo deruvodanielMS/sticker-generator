@@ -30,9 +30,10 @@ app.post('/api/generate-image', async (req, res) => {
     
     if (!OPENAI_KEY) return res.status(500).json({ error: 'Server missing OPENAI key' });
     
-    const { prompt, selfieDataUrl } = req.body || {};
+    const { prompt, selfieDataUrl, photoStep } = req.body || {};
     console.log('📝 Prompt received:', prompt?.substring(0, 100) + '...');
     console.log('📸 Selfie provided:', !!selfieDataUrl);
+    console.log('🧭 photoStep:', photoStep);
     
     if (!prompt) return res.status(400).json({ error: 'Missing prompt' });
 
