@@ -56,21 +56,14 @@ function App() {
   useEffect(() => {
     setThemeOnDocument('light');
 
-    // Temporarily reduce animations on initial mount to avoid first-render flicker
+    // Unified animation startup: keep animations reduced until the page has loaded or a short fallback
     const reducedClass = 'reduced-animations';
     const overlayReadyClass = 'overlay-ready';
-    const disableAnimationsClass = 'disable-animations';
 
-    // Add a broader disable-animations class to fully suppress CSS animations/transitions briefly
-    document.documentElement.classList.add(disableAnimationsClass);
-    // Still keep reduced-animations for finer control
     document.documentElement.classList.add(reducedClass);
-    // Keep the overlay hidden until the app has settled
     document.documentElement.classList.remove(overlayReadyClass);
 
-    // Enable overlay only after page assets are loaded (fonts/images) or after a short fallback
     let releaseTimer: number | null = null;
-    let enableAnimationsTimer: number | null = null;
 
     const enableOverlay = () => {
       if (releaseTimer) {
@@ -82,23 +75,17 @@ function App() {
     };
 
     const onLoad = () => {
-      // give a small buffer to ensure paints have settled
+      // small buffer to allow initial paints to settle
       releaseTimer = window.setTimeout(() => enableOverlay(), 250);
     };
 
     if (document.readyState === 'complete') {
-      // already loaded
       onLoad();
     } else {
       window.addEventListener('load', onLoad, { once: true });
-      // fallback in case load doesn't fire
-      releaseTimer = window.setTimeout(() => enableOverlay(), 1200);
+      // fallback if load doesn't fire
+      releaseTimer = window.setTimeout(() => enableOverlay(), 800);
     }
-
-    // Keep animations fully disabled for a short period (to prevent repeated flicker)
-    enableAnimationsTimer = window.setTimeout(() => {
-      document.documentElement.classList.remove(disableAnimationsClass);
-    }, 4000);
 
     // Try to enter fullscreen mode once (guarded to avoid repeated prompts or reload-like behavior)
     const fullscreenAttemptedRef = { current: false } as { current: boolean };
