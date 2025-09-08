@@ -1383,6 +1383,63 @@ html[data-theme="dark"] .email-input::placeholder {
   color: rgba(255, 255, 255, 0.5);
 }
 
+.email-submit-button {
+  display: flex;
+  height: 54px;
+  padding: 0 24px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 40px;
+  background: linear-gradient(90deg, #0ECC7E 0%, #53C0D2 100%);
+  box-shadow: 0 4px 40px 0 rgba(0, 0, 0, 0.10);
+  border: none;
+  cursor: pointer;
+  color: var(--gradient1-textContrast);
+  font-family: 'Red Hat Display', system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.25;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.email-submit-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 50px 0 rgba(0, 0, 0, 0.15);
+}
+
+.email-submit-button:active {
+  transform: translateY(0);
+}
+
+.email-skip-button {
+  display: flex;
+  height: 54px;
+  padding: 0 16px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 40px;
+  box-shadow: 0 4px 40px 0 rgba(0, 0, 0, 0.10);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #9274F4;
+  font-family: 'Red Hat Display', system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-decoration: underline;
+  transition: opacity 200ms ease;
+  margin-top: 20px;
+}
+
+.email-skip-button:hover {
+  opacity: 0.8;
+}
+
+.email-skip-button:active {
+  opacity: 1;
+}
+
 /* Responsive adjustments for email capture */
 @media (max-width: 768px) {
   .email-capture-screen {
