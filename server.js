@@ -9,6 +9,17 @@ app.use(express.json({ limit: '30mb' }));
 const OPENAI_KEY = process.env.OPENAI_API_KEY || process.env.VITE_API_KEY_IMAGE_GENERATION;
 const openai = new OpenAI({ apiKey: OPENAI_KEY });
 
+// Optional image resizer (sharp) will be used to downscale generated images to target size for performance
+let sharpLib = null;
+try {
+  // require dynamically so app can still start if sharp isn't installed yet
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  sharpLib = require('sharp');
+} catch (e) {
+  sharpLib = null;
+  console.warn('sharp not available — server will return original images without resizing. Run npm install sharp to enable server-side resizing.');
+}
+
 
 
 app.post('/api/generate-image', async (req, res) => {
