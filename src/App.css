@@ -1551,7 +1551,7 @@ html[data-theme="dark"] .camera-frame {
   text-align: center;
   max-width: 690px;
   width: 100%;
-  gap: 100px;
+  gap: 28px; /* reduced gap for denser layout */
   padding-top: 24px;
 }
 
