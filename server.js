@@ -109,6 +109,28 @@ app.post('/api/generate-image', async (req, res) => {
 });
 
 
+// Image proxy to convert external image URLs to data URLs to avoid CORS when composing canvas
+app.post('/api/proxy-image', async (req, res) => {
+  try {
+    const { url } = req.body || {};
+    if (!url) return res.status(400).json({ error: 'Missing url' });
+    // Basic validation: only allow http/https
+    if (!/^https?:\/\//i.test(url)) return res.status(400).json({ error: 'Invalid url' });
+
+    const resp = await fetch(url);
+    if (!resp.ok) return res.status(502).json({ error: 'Failed to fetch target image', status: resp.status });
+    const buf = await resp.arrayBuffer();
+    const contentType = resp.headers.get('content-type') || 'image/png';
+    const b64 = Buffer.from(buf).toString('base64');
+    const dataUrl = `data:${contentType};base64,${b64}`;
+    return res.json({ dataUrl });
+  } catch (err) {
+    console.error('Proxy image error', err);
+    return res.status(500).json({ error: String(err?.message || err) });
+  }
+});
+
+
 // Serve static built site if present, otherwise fall back to project index.html (development)
 const distPath = path.join(process.cwd(), 'dist');
 const distIndex = path.join(distPath, 'index.html');
