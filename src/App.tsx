@@ -156,8 +156,6 @@ function App() {
 
       // Build a deterministic prompt from answers first so it always reflects user's choices
       const fallbackArche = deriveArchetype(answers);
-      const variantToken = 'v' + Math.floor(Math.random() * 10000);
-      const localPrompt = buildPromptFromAnswers(fallbackArche, answers, variantToken);
       setGeneratedArchetype(fallbackArche);
 
 
