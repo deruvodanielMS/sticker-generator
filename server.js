@@ -64,9 +64,9 @@ app.post('/api/generate-image', async (req, res) => {
 
       } else {
         // Use regular generation for no photo or when explicitly skipped
-        console.log('🚀 Using regular image generation (dall-e-3 via REST)...');
+        console.log('🚀 Using regular image generation (gpt-image-1 via REST)...');
 
-        const payload = { model: 'dall-e-3', prompt, size: '1024x1024', n: 1, response_format: 'b64_json' };
+        const payload = { model: 'gpt-image-1', prompt, size: '1024x1024', n: 1, response_format: 'b64_json' };
         const resp = await fetch('https://api.openai.com/v1/images/generations', {
           method: 'POST',
           headers: { Authorization: `Bearer ${OPENAI_KEY}`, 'Content-Type': 'application/json' },
