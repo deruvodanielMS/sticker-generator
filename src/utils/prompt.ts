@@ -1,4 +1,3 @@
-import type { Archetype } from '../types';
 import { QUESTIONS } from '../data/questions';
 import type { Answers, Archetype } from '../types';
 
