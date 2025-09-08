@@ -1834,10 +1834,10 @@ html[data-theme="dark"] .camera-frame {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  max-width: 690px;
+  max-width: 740px;
   width: 100%;
-  gap: 28px; /* reduced gap for denser layout */
-  padding-top: 24px;
+  gap: 80px;
+  padding: 0 32px;
 }
 
 .loading-title {
@@ -1848,6 +1848,14 @@ html[data-theme="dark"] .camera-frame {
   font-weight: 700;
   line-height: 1.08;
   letter-spacing: -0.02em;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #0ECC7E 0%, #53C0D2 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 .loading-divider {
