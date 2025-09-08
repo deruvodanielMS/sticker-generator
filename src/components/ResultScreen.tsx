@@ -14,8 +14,8 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
   const { archetype, imageUrl, prompt, source, providerError } = result as any;
   const [composedUrl, setComposedUrl] = useState<string | null>(null);
 
-  // Frame image to center sticker into
-  const FRAME_URL = "https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F8a9b3325ccc5441a9bac3769fe5519d0?format=webp&width=800";
+  // Frame image to center sticker into (updated frame with extra space for overlay)
+  const FRAME_URL = "https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F92f6eacc93034c8dae850519b88047aa?format=webp&width=800";
 
   // Compose the generated sticker centered into the frame
   useEffect(() => {
