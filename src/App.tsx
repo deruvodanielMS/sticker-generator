@@ -131,7 +131,8 @@ function App() {
       setStep(STEPS.Generating);
       const promptToUse = finalPrompt;
       const arche = generatedArchetype ?? fallbackArche;
-      const res = await generateSticker(arche, maybeSelfie, promptToUse);
+      const photoStep = maybeSelfie ? 'sent' : 'skipped';
+      const res = await generateSticker(arche, maybeSelfie, promptToUse, photoStep);
       setResult(res);
       setStep(STEPS.Result);
     } catch (e: any) {
