@@ -146,14 +146,20 @@ export async function generateSticker(archetype: Archetype, selfieDataUrl?: stri
   const online = typeof navigator !== 'undefined' ? navigator.onLine : true;
 
   if (online) {
+    // Prefer server-side generation to avoid client-side CORS and key issues
     try {
-      const url = await generateViaOpenAI(prompt, selfieDataUrl, photoStep);
-      return { imageUrl: url, archetype, prompt, source: 'openai' };
-    } catch (e: any) {
-      const errMsg = e?.message || String(e);
-      // Fallback to simple SVG sticker so user always gets something
-      const dataUrl = svgDataUrl(archetype, selfieDataUrl);
-      return { imageUrl: dataUrl, archetype, prompt, source: 'fallback', providerError: errMsg };
+      const url = await generateViaServer(prompt, selfieDataUrl);
+      return { imageUrl: url, archetype, prompt, source: 'server' };
+    } catch (serverErr: any) {
+      // If server fails, fall back to client-side direct OpenAI call
+      try {
+        const url = await generateViaOpenAI(prompt, selfieDataUrl, photoStep);
+        return { imageUrl: url, archetype, prompt, source: 'openai' };
+      } catch (clientErr: any) {
+        const errMsg = clientErr?.message || serverErr?.message || String(clientErr || serverErr);
+        const dataUrl = svgDataUrl(archetype, selfieDataUrl);
+        return { imageUrl: dataUrl, archetype, prompt, source: 'fallback', providerError: errMsg };
+      }
     }
   }
 
