@@ -22,6 +22,7 @@ async function generateViaServer(prompt: string, selfieDataUrl?: string): Promis
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'x-source': 'ui'
       },
       body: JSON.stringify({ prompt, selfieDataUrl }),
     });
@@ -30,6 +31,9 @@ async function generateViaServer(prompt: string, selfieDataUrl?: string): Promis
     if (!resp.ok) {
       throw new Error(json?.error || json?.bodyText || 'Server generation failed');
     }
+
+    // Server may return a resized data URL directly in imageDataUrl for performance
+    if (json?.imageDataUrl) return json.imageDataUrl;
 
     const bodyJson = json?.bodyJson || json;
 
