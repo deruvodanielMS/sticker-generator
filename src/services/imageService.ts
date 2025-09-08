@@ -81,7 +81,12 @@ async function generateViaServer(prompt: string, selfieDataUrl?: string): Promis
 
     const found = findImageInObj(bodyJson);
     if (found) {
-      if (found.type === 'b64') return await b64ToObjectUrl(found.value);
+      if (found.type === 'b64') {
+        // if it's already a full data URL
+        if (found.value.startsWith('data:')) return found.value;
+        // otherwise return a data URL to avoid object URL/CORS issues when drawing into canvas
+        return `data:image/png;base64,${found.value}`;
+      }
       if (found.type === 'url') return found.value;
     }
 
