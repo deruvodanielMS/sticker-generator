@@ -2050,14 +2050,17 @@ html[data-theme="dark"] .result-button.selected img {
   display: flex;
   justify-content: center;
   align-items: center;
+  aspect-ratio: 1 / 1; /* ensure square frame container */
+  overflow: hidden;
+  border-radius: 12px;
 }
 
 .frame-image {
   width: 100%;
-  height: auto;
-  max-height: 420px;
-  object-fit: contain;
+  height: 100%;
+  object-fit: cover; /* fill the square while preserving aspect */
   display: block;
+  border-radius: 12px;
 }
 
 .archetype-label {
