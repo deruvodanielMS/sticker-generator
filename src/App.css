@@ -1457,6 +1457,12 @@ html[data-theme="dark"] .email-input::placeholder {
   .email-input {
     font-size: 16px;
   }
+
+  .email-submit-button,
+  .email-skip-button {
+    height: 48px;
+    font-size: 14px;
+  }
 }
 
 /* Photo Intro Screen Styles */
