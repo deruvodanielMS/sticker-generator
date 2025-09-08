@@ -64,72 +64,32 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
         const dx = Math.floor((canvas.width - drawW) / 2);
         const dy = Math.floor((canvas.height - drawH) / 2 - (canvas.height * 0.03)); // slight upward nudge
 
-        // Determine inner white area of the frame by scanning for near-white pixels
+        // Use a deterministic centered inner square area inside the frame
+        const paddingPercent = 0.12; // inner padding from frame edges
+        const padding = Math.round(canvas.width * paddingPercent);
+        const bx = padding;
+        const by = padding;
+        const bw = canvas.width - padding * 2;
+        const bh = canvas.height - padding * 2;
+
+        // Ensure square box
+        const boxSide = Math.min(bw, bh);
+        const bxCenter = Math.floor((canvas.width - boxSide) / 2);
+        const byCenter = Math.floor((canvas.height - boxSide) / 2);
+
+        // Draw sticker into the centered square (fill entirely)
+        ctx.drawImage(stickerImg, sx, sy, sSide, sSide, bxCenter, byCenter, boxSide, boxSide);
+
+        // Create a temporary canvas to modify frame alpha in the center box
         const tmpCanvas = document.createElement('canvas');
         tmpCanvas.width = canvas.width;
         tmpCanvas.height = canvas.height;
         const tmpCtx = tmpCanvas.getContext('2d');
         if (!tmpCtx) throw new Error('Failed to create temp canvas context');
         tmpCtx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
-        const frameData = tmpCtx.getImageData(0, 0, canvas.width, canvas.height);
 
-        let minX = canvas.width, minY = canvas.height, maxX = 0, maxY = 0;
-        const threshold = 240; // near-white threshold
-        for (let y = 0; y < canvas.height; y++) {
-          for (let x = 0; x < canvas.width; x++) {
-            const i = (y * canvas.width + x) * 4;
-            const r = frameData.data[i];
-            const g = frameData.data[i + 1];
-            const b = frameData.data[i + 2];
-            const a = frameData.data[i + 3];
-            if (a > 200 && r >= threshold && g >= threshold && b >= threshold) {
-              if (x < minX) minX = x;
-              if (y < minY) minY = y;
-              if (x > maxX) maxX = x;
-              if (y > maxY) maxY = y;
-            }
-          }
-        }
-
-        // If we didn't find a white area, fallback to centered square with padding
-        if (maxX <= minX || maxY <= minY) {
-          const padding = Math.round(canvas.width * 0.12);
-          minX = padding;
-          minY = padding;
-          maxX = canvas.width - padding;
-          maxY = canvas.height - padding;
-        }
-
-        // Expand/shrink slightly to avoid clipping
-        const expand = Math.round(canvas.width * 0.005);
-        minX = Math.max(0, minX - expand);
-        minY = Math.max(0, minY - expand);
-        maxX = Math.min(canvas.width, maxX + expand);
-        maxY = Math.min(canvas.height, maxY + expand);
-
-        // Make bounding box square by expanding the smaller side
-        let boxW = maxX - minX;
-        let boxH = maxY - minY;
-        const boxSide = Math.max(boxW, boxH);
-        const centerX = Math.floor((minX + maxX) / 2);
-        const centerY = Math.floor((minY + maxY) / 2);
-        const bx = Math.max(0, Math.floor(centerX - boxSide / 2));
-        const by = Math.max(0, Math.floor(centerY - boxSide / 2));
-        const bw = Math.min(canvas.width - bx, boxSide);
-        const bh = Math.min(canvas.height - by, boxSide);
-
-        // Draw sticker into the white inner box (fill entirely)
-        ctx.drawImage(stickerImg, sx, sy, sSide, sSide, bx, by, bw, bh);
-
-        // Create frame with transparent center by clearing near-white pixels inside box
-        for (let y = by; y < by + bh; y++) {
-          for (let x = bx; x < bx + bw; x++) {
-            const i = (y * canvas.width + x) * 4;
-            // set alpha to 0 for these pixels to make center transparent
-            frameData.data[i + 3] = 0;
-          }
-        }
-        tmpCtx.putImageData(frameData, 0, 0);
+        // Clear the center square area to make it transparent so sticker shows through
+        tmpCtx.clearRect(bxCenter, byCenter, boxSide, boxSide);
 
         // Draw modified frame (with transparent center) on top
         ctx.drawImage(tmpCanvas, 0, 0, canvas.width, canvas.height);
