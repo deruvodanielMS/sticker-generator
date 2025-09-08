@@ -18,10 +18,13 @@
 
 
 /* Smooth theme overlay that crossfades background. We animate background-position + opacity for a more noticeable, 'magical' change. */
-.theme-overlay { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 1; background-size: cover; background-position: center center; background-repeat: no-repeat; transform: scale(1); /* Do not enable heavy filters by default to avoid initial paint flicker */ transition: none; backdrop-filter: none; }
+.theme-overlay { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0; visibility: hidden; background-size: cover; background-position: center center; background-repeat: no-repeat; transform: scale(1); /* Do not enable heavy filters by default to avoid initial paint flicker */ transition: none; backdrop-filter: none; }
+
+/* Only show the overlay once overlay-ready class is present */
+html.overlay-ready .theme-overlay { visibility: visible; opacity: 1; }
 
 /* Enable full effects only when animations are allowed */
-html:not(.reduced-animations) .theme-overlay {
+html.overlay-ready:not(.reduced-animations) .theme-overlay {
   transition: opacity 900ms ease-in-out, background-position 900ms ease-in-out, transform 900ms cubic-bezier(.2,.8,.2,1);
   backdrop-filter: blur(8px) saturate(1.02);
 }
