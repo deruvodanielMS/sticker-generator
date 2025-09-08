@@ -173,12 +173,8 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
 
         {/* Frame image (the frame contains the site url visually) */}
         <div className="frame-only">
-          <img src={FRAME_URL} alt="Frame" className="frame-image" />
-        </div>
-
-        {/* Sticker result shown below the frame */}
-        <div className="result-image-container">
-          <img src={(result as any)?.imageDataUrl || composedUrl || imageUrl} alt={`${archetype.name} sticker`} className="result-image" />
+          {/* Show composed frame+sticker if available; otherwise fall back to frame or sticker */}
+          <img src={composedUrl || (result as any)?.imageDataUrl || imageUrl || FRAME_URL} alt="Framed sticker" className="frame-image" />
         </div>
 
         <div className="result-buttons">
