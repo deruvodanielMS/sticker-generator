@@ -70,7 +70,7 @@ async function generateViaProxy(prompt: string, selfieDataUrl?: string, photoSte
 }
 
 // Generate sticker - accepts optional promptOverride from the LLM
-export async function generateSticker(archetype: Archetype, selfieDataUrl?: string, promptOverride?: string): Promise<GenerationResult> {
+export async function generateSticker(archetype: Archetype, selfieDataUrl?: string, promptOverride?: string, photoStepParam?: string): Promise<GenerationResult> {
   const includeSelfie = Boolean(selfieDataUrl);
   const prompt = promptOverride ?? buildPromptUtil(archetype, includeSelfie);
   const photoStep = selfieDataUrl ? 'sent' : 'skipped';
