@@ -734,11 +734,15 @@ html[data-theme="dark"] .step-pending {
 
 /* Result buttons icon sizing */
 .result-button-icon {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
+  max-width: 24px;
+  max-height: 24px;
   display: inline-block;
   margin-right: 10px;
   vertical-align: middle;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
 }
 
 /* Ensure result buttons keep same interactive behavior */
