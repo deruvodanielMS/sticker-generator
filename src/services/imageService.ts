@@ -38,7 +38,7 @@ async function generateViaServer(prompt: string, selfieDataUrl?: string): Promis
     const bodyJson = json?.bodyJson || json;
 
     // Helper to find image data in multiple possible shapes
-    const findImageInObj = (obj: any) => {
+    const findImageInObj = (obj: any): { type: 'b64' | 'url'; value: string } | null => {
       if (!obj || typeof obj !== 'object') return null;
       // If array with data/artifacts/images
       if (Array.isArray(obj)) {
@@ -48,7 +48,7 @@ async function generateViaServer(prompt: string, selfieDataUrl?: string): Promis
         }
       }
       // common locations
-      const candidates = [
+      const candidates: any[] = [
         obj.data?.[0],
         obj.images?.[0],
         obj.output?.[0],
@@ -60,10 +60,10 @@ async function generateViaServer(prompt: string, selfieDataUrl?: string): Promis
       for (const c of candidates) {
         if (!c) continue;
         // base64 fields
-        const b64 = c.b64_json || c.b64 || c.base64 || c.b64Image || c.b64_image;
+        const b64 = (c as any).b64_json || (c as any).b64 || (c as any).base64 || (c as any).b64Image || (c as any).b64_image;
         if (b64 && typeof b64 === 'string') return { type: 'b64', value: b64 };
         // url-like fields
-        const url = c.url || c.image_url || c.src || c.uri || c.href || c.link;
+        const url = (c as any).url || (c as any).image_url || (c as any).src || (c as any).uri || (c as any).href || (c as any).link;
         if (url && typeof url === 'string') return { type: 'url', value: url };
         // sometimes the whole field is a string data:image... or a url
         if (typeof c === 'string') {
@@ -74,7 +74,7 @@ async function generateViaServer(prompt: string, selfieDataUrl?: string): Promis
       // traverse deeper
       for (const key of Object.keys(obj)) {
         try {
-          const found = findImageInObj(obj[key]);
+          const found = findImageInObj((obj as any)[key]);
           if (found) return found;
         } catch (e) {
           continue;
@@ -83,7 +83,7 @@ async function generateViaServer(prompt: string, selfieDataUrl?: string): Promis
       return null;
     };
 
-    const found = findImageInObj(bodyJson);
+    const found: { type: 'b64' | 'url'; value: string } | null = findImageInObj(bodyJson);
     if (found) {
       if (found.type === 'b64') {
         // if it's already a full data URL
@@ -219,7 +219,8 @@ export async function generateSticker(archetype: Archetype, selfieDataUrl?: stri
     // Prefer server-side generation to avoid client-side CORS and key issues
     try {
       const url = await generateViaServer(prompt, selfieDataUrl);
-      return { imageUrl: url, archetype, prompt, source: 'server' };
+      // Mark as 'openai' source to satisfy GenerationResult type (server proxies OpenAI)
+      return { imageUrl: url, archetype, prompt, source: 'openai' };
     } catch (serverErr: any) {
       // If server fails, fall back to client-side direct OpenAI call
       try {
@@ -239,15 +240,9 @@ export async function generateSticker(archetype: Archetype, selfieDataUrl?: stri
 
 // Fallback: return a provided static image asset instead of SVG
 function svgDataUrl(archetype: Archetype, selfieDataUrl?: string) {
+  // Reference params to avoid unused-variable TS errors
+  void archetype;
+  void selfieDataUrl;
   // Use the designer-provided rectangle image as a friendly fallback
   return 'https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F8c6851ed424248ef976a48b883ae9729?format=webp&width=800';
-}
-
-function escapeXml(str: string) {
-  return String(str)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&apos;');
 }
