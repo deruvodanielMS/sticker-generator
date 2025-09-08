@@ -2020,13 +2020,14 @@ html[data-theme="dark"] .result-button.selected img {
 }
 
 .result-image-container {
+  position: relative; /* allow overlay positioning */
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 300px;
+  max-width: 420px; /* allow larger frame */
   margin: 0 auto;
-  border-radius: 0; /* square frame */
+  border-radius: 12px; /* slight rounding to match new frame */
   overflow: visible;
   aspect-ratio: 1 / 1; /* ensure square container */
 }
@@ -2034,9 +2035,35 @@ html[data-theme="dark"] .result-button.selected img {
 .result-image {
   width: 100%;
   height: 100%;
-  border-radius: 0; /* square sticker */
+  border-radius: 12px;
   object-fit: cover;
-  box-shadow: none;
+  box-shadow: 0 8px 30px rgba(11,18,32,0.15);
+}
+
+/* Overlay inside frame to show archetype and site url */
+.result-frame-overlay {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 28px; /* position slightly above bottom area of frame */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.frame-archetype {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 18px;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.35);
+}
+
+.frame-site {
+  color: rgba(255,255,255,0.9);
+  font-size: 12px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.28);
 }
 
 .result-buttons {
