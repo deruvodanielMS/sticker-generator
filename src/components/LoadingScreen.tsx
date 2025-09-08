@@ -1,5 +1,3 @@
-import type { FC } from 'react';
-
 const LoadingScreen = () => {
   return (
     <div className="loading-screen">
