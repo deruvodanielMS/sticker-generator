@@ -451,7 +451,7 @@ html[data-theme="dark"] .secondary-button { background: rgba(255,255,255,0.06); 
 /* New Stepper Styles based on Figma Design */
 .stepper-navigation {
   position: fixed;
-  top: calc(var(--header-height) + 8px);
+  top: calc(var(--header-height) + 24px);
   left: 0;
   right: 0;
   height: 64px;
