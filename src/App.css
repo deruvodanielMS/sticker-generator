@@ -2476,8 +2476,8 @@ html[data-theme="dark"] .result-button.secondary {
   gap: 20px;
 }
 
-/* Reduce title margins and description spacing */
-.question-title, .result-title {
+/* Reduce title margins and description spacing for question titles only - keep result title spacing large */
+.question-title {
   margin-bottom: 8px;
 }
 
