@@ -28,94 +28,61 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
         }
         const loadImg = (src: string) => new Promise<HTMLImageElement>((resolve, reject) => {
           const img = new Image();
-          img.crossOrigin = 'anonymous';
           img.onload = () => resolve(img);
           img.onerror = reject;
           img.src = src;
         });
 
-        const [frameImg, stickerImg] = await Promise.all([loadImg(FRAME_URL), loadImg(imageUrl)]);
+        // Proxy the frame image to a data URL to avoid CORS issues and allow safe canvas composition
+        let proxiedFrameSrc = FRAME_URL;
+        try {
+          const proxyResp = await fetch('/api/proxy-image', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-source': 'ui' },
+            body: JSON.stringify({ url: FRAME_URL }),
+          });
+          if (proxyResp.ok) {
+            const pj = await proxyResp.json();
+            if (pj?.dataUrl) proxiedFrameSrc = pj.dataUrl;
+          }
+        } catch (e) {
+          // fallback to FRAME_URL on failure
+        }
 
-        // Use frame dimensions as canvas size and account for devicePixelRatio for crisp output
-        const baseWidth = frameImg.naturalWidth || frameImg.width || 1024;
-        const baseHeight = frameImg.naturalHeight || frameImg.height || 1024;
-        const dpr = (typeof window !== 'undefined' && window.devicePixelRatio) ? window.devicePixelRatio : 1;
+        const [frameImg, stickerImg] = await Promise.all([loadImg(proxiedFrameSrc), loadImg(imageUrl)]);
+
+        // Use frame dimensions as canvas size
         const canvas = document.createElement('canvas');
-        canvas.width = Math.max(1, Math.floor(baseWidth * dpr));
-        canvas.height = Math.max(1, Math.floor(baseHeight * dpr));
+        const canvasW = frameImg.naturalWidth || frameImg.width || 1024;
+        const canvasH = frameImg.naturalHeight || frameImg.height || 1024;
+        canvas.width = canvasW;
+        canvas.height = canvasH;
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
-        // Scale context so we can draw using CSS-pixel coordinates
-        if (dpr !== 1) ctx.scale(dpr, dpr);
 
-        // Draw white background (in CSS pixels)
+        // Draw frame first as background
+        ctx.drawImage(frameImg, 0, 0, canvasW, canvasH);
+
+        // Compute inner square area where sticker should be drawn
+        const paddingPercent = 0.12;
+        const padding = Math.round(canvasW * paddingPercent);
+        const bw = canvasW - padding * 2;
+        const bh = canvasH - padding * 2;
+        const boxSide = Math.min(bw, bh);
+        const bxCenter = Math.floor((canvasW - boxSide) / 2);
+        const byCenter = Math.floor((canvasH - boxSide) / 2);
+
+        // Draw white background inside box
         ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, baseWidth, baseHeight);
+        ctx.fillRect(bxCenter, byCenter, boxSide, boxSide);
 
-        // Draw sticker centered and sized to fit within 76% of the frame (keeps margins)
-        const maxStickerSize = Math.min(baseWidth, baseHeight) * 0.76;
-
-        // Crop sticker to a centered square from source
+        // Crop sticker to centered square and draw into box
         const sW = stickerImg.naturalWidth || stickerImg.width;
         const sH = stickerImg.naturalHeight || stickerImg.height;
         const sSide = Math.min(sW, sH);
         const sx = Math.floor((sW - sSide) / 2);
         const sy = Math.floor((sH - sSide) / 2);
-
-        // Destination size is square (in CSS pixels)
-        const drawW = maxStickerSize;
-        const drawH = maxStickerSize;
-        const dx = Math.floor((baseWidth - drawW) / 2);
-        const dy = Math.floor((baseHeight - drawH) / 2 - (baseHeight * 0.03)); // slight upward nudge
-
-        // Use a deterministic centered inner square area inside the frame
-        const paddingPercent = 0.12; // inner padding from frame edges
-        const padding = Math.round(baseWidth * paddingPercent);
-        const bw = baseWidth - padding * 2;
-        const bh = baseHeight - padding * 2;
-
-        // Ensure square box
-        const boxSide = Math.min(bw, bh);
-        const bxCenter = Math.floor((baseWidth - boxSide) / 2);
-        const byCenter = Math.floor((baseHeight - boxSide) / 2);
-
-        // Draw opaque background rectangle to ensure sticker appears square (hide any rounded alpha from image)
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(bxCenter, byCenter, boxSide, boxSide);
-
-        // Draw sticker into the centered square (fill entirely)
         ctx.drawImage(stickerImg, sx, sy, sSide, sSide, bxCenter, byCenter, boxSide, boxSide);
-
-        // Create a temporary canvas to modify frame alpha by clearing near-white pixels (make center transparent)
-        const tmpCanvas = document.createElement('canvas');
-        tmpCanvas.width = canvas.width;
-        tmpCanvas.height = canvas.height;
-        const tmpCtx = tmpCanvas.getContext('2d');
-        if (!tmpCtx) throw new Error('Failed to create temp canvas context');
-        // If using DPR, draw frame scaled appropriately
-        if (dpr !== 1) tmpCtx.scale(dpr, dpr);
-        tmpCtx.drawImage(frameImg, 0, 0, baseWidth, baseHeight);
-
-        try {
-          const frameData = tmpCtx.getImageData(0, 0, tmpCanvas.width, tmpCanvas.height);
-          const threshold = 245; // near-white threshold
-          for (let i = 0; i < frameData.data.length; i += 4) {
-            const r = frameData.data[i];
-            const g = frameData.data[i + 1];
-            const b = frameData.data[i + 2];
-            const a = frameData.data[i + 3];
-            if (a > 200 && r >= threshold && g >= threshold && b >= threshold) {
-              frameData.data[i + 3] = 0; // make pixel transparent
-            }
-          }
-          tmpCtx.putImageData(frameData, 0, 0);
-        } catch (e) {
-          // getImageData may fail due to CORS; in that case, fallback to drawing frame as-is on top
-          console.warn('Could not access frame pixel data (CORS?), drawing frame as-is', e);
-        }
-
-        // Draw modified frame (with transparent center where possible) on top (scale back to CSS pixels via ctx draw)
-        ctx.drawImage(tmpCanvas, 0, 0, baseWidth, baseHeight);
 
         const dataUrl = canvas.toDataURL('image/png');
         if (!cancelled) setComposedUrl(dataUrl);
