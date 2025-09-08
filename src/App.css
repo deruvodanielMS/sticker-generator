@@ -24,20 +24,12 @@
 /* Only show the overlay once overlay-ready class is present */
 html.overlay-ready .theme-overlay { visibility: visible; opacity: 1; }
 
-/* Enable full effects only when animations are allowed */
-html.overlay-ready:not(.reduced-animations) .theme-overlay {
+/* Enable overlay animations once overlay-ready is present */
+html.overlay-ready .theme-overlay {
+  visibility: visible;
+  opacity: 1;
   transition: opacity 900ms ease-in-out, background-position 900ms ease-in-out, transform 900ms cubic-bezier(.2,.8,.2,1);
   backdrop-filter: blur(8px) saturate(1.02);
-}
-
-/* When reduced-animations class is present, pause intensive background animations to reduce repaint and potential flicker */
-html.reduced-animations .theme-overlay,
-html.reduced-animations .theme-overlay::before,
-html.reduced-animations .theme-overlay::after {
-  animation-play-state: paused !important;
-  transition: none !important;
-  will-change: auto !important;
-  backdrop-filter: none !important;
 }
 
 /* Use moving radial "manchas" layers so they look like blobs that drift */
