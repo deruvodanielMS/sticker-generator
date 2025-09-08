@@ -39,6 +39,7 @@ function App() {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<GenerationResult | null>(null);
+  const [capturedPhoto, setCapturedPhoto] = useState<string | undefined>(undefined);
 
   const [generatedArchetype, setGeneratedArchetype] = useState<any | null>(null);
 
@@ -135,9 +136,8 @@ function App() {
 
   const handleEmailSubmit = async (email: string) => {
     setUserEmail(email);
-    // Ensure data is submitted once the user completes the flow
-    await submitUserData();
-    setStep(STEPS.ThankYou);
+    // Now start generation process after email is captured
+    await generateStickerAfterEmail();
   };
 
   const submitUserData = async () => {
@@ -160,8 +160,14 @@ function App() {
   };
 
 
-  // Prepare prompt using LLM (or fallback) and generate immediately (skip prompt preview)
+  // Store photo data and proceed to email capture
   const preparePrompt = async (maybeSelfie?: string) => {
+    setCapturedPhoto(maybeSelfie);
+    setStep(STEPS.EmailCapture);
+  };
+
+  // Generate sticker after email is captured
+  const generateStickerAfterEmail = async () => {
     setError(null);
     try {
       if (!navigator.onLine) throw new Error('No internet connection. Please connect to continue.');
@@ -190,14 +196,13 @@ function App() {
       setStep(STEPS.Generating);
       const promptToUse = finalPrompt;
       const arche = generatedArchetype ?? fallbackArche;
-      const photoStep = maybeSelfie ? 'sent' : 'skipped';
-      const res = await generateSticker(arche, maybeSelfie, promptToUse, photoStep);
+      const photoStep = capturedPhoto ? 'sent' : 'skipped';
+      const res = await generateSticker(arche, capturedPhoto, promptToUse, photoStep);
       setResult(res);
       setStep(STEPS.Result);
     } catch (e: any) {
       setError(e?.message || 'Failed to prepare or generate sticker');
       setStep(STEPS.Splash);
-    } finally {
     }
   };
 
@@ -214,6 +219,7 @@ function App() {
     setQuestionIndex(0);
     setError(null);
     setResult(null);
+    setCapturedPhoto(undefined);
     setThemeOnDocument('light');
   };
 
