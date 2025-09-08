@@ -1954,10 +1954,18 @@ html[data-theme="dark"] .result-button.selected img {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  max-width: 690px;
+  max-width: 820px;
   width: 100%;
-  gap: 28px; /* reduced spacing */
-  padding-top: 24px;
+  gap: 28px; /* content spacing between sections */
+  padding-top: 80px; /* ensure 80px between page top/title and content */
+}
+
+/* Ensure the main h1 always has 80px spacing below it relative to following content */
+.result-title {
+  margin: 0 0 80px 0; /* enforce 80px below title */
+}
+@media (max-width: 480px) {
+  .result-title { margin-bottom: 48px; } /* slightly smaller on very small screens */
 }
 
 
@@ -2029,6 +2037,37 @@ html[data-theme="dark"] .result-button.selected img {
   display: flex;
   align-items: center;
   gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap; /* allow wrapping if not enough space */
+}
+
+/* Make result buttons slightly wider and allow them to expand on larger viewports */
+.result-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  height: 56px;
+  padding: 0 28px;
+  border-radius: 40px;
+  font-family: 'Red Hat Display', system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+  min-width: 220px; /* wider to fit content */
+  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive: if buttons can't fit side-by-side, stack them full-width */
+@media (max-width: 768px) {
+  .result-buttons { flex-direction: column; width: 100%; gap: 16px; }
+  .result-button { width: 100%; max-width: 100%; min-width: 0; }
+}
+
+/* Keep tablet behavior showing side-by-side but allowing larger widths */
+@media (min-width: 481px) and (max-width: 1024px) {
+  .result-button { min-width: 240px; }
 }
 
 .result-button {
@@ -2449,9 +2488,17 @@ html[data-theme="dark"] .result-button.secondary {
   align-items: center;
   gap: 24px;
   width: 100%;
-  max-width: 760px;
-  padding: 0 32px 32px 32px; /* more side spacing */
+  max-width: 920px; /* allow more horizontal room on large screens */
+  padding: 0 48px 32px 48px; /* increased side spacing for percentage bar */
   margin: 0 auto;
+}
+
+/* Make side padding scale down on smaller screens while preserving minimum spacing */
+@media (max-width: 900px) {
+  .linear-slider-container { padding: 0 28px 32px 28px; max-width: 100%; }
+}
+@media (max-width: 480px) {
+  .linear-slider-container { padding: 0 16px 24px 16px; }
 }
 
 .linear-slider-result {
