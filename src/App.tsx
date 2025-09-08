@@ -245,7 +245,7 @@ function App() {
 
 
       {step === STEPS.Generating && <LoadingScreen />}
-      {step === STEPS.Result && result && <ResultScreen result={result} userName={userName} userEmail={userEmail} onShare={goToThankYou} onPrint={goToThankYou} onRequestEmail={() => setStep(STEPS.EmailCapture)} />}
+      {step === STEPS.Result && result && <ResultScreen result={result} userName={userName} userEmail={userEmail} onShare={goToThankYou} onPrint={goToThankYou} />}
       {step === STEPS.EmailCapture && <EmailCapture onSubmit={handleEmailSubmit} />}
       {step === STEPS.ThankYou && <ThankYouScreen onRestart={restart} />}
 
