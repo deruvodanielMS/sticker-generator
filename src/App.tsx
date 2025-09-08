@@ -58,10 +58,14 @@ function App() {
 
     // Temporarily reduce animations on initial mount to avoid first-render flicker
     const reducedClass = 'reduced-animations';
+    const overlayReadyClass = 'overlay-ready';
     document.documentElement.classList.add(reducedClass);
+    // Keep the overlay hidden until the app has settled
+    document.documentElement.classList.remove(overlayReadyClass);
     const releaseTimer = window.setTimeout(() => {
       document.documentElement.classList.remove(reducedClass);
-    }, 600);
+      document.documentElement.classList.add(overlayReadyClass);
+    }, 700);
 
     // Try to enter fullscreen mode once (guarded to avoid repeated prompts or reload-like behavior)
     const fullscreenAttemptedRef = { current: false } as { current: boolean };
