@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import type { FC } from 'react';
 import type { GenerationResult } from '../types';
 
