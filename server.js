@@ -83,9 +83,9 @@ app.post('/api/generate-image', async (req, res) => {
         console.log('✅ OpenAI images.edit() success with real photo!');
         
       } else {
-        // Use regular generation for no photo
-        console.log('🚀 Using regular image generation...');
-        
+        // Use regular generation for no photo or when explicitly skipped
+        console.log('🚀 Using regular image generation (dall-e-3)...');
+
         result = await openaiClient.images.generate({
           model: "dall-e-3",
           prompt: prompt,
