@@ -25,7 +25,7 @@ async function generateViaOpenAI(prompt: string, selfieDataUrl?: string, photoSt
 
   if (useEdit && selfieDataUrl) {
     // prepare personalized prompt
-    const personalizedPrompt = `${prompt}. Transform this into a circular sticker design incorporating the person's appearance and features from the reference image. Make it creative and stylized while maintaining the person's recognizable characteristics.`;
+    const personalizedPrompt = `${prompt}. Transform this into a square, full-bleed 1:1 sticker design (sized for 2x2 inches). Do NOT include rounded corners or any circular masking — produce a full-bleed square image that fills the canvas, with no text and no external borders. Keep the person's recognizable features integrated respectfully.`;
 
     const blob = await dataUrlToBlob(selfieDataUrl);
     const fd = new FormData();
