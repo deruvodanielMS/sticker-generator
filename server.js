@@ -1,12 +1,13 @@
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
-import FormData from 'form-data';
+import OpenAI, { toFile } from 'openai';
 
 const app = express();
-app.use(express.json({ limit: '10mb' }));
+app.use(express.json({ limit: '30mb' }));
 
 const OPENAI_KEY = process.env.OPENAI_API_KEY || process.env.VITE_API_KEY_IMAGE_GENERATION;
+const openai = new OpenAI({ apiKey: OPENAI_KEY });
 
 
 
