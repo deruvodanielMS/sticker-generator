@@ -13,6 +13,72 @@ type Props = {
 const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint }) => {
   const { archetype, imageUrl, prompt, source, providerError } = result as any;
   const [showDebug, setShowDebug] = useState(false);
+  const [composedUrl, setComposedUrl] = useState<string | null>(null);
+
+  // Frame image to center sticker into
+  const FRAME_URL = "https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F8a9b3325ccc5441a9bac3769fe5519d0?format=webp&width=800";
+
+  // Compose the generated sticker centered into the frame
+  useEffect(() => {
+    let cancelled = false;
+    async function compose() {
+      try {
+        if (!imageUrl) {
+          setComposedUrl(null);
+          return;
+        }
+        const loadImg = (src: string) => new Promise<HTMLImageElement>((resolve, reject) => {
+          const img = new Image();
+          img.crossOrigin = 'anonymous';
+          img.onload = () => resolve(img);
+          img.onerror = reject;
+          img.src = src;
+        });
+
+        const [frameImg, stickerImg] = await Promise.all([loadImg(FRAME_URL), loadImg(imageUrl)]);
+
+        // Use frame dimensions as canvas size
+        const canvas = document.createElement('canvas');
+        canvas.width = frameImg.naturalWidth || frameImg.width || 1024;
+        canvas.height = frameImg.naturalHeight || frameImg.height || 1024;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        // Draw white background
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Draw sticker centered and sized to fit within 62% of the frame (keeps margins)
+        const maxStickerSize = Math.min(canvas.width, canvas.height) * 0.62;
+        let drawW = stickerImg.naturalWidth || stickerImg.width;
+        let drawH = stickerImg.naturalHeight || stickerImg.height;
+        const stickerRatio = drawW / drawH;
+        if (drawW > drawH) {
+          drawW = maxStickerSize;
+          drawH = maxStickerSize / stickerRatio;
+        } else {
+          drawH = maxStickerSize;
+          drawW = maxStickerSize * stickerRatio;
+        }
+        const dx = (canvas.width - drawW) / 2;
+        const dy = (canvas.height - drawH) / 2 - (canvas.height * 0.05); // slight upward nudge
+
+        // Draw sticker
+        ctx.drawImage(stickerImg, dx, dy, drawW, drawH);
+
+        // Draw frame on top
+        ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
+
+        const dataUrl = canvas.toDataURL('image/png');
+        if (!cancelled) setComposedUrl(dataUrl);
+      } catch (e) {
+        console.error('Failed to compose sticker with frame', e);
+        setComposedUrl(imageUrl);
+      }
+    }
+    compose();
+    return () => { cancelled = true; };
+  }, [imageUrl]);
 
   const printSticker = () => {
     const w = window.open('', '_blank');
