@@ -45,23 +45,17 @@ app.post('/api/generate-image', async (req, res) => {
 
         console.log('📷 Image buffer size:', imageBuffer.length, 'bytes');
 
-        const fd = new FormData();
-        fd.append('image', imageBuffer, { filename: 'selfie.png', contentType: mimeType });
-        fd.append('model', 'gpt-image-1');
-        fd.append('prompt', `${prompt}. Transform this into a circular sticker design incorporating the person's appearance and features from the reference image. Make it creative and stylized while maintaining the person's recognizable characteristics. Do NOT include text or branding.`);
-        fd.append('size', '1024x1024');
-        fd.append('n', '1');
-
-        const resp = await fetch('https://api.openai.com/v1/images/edits', {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${OPENAI_KEY}`, ...fd.getHeaders() },
-          body: fd,
+        // Use OpenAI client images.edit with toFile to pass the selfie buffer
+        const imageFile = await toFile(imageBuffer, 'selfie.png', { type: mimeType || 'image/png' });
+        console.log('Calling OpenAI images.edit with model gpt-image-1...');
+        const editResult = await openai.images.edit({
+          model: 'gpt-image-1',
+          image: imageFile,
+          prompt: `${prompt}. Transform this into a circular sticker design incorporating the person's appearance and features from the reference image. Make it creative and stylized while maintaining the person's recognizable characteristics. Do NOT include text, white borders, or rounded masks.`,
+          size: '100x100',
+          n: 1,
         });
-        const text = await resp.text();
-        let json = null;
-        try { json = JSON.parse(text); } catch (e) { return res.status(502).json({ error: 'Invalid JSON from OpenAI', bodyText: text }); }
-        if (!resp.ok) return res.status(502).json({ error: json?.error?.message || JSON.stringify(json), bodyJson: json });
-        result = json;
+        result = editResult;
 
       } else {
         // Use regular generation for no photo or when explicitly skipped
