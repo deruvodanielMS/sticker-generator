@@ -142,7 +142,7 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
           to: emailState,
           subject: `${archetype.name} Sticker for ${userName || 'you'}`,
           text: archetype.valueLine,
-          imageUrl,
+          imageUrl: composedUrl || imageUrl,
         }),
       });
       const json = await resp.json();
