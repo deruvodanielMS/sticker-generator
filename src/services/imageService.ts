@@ -31,7 +31,7 @@ async function generateViaProxy(prompt: string, selfieDataUrl?: string, photoSte
         const retryRes = await fetch('/api/generate-image', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ prompt, selfieDataUrl }),
+          body: JSON.stringify({ prompt, selfieDataUrl, photoStep }),
           cache: 'no-store',
         });
         envelope = await retryRes.json();
