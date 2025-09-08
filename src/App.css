@@ -620,8 +620,14 @@ html[data-theme="dark"] .stepper-navigation {
   align-items: flex-start;
   flex: 1;
   border-radius: 20px;
-  background: #EEE;
+  /* Match header gradient in light mode to hide seam */
+  background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(250,251,250,0.88));
   position: relative;
+}
+
+/* Keep dark theme variant as-is but ensure contrast */
+html[data-theme="dark"] .stepper-steps {
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .step-item {
