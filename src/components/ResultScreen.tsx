@@ -190,7 +190,7 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
         </div>
         
         <div className="result-image-container">
-          <img src={imageUrl} alt={`${archetype.name} sticker`} className="result-image" />
+          <img src={composedUrl || imageUrl} alt={`${archetype.name} sticker`} className="result-image" />
         </div>
         
         <div className="result-buttons">
