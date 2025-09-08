@@ -77,6 +77,10 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
         const bxCenter = Math.floor((canvas.width - boxSide) / 2);
         const byCenter = Math.floor((canvas.height - boxSide) / 2);
 
+        // Draw opaque background rectangle to ensure sticker appears square (hide any rounded alpha from image)
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(bxCenter, byCenter, boxSide, boxSide);
+
         // Draw sticker into the centered square (fill entirely)
         ctx.drawImage(stickerImg, sx, sy, sSide, sSide, bxCenter, byCenter, boxSide, boxSide);
 
