@@ -167,12 +167,10 @@ export async function generateSticker(archetype: Archetype, selfieDataUrl?: stri
   return { imageUrl: dataUrl, archetype, prompt, source: 'fallback' };
 }
 
-// Simple SVG fallback generator (keeps original behavior)
+// Fallback: return a provided static image asset instead of SVG
 function svgDataUrl(archetype: Archetype, selfieDataUrl?: string) {
-  const color = '#111827';
-  const label = archetype?.label ?? 'Friend';
-  const svg = `<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1024\" height=\"1024\"><rect width=\"100%\" height=\"100%\" fill=\"#fff\"/><circle cx=\"512\" cy=\"384\" r=\"320\" fill=\"#f3f4f6\"/><text x=\"512\" y=\"620\" font-size=\"72\" font-family=\"Arial, Helvetica, sans-serif\" fill=\"${color}\" text-anchor=\"middle\">${escapeXml(label)}</text></svg>`;
-  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+  // Use the designer-provided rectangle image as a friendly fallback
+  return 'https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F8c6851ed424248ef976a48b883ae9729?format=webp&width=800';
 }
 
 function escapeXml(str: string) {
