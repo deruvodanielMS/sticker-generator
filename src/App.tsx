@@ -12,7 +12,6 @@ import ErrorBanner from './components/ErrorBanner';
 import { QUESTIONS } from './data/questions';
 import type { Answers, GenerationResult } from './types';
 import { deriveArchetype } from './utils/archetype';
-import { buildPromptFromAnswers } from './utils/prompt';
 import { generateSticker } from './services/imageService';
 
 const STEPS = {
