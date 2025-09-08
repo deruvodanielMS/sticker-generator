@@ -6,7 +6,11 @@ import OpenAI, { toFile } from 'openai';
 const app = express();
 app.use(express.json({ limit: '30mb' }));
 
-const OPENAI_KEY = process.env.OPENAI_API_KEY || process.env.VITE_API_KEY_IMAGE_GENERATION;
+// Support multiple possible environment variable names for OpenAI key (helps on different hosting setups)
+const OPENAI_KEY = process.env.OPENAI_API_KEY || process.env.VITE_API_KEY_IMAGE_GENERATION || process.env.NEXT_PUBLIC_OPENAI_API_KEY || process.env.VERCEL_OPENAI_API_KEY || process.env.OPENAI_API_KEY_SERVER || null;
+if (!OPENAI_KEY) {
+  console.warn('Warning: OPENAI key not found in environment variables. Image generation will fail without a valid key. Checked vars: OPENAI_API_KEY, VITE_API_KEY_IMAGE_GENERATION, NEXT_PUBLIC_OPENAI_API_KEY, VERCEL_OPENAI_API_KEY, OPENAI_API_KEY_SERVER');
+}
 const openai = new OpenAI({ apiKey: OPENAI_KEY });
 
 
