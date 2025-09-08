@@ -2420,8 +2420,8 @@ html[data-theme="dark"] .result-button.secondary {
   align-items: center;
   gap: 24px;
   width: 100%;
-  max-width: 673px;
-  padding: 0 28px 32px 28px;
+  max-width: 760px;
+  padding: 0 32px 32px 32px; /* more side spacing */
   margin: 0 auto;
 }
 
