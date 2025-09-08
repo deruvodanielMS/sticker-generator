@@ -73,7 +73,7 @@ function App() {
         else if (el.msRequestFullscreen) await el.msRequestFullscreen();
         // when fullscreen entered, the browser chrome will be hidden on supported devices
       } catch (e) {
-        // ignore errors ��� many browsers will refuse or require user gesture
+        // ignore errors — many browsers will refuse or require user gesture
       }
       // remove listener after attempt
       window.removeEventListener('pointerdown', tryFullscreen);
@@ -249,7 +249,25 @@ function App() {
 
   return (
     <div className="app-root">
-      <div className="theme-overlay" aria-hidden />
+      <div className="theme-overlay" aria-hidden>
+        {particleConfig.map((p) => (
+          <span
+            key={p.key}
+            className="particle"
+            style={{
+              top: p.top + '%',
+              left: p.left + '%',
+              width: `min(${p.sizeVw}vmin, 140px)`,
+              height: `min(${p.sizeVw}vmin, 140px)`,
+              background: p.color,
+              boxShadow: p.boxShadow,
+              transformOrigin: p.transformOrigin,
+              animationDuration: p.duration,
+              animationDelay: p.delay,
+            }}
+          />
+        ))}
+      </div>
 
       <header className="app-header" aria-hidden>
         <img className="brand-logo-img logo-light persistent-logo" src={LOGO_LIGHT} alt="Making Sense logo light" />
