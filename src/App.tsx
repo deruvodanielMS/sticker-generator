@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import './App.css';
 import { useState, useEffect, useMemo } from 'react';
 import SplashScreen from './components/SplashScreen';
