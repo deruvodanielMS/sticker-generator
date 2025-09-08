@@ -47,27 +47,32 @@ html[data-theme="dark"] .theme-overlay {
 @keyframes blobsMove {
   0% {
     background-position: 10% 15%, 85% 30%, 30% 80%;
-    filter: blur(36px) saturate(1.05);
+    filter: blur(28px) saturate(1.05);
     opacity: 1;
   }
-  25% {
-    background-position: 20% 10%, 78% 25%, 25% 70%;
+  20% {
+    background-position: 30% 5%, 78% 20%, 20% 70%;
+    filter: blur(36px) saturate(1.08);
+    opacity: 1;
+  }
+  40% {
+    background-position: 55% 18%, 70% 40%, 40% 60%;
+    filter: blur(48px) saturate(1.12);
+    opacity: 1;
+  }
+  60% {
+    background-position: 25% 28%, 90% 28%, 38% 82%;
     filter: blur(44px) saturate(1.08);
     opacity: 1;
   }
-  50% {
-    background-position: 30% 22%, 70% 32%, 35% 78%;
-    filter: blur(52px) saturate(1.12);
-    opacity: 1;
-  }
-  75% {
-    background-position: 18% 28%, 88% 38%, 40% 60%;
-    filter: blur(44px) saturate(1.08);
+  80% {
+    background-position: 12% 22%, 85% 36%, 30% 66%;
+    filter: blur(40px) saturate(1.06);
     opacity: 1;
   }
   100% {
     background-position: 10% 15%, 85% 30%, 30% 80%;
-    filter: blur(36px) saturate(1.05);
+    filter: blur(28px) saturate(1.05);
     opacity: 1;
   }
 }
