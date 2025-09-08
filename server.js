@@ -7,9 +7,13 @@ const app = express();
 app.use(express.json({ limit: '10mb' }));
 
 const OPENAI_KEY = process.env.OPENAI_API_KEY || process.env.VITE_API_KEY_IMAGE_GENERATION;
-const openai = new OpenAI({
-  apiKey: OPENAI_KEY,
-});
+
+// Create OpenAI client lazily so the server can start even when the key is not set
+const createOpenAI = () => {
+  const key = process.env.OPENAI_API_KEY || process.env.VITE_API_KEY_IMAGE_GENERATION;
+  if (!key) return null;
+  return new OpenAI({ apiKey: key });
+};
 
 // Email transporter configuration expects SMTP_* env vars
 const SMTP_HOST = process.env.SMTP_HOST;
@@ -33,6 +37,8 @@ app.post('/api/generate-image', async (req, res) => {
 
     try {
       let result;
+      const openaiClient = createOpenAI();
+      if (!openaiClient) return res.status(500).json({ error: 'Server missing OPENAI key' });
       
       if (selfieDataUrl) {
         // Use real image with images.edit()
@@ -61,7 +67,7 @@ app.post('/api/generate-image', async (req, res) => {
         // Create enhanced prompt for personalization
         const personalizedPrompt = `${prompt}. Transform this into a circular sticker design incorporating the person's appearance and features from the reference image. Make it creative and stylized while maintaining the person's recognizable characteristics.`;
         
-        result = await openai.images.edit({
+        result = await openaiClient.images.edit({
           model: "gpt-image-1",
           image: imageFile,
           prompt: personalizedPrompt,
@@ -75,7 +81,7 @@ app.post('/api/generate-image', async (req, res) => {
         // Use regular generation for no photo
         console.log('🚀 Using regular image generation...');
         
-        result = await openai.images.generate({
+        result = await openaiClient.images.generate({
           model: "gpt-image-1",
           prompt: prompt,
           size: "1024x1024",
