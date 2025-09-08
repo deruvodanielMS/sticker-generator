@@ -205,9 +205,25 @@ function App() {
         // keep local prompt
       }
 
-      // Skip PromptPreview and start generation immediately
+      // Build the required fixed prompt using collected answers and chosen archetype
+      const findAnswerLabel = (qid: string) => {
+        try {
+          const q = QUESTIONS.find((qq) => qq.id === qid);
+          const ans = answers[qid];
+          if (!q || !ans) return 'N/A';
+          const opt = q.options?.find((o: any) => o.id === ans.choice);
+          if (opt && opt.label) return opt.label;
+          // If no option found, fall back to any numeric/intensity value or choice id
+          return ans?.choice ?? (ans?.intensity != null ? String(ans.intensity) : 'N/A');
+        } catch (e) {
+          return 'N/A';
+        }
+      };
+
+      const promptTemplate = `Create an original, unique sticker that embodies the archetype "${archetype?.name || fallbackArche?.name}". Avoid using\n- archetype label\n- any text into the image\n- white borders.\n- transparent background\nThe image should be 100x100px. StyleToken:v2338;Draw inspiration from the following traits: Which best describes your approach to making business decisions?: ${findAnswerLabel('decision_style')}; Which mindset do you most identify with when new technologies emerge?: ${findAnswerLabel('innovation')}; With new opportunities, how would you describe your risk tolerance?: ${findAnswerLabel('risk')}; When working on a team project, which approach best describes your style?: ${findAnswerLabel('collaboration')}; When defining your vision for the future, which area is your primary focus?: ${findAnswerLabel('vision')}. Produce a high-quality, visually engaging sticker concept — be creative with composition, colors should be green, blue, purple, white and black\nThe design should feature a character in the middle with small illustrations in the background. The background should fill the complete image and should be only one color. The style should be clean, simple, flat, with no text on it.`;
+
       setStep(STEPS.Generating);
-      const promptToUse = finalPrompt;
+      const promptToUse = promptTemplate;
       const arche = generatedArchetype ?? fallbackArche;
       const photoStep = capturedPhoto ? 'sent' : 'skipped';
       const res = await generateSticker(arche, capturedPhoto, promptToUse, photoStep);
