@@ -51,9 +51,45 @@ function App() {
     } catch (e) {}
   };
 
-  // Ensure default theme on mount
+  // Ensure default theme on mount and setup fullscreen
   useEffect(() => {
     setThemeOnDocument('light');
+
+    // Try to enter fullscreen mode
+    const requestFullscreen = async () => {
+      try {
+        if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+          await document.documentElement.requestFullscreen();
+          localStorage.setItem('fullscreenPreference', 'enabled');
+        }
+      } catch (error) {
+        console.log('Fullscreen not supported or denied');
+      }
+    };
+
+    // Check if user previously enabled fullscreen
+    const fullscreenPref = localStorage.getItem('fullscreenPreference');
+    if (fullscreenPref === 'enabled') {
+      requestFullscreen();
+    } else {
+      // Request on first visit
+      requestFullscreen();
+    }
+
+    // Listen for fullscreen changes to maintain preference
+    const handleFullscreenChange = () => {
+      if (document.fullscreenElement) {
+        localStorage.setItem('fullscreenPreference', 'enabled');
+      } else {
+        localStorage.setItem('fullscreenPreference', 'disabled');
+      }
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
   }, []);
 
   const handleSelect = (optId: string, intensity?: number) => {
