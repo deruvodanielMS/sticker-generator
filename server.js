@@ -56,7 +56,6 @@ app.post('/api/generate-image', async (req, res) => {
 
         // Use OpenAI client images.edit with toFile to pass the selfie buffer
         const imageFile = await toFile(imageBuffer, 'selfie.png', { type: mimeType || 'image/png' });
-        console.log('Calling OpenAI images.edit with model gpt-image-1...');
         const editResult = await openai.images.edit({
           model: 'gpt-image-1',
           image: imageFile,
