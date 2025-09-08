@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
-import OpenAI, { toFile } from 'openai';
+import FormData from 'form-data';
 
 const app = express();
 app.use(express.json({ limit: '10mb' }));
@@ -32,75 +32,63 @@ app.post('/api/generate-image', async (req, res) => {
 
     try {
       let result;
-      const openaiClient = createOpenAI();
-      if (!openaiClient) return res.status(500).json({ error: 'Server missing OPENAI key' });
-      
+
       // Decide whether user skipped photo or provided one
       const skipped = (typeof photoStep === 'string' && photoStep === 'skipped') || !selfieDataUrl;
 
       if (!skipped && selfieDataUrl) {
-        // Use real image with images.edit()
-        console.log('🚀 Using real image with OpenAI images.edit()...');
-        
-        // Convert data URL to buffer
+        // Use real image with OpenAI images.edits via REST
+        console.log('🚀 Using real image with OpenAI images.edits (REST)...');
+
         const match = selfieDataUrl.match(/^data:(.*);base64,(.*)$/);
         if (!match) {
           return res.status(400).json({ error: 'Invalid selfie data URL format' });
         }
-        
         const mimeType = match[1];
         const base64Data = match[2];
         const imageBuffer = Buffer.from(base64Data, 'base64');
-        
+
         console.log('📷 Image buffer size:', imageBuffer.length, 'bytes');
-        console.log('📷 Image MIME type:', mimeType);
-        
-        // Convert buffer to File using toFile
-        const imageFile = await toFile(imageBuffer, 'selfie.jpg', {
-          type: mimeType || 'image/jpeg'
+
+        const fd = new FormData();
+        fd.append('image', imageBuffer, { filename: 'selfie.png', contentType: mimeType });
+        fd.append('model', 'gpt-image-1');
+        fd.append('prompt', `${prompt}. Transform this into a circular sticker design incorporating the person's appearance and features from the reference image. Make it creative and stylized while maintaining the person's recognizable characteristics. Do NOT include text or branding.`);
+        fd.append('size', '1024x1024');
+        fd.append('n', '1');
+
+        const resp = await fetch('https://api.openai.com/v1/images/edits', {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${OPENAI_KEY}`, ...fd.getHeaders() },
+          body: fd,
         });
-        
-        console.log('📁 Created file object for OpenAI');
-        
-        // Create enhanced prompt for personalization
-        const personalizedPrompt = `${prompt}. Transform this into a circular sticker design incorporating the person's appearance and features from the reference image. Make it creative and stylized while maintaining the person's recognizable characteristics.`;
-        
-        result = await openaiClient.images.edit({
-          model: "gpt-image-1",
-          image: imageFile,
-          prompt: personalizedPrompt,
-          size: "1024x1024",
-          n: 1
-        });
-        
-        console.log('✅ OpenAI images.edit() success with real photo!');
-        
+        const text = await resp.text();
+        let json = null;
+        try { json = JSON.parse(text); } catch (e) { return res.status(502).json({ error: 'Invalid JSON from OpenAI', bodyText: text }); }
+        if (!resp.ok) return res.status(502).json({ error: json?.error?.message || JSON.stringify(json), bodyJson: json });
+        result = json;
+
       } else {
         // Use regular generation for no photo or when explicitly skipped
-        console.log('🚀 Using regular image generation (dall-e-3)...');
+        console.log('🚀 Using regular image generation (dall-e-3 via REST)...');
 
-        result = await openaiClient.images.generate({
-          model: "dall-e-3",
-          prompt: prompt,
-          size: "1024x1024",
-          n: 1
+        const payload = { model: 'dall-e-3', prompt, size: '1024x1024', n: 1, response_format: 'b64_json' };
+        const resp = await fetch('https://api.openai.com/v1/images/generations', {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${OPENAI_KEY}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
         });
-        
-        console.log('✅ OpenAI images.generate() success!');
+        const text = await resp.text();
+        let json = null;
+        try { json = JSON.parse(text); } catch (e) { return res.status(502).json({ error: 'Invalid JSON from OpenAI', bodyText: text }); }
+        if (!resp.ok) return res.status(502).json({ error: json?.error?.message || JSON.stringify(json), bodyJson: json });
+        result = json;
       }
-      
-      console.log('📊 Result structure keys:', Object.keys(result));
-      console.log('📊 Result data length:', result.data?.length);
-      console.log('📊 Has b64_json:', !!result.data?.[0]?.b64_json);
-      console.log('📊 Has url:', !!result.data?.[0]?.url);
-      
-      // Return envelope format for compatibility
-      return res.status(200).json({
-        status: 200,
-        ok: true,
-        bodyText: JSON.stringify(result),
-        bodyJson: result,
-      });
+
+      console.log('📊 Result structure keys:', Object.keys(result || {}));
+      console.log('📊 Result data length:', (result?.data || result?.images || []).length);
+
+      return res.status(200).json({ status: 200, ok: true, bodyText: JSON.stringify(result), bodyJson: result });
       
     } catch (openaiErr) {
       console.error('❌ OpenAI API error:', openaiErr);
