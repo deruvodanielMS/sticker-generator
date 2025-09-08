@@ -67,6 +67,7 @@ app.post('/api/generate-image', async (req, res) => {
         console.log('🚀 Using regular image generation (gpt-image-1 via REST)...');
 
         const payload = { model: 'gpt-image-1', prompt, size: '1024x1024', n: 1 };
+        console.log('Sending payload to /v1/images/generations:', JSON.stringify(payload).substring(0,500));
         const resp = await fetch('https://api.openai.com/v1/images/generations', {
           method: 'POST',
           headers: { Authorization: `Bearer ${OPENAI_KEY}`, 'Content-Type': 'application/json' },
