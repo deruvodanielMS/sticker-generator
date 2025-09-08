@@ -160,19 +160,6 @@ function App() {
       const localPrompt = buildPromptFromAnswers(fallbackArche, answers, variantToken);
       setGeneratedArchetype(fallbackArche);
 
-      // Then ask LLM to refine/creative prompt; if LLM returns, use it, otherwise keep localPrompt
-      let finalPrompt = localPrompt;
-      try {
-        const llm = await import('./services/llmService');
-        const out = await llm.generateArchetypeWithLLM(answers, variantToken);
-        // if the LLM produced a different prompt use it, otherwise keep local
-        if (out?.prompt && out.prompt.trim().length > 0 && out.prompt.trim() !== localPrompt.trim()) {
-          finalPrompt = out.prompt;
-          setGeneratedArchetype(out.archetype);
-        }
-      } catch (llmErr) {
-        // keep local prompt
-      }
 
       // Build the required fixed prompt using collected answers and chosen archetype
       const findAnswerLabel = (qid: string) => {
