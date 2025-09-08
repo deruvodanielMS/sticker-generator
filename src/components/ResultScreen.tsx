@@ -38,23 +38,20 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
         });
 
         // Proxy the frame image to a data URL to avoid CORS issues and allow safe canvas composition
-        let proxiedFrameSrc = FRAME_URL;
-
-        // Proxy the frame image to a data URL to avoid CORS issues and allow safe canvas composition
-        let proxiedFrameSrc = FRAME_URL;
-        try {
-          const proxyResp = await fetch('/api/proxy-image', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'x-source': 'ui' },
-            body: JSON.stringify({ url: FRAME_URL }),
-          });
-          if (proxyResp.ok) {
-            const pj = await proxyResp.json();
-            if (pj?.dataUrl) proxiedFrameSrc = pj.dataUrl;
-          }
-        } catch (e) {
-          // fallback to FRAME_URL on failure
-        }
+    let proxiedFrameSrc = FRAME_URL;
+    try {
+      const proxyResp = await fetch('/api/proxy-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-source': 'ui' },
+        body: JSON.stringify({ url: FRAME_URL }),
+      });
+      if (proxyResp.ok) {
+        const pj = await proxyResp.json();
+        if (pj?.dataUrl) proxiedFrameSrc = pj.dataUrl;
+      }
+    } catch (e) {
+      // fallback to FRAME_URL on failure
+    }
 
         const [frameImg, stickerImg] = await Promise.all([loadImg(proxiedFrameSrc), loadImg(stickerSource)]);
 
