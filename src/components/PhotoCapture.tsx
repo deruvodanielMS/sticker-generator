@@ -1,5 +1,6 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
 
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import Webcam from 'react-webcam';
 
 type Props = {
