@@ -82,7 +82,7 @@ app.post('/api/generate-image', async (req, res) => {
         console.log('🚀 Using regular image generation...');
         
         result = await openaiClient.images.generate({
-          model: "gpt-image-1",
+          model: "dall-e-3",
           prompt: prompt,
           size: "1024x1024",
           n: 1
