@@ -61,18 +61,14 @@ app.post('/api/generate-image', async (req, res) => {
         // Use regular generation for no photo or when explicitly skipped
         console.log('🚀 Using regular image generation (gpt-image-1 via REST)...');
 
-        const payload = { model: 'gpt-image-1', prompt, size: '1024x1024', n: 1 };
-        console.log('Sending payload to /v1/images/generations:', JSON.stringify(payload).substring(0,500));
-        const resp = await fetch('https://api.openai.com/v1/images/generations', {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${OPENAI_KEY}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
+        console.log('Calling OpenAI images.generate with model gpt-image-1...');
+        const genResult = await openai.images.generate({
+          model: 'gpt-image-1',
+          prompt,
+          size: '100x100',
+          n: 1,
         });
-        const text = await resp.text();
-        let json = null;
-        try { json = JSON.parse(text); } catch (e) { return res.status(502).json({ error: 'Invalid JSON from OpenAI', bodyText: text }); }
-        if (!resp.ok) return res.status(502).json({ error: json?.error?.message || JSON.stringify(json), bodyJson: json });
-        result = json;
+        result = genResult;
       }
 
       console.log('📊 Result structure keys:', Object.keys(result || {}));
