@@ -42,7 +42,10 @@ app.post('/api/generate-image', async (req, res) => {
       const openaiClient = createOpenAI();
       if (!openaiClient) return res.status(500).json({ error: 'Server missing OPENAI key' });
       
-      if (selfieDataUrl) {
+      // Decide whether user skipped photo or provided one
+      const skipped = (typeof photoStep === 'string' && photoStep === 'skipped') || !selfieDataUrl;
+
+      if (!skipped && selfieDataUrl) {
         // Use real image with images.edit()
         console.log('🚀 Using real image with OpenAI images.edit()...');
         
