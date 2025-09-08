@@ -32,15 +32,61 @@ async function generateViaServer(prompt: string, selfieDataUrl?: string): Promis
     }
 
     const bodyJson = json?.bodyJson || json;
-    const data = bodyJson?.data || bodyJson?.images || bodyJson;
 
-    const b64 = data?.[0]?.b64_json || data?.[0]?.b64 || data?.[0]?.b64_json;
-    const url = data?.[0]?.url || data?.[0]?.image_url || data?.[0]?.src;
+    // Helper to find image data in multiple possible shapes
+    const findImageInObj = (obj: any) => {
+      if (!obj || typeof obj !== 'object') return null;
+      // If array with data/artifacts/images
+      if (Array.isArray(obj)) {
+        for (const item of obj) {
+          const found = findImageInObj(item);
+          if (found) return found;
+        }
+      }
+      // common locations
+      const candidates = [
+        obj.data?.[0],
+        obj.images?.[0],
+        obj.output?.[0],
+        obj.artifacts?.[0],
+        obj?.result?.[0],
+        obj?.[0],
+        obj,
+      ];
+      for (const c of candidates) {
+        if (!c) continue;
+        // base64 fields
+        const b64 = c.b64_json || c.b64 || c.base64 || c.b64Image || c.b64_image;
+        if (b64 && typeof b64 === 'string') return { type: 'b64', value: b64 };
+        // url-like fields
+        const url = c.url || c.image_url || c.src || c.uri || c.href || c.link;
+        if (url && typeof url === 'string') return { type: 'url', value: url };
+        // sometimes the whole field is a string data:image... or a url
+        if (typeof c === 'string') {
+          if (c.startsWith('data:') || c.match(/^data:/)) return { type: 'b64', value: c };
+          if (c.startsWith('http')) return { type: 'url', value: c };
+        }
+      }
+      // traverse deeper
+      for (const key of Object.keys(obj)) {
+        try {
+          const found = findImageInObj(obj[key]);
+          if (found) return found;
+        } catch (e) {
+          continue;
+        }
+      }
+      return null;
+    };
 
-    if (b64) return await b64ToObjectUrl(b64);
-    if (url) return url;
+    const found = findImageInObj(bodyJson);
+    if (found) {
+      if (found.type === 'b64') return await b64ToObjectUrl(found.value);
+      if (found.type === 'url') return found.value;
+    }
 
-    throw new Error('Server returned no image data');
+    // fallback: attempt to stringify response for easier debugging
+    throw new Error('Server returned no image data. Response: ' + JSON.stringify(bodyJson).substring(0, 1000));
   } catch (err: any) {
     throw new Error(`Server generation failed: ${err?.message || String(err)}`);
   }
