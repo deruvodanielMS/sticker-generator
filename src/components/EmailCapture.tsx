@@ -32,8 +32,8 @@ const EmailCapture = ({ onSubmit }: Props) => {
         </div>
         
         <p className="email-description">
-          Would you like to get personalized insights for your business?<br />
-          Leave us your email and we'll reach out to you.
+          Complete your profile to finish the experience.<br />
+          Your email helps us provide personalized insights.
         </p>
         
         <form onSubmit={handleSubmit} className="email-form">
