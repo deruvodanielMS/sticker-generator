@@ -132,8 +132,10 @@ function App() {
     setThemeOnDocument('light');
   };
 
-  const handleEmailSubmit = (email: string) => {
+  const handleEmailSubmit = async (email: string) => {
     setUserEmail(email);
+    // Ensure data is submitted once the user completes the flow
+    await submitUserData();
     setStep(STEPS.ThankYou);
   };
 
