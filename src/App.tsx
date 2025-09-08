@@ -94,6 +94,19 @@ function App() {
     };
   }, []);
 
+  // Reduce heavy background animations when on the Result screen to avoid flicker
+  useEffect(() => {
+    const className = 'reduced-animations';
+    if (step === STEPS.Result) {
+      document.documentElement.classList.add(className);
+    } else {
+      document.documentElement.classList.remove(className);
+    }
+    return () => {
+      document.documentElement.classList.remove(className);
+    };
+  }, [step]);
+
   const handleSelect = (optId: string, intensity?: number) => {
     setAnswers(prev => ({ ...prev, [currentQuestion.id]: { choice: optId, intensity } }));
 
