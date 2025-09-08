@@ -48,23 +48,24 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
         ctx.fillStyle = '#ffffff';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Draw sticker centered and sized to fit within 62% of the frame (keeps margins)
-        const maxStickerSize = Math.min(canvas.width, canvas.height) * 0.62;
-        let drawW = stickerImg.naturalWidth || stickerImg.width;
-        let drawH = stickerImg.naturalHeight || stickerImg.height;
-        const stickerRatio = drawW / drawH;
-        if (drawW > drawH) {
-          drawW = maxStickerSize;
-          drawH = maxStickerSize / stickerRatio;
-        } else {
-          drawH = maxStickerSize;
-          drawW = maxStickerSize * stickerRatio;
-        }
-        const dx = (canvas.width - drawW) / 2;
-        const dy = (canvas.height - drawH) / 2 - (canvas.height * 0.05); // slight upward nudge
+        // Draw sticker centered and sized to fit within 76% of the frame (keeps margins)
+        const maxStickerSize = Math.min(canvas.width, canvas.height) * 0.76;
 
-        // Draw sticker
-        ctx.drawImage(stickerImg, dx, dy, drawW, drawH);
+        // Crop sticker to a centered square from source
+        const sW = stickerImg.naturalWidth || stickerImg.width;
+        const sH = stickerImg.naturalHeight || stickerImg.height;
+        const sSide = Math.min(sW, sH);
+        const sx = Math.floor((sW - sSide) / 2);
+        const sy = Math.floor((sH - sSide) / 2);
+
+        // Destination size is square
+        const drawW = maxStickerSize;
+        const drawH = maxStickerSize;
+        const dx = Math.floor((canvas.width - drawW) / 2);
+        const dy = Math.floor((canvas.height - drawH) / 2 - (canvas.height * 0.03)); // slight upward nudge
+
+        // Draw square-cropped sticker into the center area
+        ctx.drawImage(stickerImg, sx, sy, sSide, sSide, dx, dy, drawW, drawH);
 
         // Draw frame on top
         ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
