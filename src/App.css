@@ -2536,6 +2536,7 @@ html[data-theme="dark"] .result-button.secondary {
   border-radius: 3.5px;
   background: linear-gradient(90deg, #0ECC7E 0%, #53C0D2 100%);
   transition: width 200ms ease;
+  z-index: 1;
 }
 
 .linear-slider-thumb {
@@ -2549,8 +2550,26 @@ html[data-theme="dark"] .result-button.secondary {
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12), 0 1px 8px rgba(0, 0, 0, 0.08);
   transition: left 160ms ease, transform 160ms ease, box-shadow 160ms ease;
   pointer-events: none;
-  z-index: 2;
+  z-index: 4;
   border: 3px solid rgba(14,204,126,0.12); /* subtle ring matching brand */
+  overflow: hidden; /* ensure inner mask hides track fill under the thumb */
+}
+
+/* Add inner mask to cover the filled track edge so no green nub shows */
+.linear-slider-thumb::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  right: 6px;
+  bottom: 6px;
+  border-radius: 50%;
+  background: #F9F9F9;
+  z-index: 2;
+}
+
+html[data-theme="dark"] .linear-slider-thumb::before {
+  background: #162027;
 }
 
 
@@ -2571,7 +2590,7 @@ html[data-theme="dark"] .linear-slider-thumb {
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
-  z-index: 3;
+  z-index: 5;
 }
 
 .linear-slider-labels {
