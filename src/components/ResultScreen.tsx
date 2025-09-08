@@ -191,6 +191,12 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
 
         <div className="result-image-container">
           <img src={composedUrl || imageUrl} alt={`${archetype.name} sticker`} className="result-image" />
+
+          {/* Overlay archetype label and site URL inside frame area */}
+          <div className="result-frame-overlay" aria-hidden>
+            <div className="frame-archetype">{archetype?.name}</div>
+            <div className="frame-site">www.makingsense.com</div>
+          </div>
         </div>
 
         <div className="result-buttons">
