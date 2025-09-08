@@ -588,7 +588,7 @@ html[data-theme="dark"] .question-option.selected {
   text-align: center;
   max-width: 696px;
   width: 100%;
-  gap: 80px;
+  gap: 28px; /* reduced spacing for tighter layout */
 }
 
 .question-title {
