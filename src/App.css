@@ -20,20 +20,6 @@
 /* Smooth theme overlay that crossfades background. We animate background-position + opacity for a more noticeable, 'magical' change. */
 .theme-overlay { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0; visibility: hidden; background-size: cover; background-position: center center; background-repeat: no-repeat; transform: scale(1); /* Do not enable heavy filters by default to avoid initial paint flicker */ transition: none; backdrop-filter: none; }
 
-/* When disable-animations class present, turn off all animations and transitions globally */
-html.disable-animations *,
-html.disable-animations *::before,
-html.disable-animations *::after {
-  animation: none !important;
-  transition: none !important;
-  will-change: auto !important;
-}
-html.disable-animations .theme-overlay,
-html.disable-animations .theme-overlay::before,
-html.disable-animations .theme-overlay::after {
-  backdrop-filter: none !important;
-  filter: none !important;
-}
 
 /* Only show the overlay once overlay-ready class is present */
 html.overlay-ready .theme-overlay { visibility: visible; opacity: 1; }
