@@ -52,7 +52,7 @@ app.post('/api/generate-image', async (req, res) => {
           model: 'gpt-image-1',
           image: imageFile,
           prompt: `${prompt}. Transform this into a circular sticker design incorporating the person's appearance and features from the reference image. Make it creative and stylized while maintaining the person's recognizable characteristics. Do NOT include text, white borders, or rounded masks.`,
-          size: '100x100',
+          size: '1024x1024',
           n: 1,
         });
         result = editResult;
@@ -65,7 +65,7 @@ app.post('/api/generate-image', async (req, res) => {
         const genResult = await openai.images.generate({
           model: 'gpt-image-1',
           prompt,
-          size: '100x100',
+          size: '1024x1024',
           n: 1,
         });
         result = genResult;
