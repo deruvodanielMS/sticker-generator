@@ -11,11 +11,11 @@ async function b64ToObjectUrl(b64: string, mime = 'image/png') {
   return URL.createObjectURL(blob);
 }
 
-async function generateViaProxy(prompt: string, selfieDataUrl?: string): Promise<string> {
+async function generateViaProxy(prompt: string, selfieDataUrl?: string, photoStep?: string): Promise<string> {
   const res = await fetch('/api/generate-image', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prompt, selfieDataUrl }),
+    body: JSON.stringify({ prompt, selfieDataUrl, photoStep }),
   });
 
   // Server returns a JSON envelope with { status, ok, bodyText, bodyJson }
@@ -73,11 +73,12 @@ async function generateViaProxy(prompt: string, selfieDataUrl?: string): Promise
 export async function generateSticker(archetype: Archetype, selfieDataUrl?: string, promptOverride?: string): Promise<GenerationResult> {
   const includeSelfie = Boolean(selfieDataUrl);
   const prompt = promptOverride ?? buildPromptUtil(archetype, includeSelfie);
+  const photoStep = selfieDataUrl ? 'sent' : 'skipped';
   const online = typeof navigator !== 'undefined' ? navigator.onLine : true;
 
   if (online) {
     try {
-      const url = await generateViaProxy(prompt, selfieDataUrl);
+      const url = await generateViaProxy(prompt, selfieDataUrl, photoStep);
       return { imageUrl: url, archetype, prompt, source: 'openai' };
     } catch (e: any) {
       const errMsg = e?.message || String(e);
