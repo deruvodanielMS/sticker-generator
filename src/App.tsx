@@ -73,7 +73,8 @@ function App() {
     if (questionIndex < total - 1) {
       setQuestionIndex(questionIndex + 1);
     } else {
-      setStep(STEPS.EmailCapture);
+      // After completing questions, go to Photo capture step (selfie first)
+      setStep(STEPS.Photo);
     }
   };
 
