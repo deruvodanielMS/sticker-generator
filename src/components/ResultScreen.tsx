@@ -12,7 +12,7 @@ type Props = {
   onRequestEmail?: () => void;
 };
 
-const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint }) => {
+const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint, onRequestEmail }) => {
   const { archetype, imageUrl, prompt, source, providerError } = result as any;
   const [composedUrl, setComposedUrl] = useState<string | null>(null);
 
