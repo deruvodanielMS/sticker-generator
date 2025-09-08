@@ -8,10 +8,9 @@ type Props = {
   userEmail?: string;
   onShare: () => void;
   onPrint: () => void;
-  onRequestEmail?: () => void;
 };
 
-const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint, onRequestEmail }) => {
+const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint }) => {
   const { archetype, imageUrl, prompt, source, providerError } = result as any;
   const [composedUrl, setComposedUrl] = useState<string | null>(null);
 
@@ -166,47 +165,9 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
     }
   };
 
-  const emailState = (userEmail as string) || '';
-
-  const [sending, setSending] = useState(false);
-  const [sendSuccess, setSendSuccess] = useState<boolean | null>(null);
-
-  const sendByEmail = async () => {
-    if (!emailState || !/[^@\s]+@[^@\s]+\.[^@\s]+/.test(emailState)) {
-      // If no email is present, request email via parent flow
-      if (onRequestEmail) {
-        onRequestEmail();
-        return;
-      }
-      setSendSuccess(false);
-      return;
-    }
-    setSending(true);
-    setSendSuccess(null);
-    try {
-      const resp = await fetch('/api/send-sticker-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          to: emailState,
-          subject: `${archetype.name} Sticker for ${userName || 'you'}`,
-          text: archetype.valueLine,
-          imageUrl: composedUrl || imageUrl,
-        }),
-      });
-      const json = await resp.json();
-      if (json && json.success) setSendSuccess(true);
-      else setSendSuccess(false);
-    } catch (e) {
-      setSendSuccess(false);
-    } finally {
-      setSending(false);
-    }
-  };
-
   return (
     <div className="result-screen">
-  
+
       <div className="result-section">
         <h1 className="result-title">{userName ? `${userName}, you are a ${archetype.name}!` : `You are ${archetype.name}!`}</h1>
 
@@ -222,16 +183,16 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
             </defs>
           </svg>
         </div>
-        
+
         <div className="result-description">
           <p className="result-line-1">{archetype.descriptor}</p>
           <p className="result-line-2">{archetype.valueLine}</p>
         </div>
-        
+
         <div className="result-image-container">
           <img src={composedUrl || imageUrl} alt={`${archetype.name} sticker`} className="result-image" />
         </div>
-        
+
         <div className="result-buttons">
           <button className="result-button secondary" onClick={shareSticker}>
             <img src="https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2Fb2c3e6f19434464292c37a48e9e419e9?format=webp&width=800" alt="Share" className="result-button-icon" />
@@ -245,11 +206,6 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
         </div>
 
         <div className="result-email">
-          <button className="result-button tertiary" onClick={sendByEmail} disabled={sending || !emailState} title={emailState ? `Send to ${emailState}` : 'No email available'}>
-            {sending ? 'SENDING…' : `EMAIL TO ${emailState ? emailState : '...'}`}
-          </button>
-          {sendSuccess === true && <div className="email-success">Sent to {emailState}</div>}
-          {sendSuccess === false && <div className="email-error">Failed to send</div>}
         </div>
       </div>
 
