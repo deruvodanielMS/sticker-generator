@@ -85,7 +85,44 @@ app.post('/api/generate-image', async (req, res) => {
       console.log('📊 Result structure keys:', Object.keys(result || {}));
       console.log('📊 Result data length:', (result?.data || result?.images || []).length);
 
-      return res.status(200).json({ status: 200, ok: true, bodyText: JSON.stringify(result), bodyJson: result });
+      // Extract base64 image if present
+      const b64 = result?.data?.[0]?.b64_json || result?.data?.[0]?.b64 || result?.data?.[0]?.base64 || null;
+      const remoteUrl = result?.data?.[0]?.url || result?.data?.[0]?.image_url || null;
+
+      let resizedDataUrl = null;
+      try {
+        if (b64) {
+          const imgBuf = Buffer.from(b64, 'base64');
+          if (sharpLib) {
+            const resizedBuf = await sharpLib(imgBuf).resize(100, 100, { fit: 'cover' }).png().toBuffer();
+            resizedDataUrl = `data:image/png;base64,${resizedBuf.toString('base64')}`;
+          } else {
+            resizedDataUrl = `data:image/png;base64,${b64}`;
+          }
+        } else if (remoteUrl) {
+          // Proxy and then resize
+          try {
+            const p = await fetch(remoteUrl);
+            if (p.ok) {
+              const arr = await p.arrayBuffer();
+              const buf = Buffer.from(arr);
+              if (sharpLib) {
+                const resizedBuf = await sharpLib(buf).resize(100, 100, { fit: 'cover' }).png().toBuffer();
+                resizedDataUrl = `data:image/png;base64,${resizedBuf.toString('base64')}`;
+              } else {
+                const contentType = p.headers.get('content-type') || 'image/png';
+                resizedDataUrl = `data:${contentType};base64,${buf.toString('base64')}`;
+              }
+            }
+          } catch (e) {
+            console.warn('Failed to proxy remote image for resize', e);
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to resize/generated image', e);
+      }
+
+      return res.status(200).json({ status: 200, ok: true, imageDataUrl: resizedDataUrl, bodyJson: result });
       
     } catch (openaiErr) {
       console.error('❌ OpenAI API error:', openaiErr);
