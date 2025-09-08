@@ -284,7 +284,7 @@ function App() {
         />
       )}
       {step === STEPS.EmailCapture && (
-        <EmailCapture onSubmit={handleEmailSubmit} />
+        <EmailCapture onSubmit={handleEmailSubmit} onSkip={handleEmailSkip} />
       )}
       {step === STEPS.Photo && (
         <PhotoCapture onConfirm={(dataUrl?: string) => preparePrompt(dataUrl)} onSkip={() => preparePrompt(undefined)} />
