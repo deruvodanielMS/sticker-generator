@@ -153,6 +153,12 @@ function App() {
     await generateStickerAfterEmail();
   };
 
+  const handleEmailSkip = async () => {
+    setUserEmail(''); // Clear email if skipped
+    // Start generation process even without email
+    await generateStickerAfterEmail();
+  };
+
   const submitUserData = async () => {
     try {
       await fetch('/api/submit-user-data', {
