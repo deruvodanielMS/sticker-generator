@@ -448,30 +448,82 @@ html[data-theme="dark"] .secondary-button { background: rgba(255,255,255,0.06); 
   }
 }
 
-/* Stepper Styles */
-.stepper-container {
+/* New Stepper Styles based on Figma Design */
+.stepper-navigation {
   position: fixed;
-  top: calc(var(--header-height)); /* sit directly below header */
+  top: var(--header-height);
   left: 0;
   right: 0;
-  height: 56px;
-  background: rgba(255,255,255,0.7);
-  backdrop-filter: blur(6px);
+  height: 64px;
+  background: #F9F9F9;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-
-  padding: 8px 20px;
-  z-index: 9999; /* ensure it is above header */
-
+  gap: 48px;
+  padding: 24px 24px 24px 40px;
+  z-index: 9999;
   box-sizing: border-box;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-/* Remove duplicate stepper styles - they are defined below */
+.stepper-steps {
+  display: flex;
+  align-items: flex-start;
+  flex: 1;
+  border-radius: 20px;
+  background: #EEE;
+  position: relative;
+}
 
-/* Make sure the stepper does not overlap content: push content down slightly */
-.question-content { padding: calc(var(--header-height) + 56px + 28px) 24px 40px; }
+.step-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+.step-line {
+  height: 4px;
+  width: 100%;
+  border-radius: 20px;
+  transition: background 300ms ease;
+}
+
+.step-completed {
+  background: linear-gradient(90deg, #0ECC7E 0%, #53C0D2 100%);
+}
+
+.step-pending {
+  background: #E0E0E0;
+}
+
+.stepper-menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+}
+
+.stepper-close-btn {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 200ms ease;
+}
+
+.stepper-close-btn:hover {
+  opacity: 0.7;
+}
+
+/* Update content padding to account for new stepper height */
+.question-content {
+  padding: calc(var(--header-height) + 64px + 40px) 24px 40px;
+}
 
 /* Remove shadows and gradients from question options across themes */
 .question-option,
@@ -514,51 +566,6 @@ html[data-theme="dark"] .question-option.selected {
 @media (max-width: 480px) {
   .linear-slider-container { padding: 0 16px 24px 16px; }
   .linear-slider-track-container { height: 56px; }
-}
-
-
-/* Make sure the stepper pushes content and occupies full available width */
-.stepper-container::after { content: '' ; display: block; width: 100%; height: 0; }
-
-.stepper-progress {
-  display: flex;
-  flex: 1 1 auto;
-  background: #EEE;
-  border-radius: 20px;
-  overflow: hidden;
-  margin-right: 16px;
-  min-width: 0; /* allow flex children to shrink on narrow screens */
-  height: 8px; /* make it taller and visible */
-}
-
-/* ensure the visual bar takes full width inside the container */
-.stepper-progress .stepper-step { min-width: 0; }
-
-.stepper-step {
-  flex: 1;
-  height: 100%;
-  background: #E0E0E0;
-  transition: background 300ms ease;
-}
-
-.stepper-step.completed {
-  background: linear-gradient(90deg, var(--primary-main) 0%, var(--secondary-main) 100%) !important;
-}
-
-.stepper-close {
-  width: 24px;
-  height: 24px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 200ms ease;
-}
-
-.stepper-close:hover {
-  opacity: 0.7;
 }
 
 /* Question Screen Styles */
@@ -713,9 +720,16 @@ html[data-theme="dark"] .question-option.selected {
 }
 
 /* Dark theme adjustments for questions and stepper */
-html[data-theme="dark"] .stepper-container {
+html[data-theme="dark"] .stepper-navigation {
   background: rgba(16, 24, 32, 0.95);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme="dark"] .stepper-steps {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme="dark"] .step-pending {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 html[data-theme="dark"] .question-option {
@@ -735,14 +749,9 @@ html[data-theme="dark"] .nav-button.secondary {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .stepper-container {
-
-    padding: 12px 16px;
-  }
-
-  .stepper-progress {
-    margin-right: 12px;
-
+  .stepper-navigation {
+    padding: 16px;
+    gap: 32px;
   }
 
   .question-content {
