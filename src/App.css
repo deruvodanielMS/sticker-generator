@@ -21,8 +21,6 @@
 .theme-overlay { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0; visibility: hidden; background-size: cover; background-position: center center; background-repeat: no-repeat; transform: scale(1); /* Do not enable heavy filters by default to avoid initial paint flicker */ transition: none; backdrop-filter: none; }
 
 
-/* Only show the overlay once overlay-ready class is present */
-html.overlay-ready .theme-overlay { visibility: visible; opacity: 1; }
 
 /* Enable overlay animations once overlay-ready is present */
 html.overlay-ready .theme-overlay {
