@@ -26,7 +26,7 @@ export function buildPromptFromAnswers(archetype: Archetype, answers: Answers, v
   const inspiration = `Background / Color palette: ${archetype.colorPalette}. Background style: ${archetype.backgroundStyle}. Robot type: ${archetype.robotType}. Robot pose: ${archetype.robotPose}. Tone: ${archetype.descriptor} ${archetype.valueLine}`;
 
   // Build detailed prompt following the requested template, but do NOT include the archetype name literally and avoid textual elements in the image.
-  const prompt = `Create a high-quality image of a futuristic robot sized 2x2 inches showcasing the following characteristics. Use the archetype traits as inspiration but do not mention the archetype name in the image or include any text in the design.
+  let prompt = `Create a high-quality image of a futuristic robot sized 2x2 inches showcasing the following characteristics. Use the archetype traits as inspiration but do not mention the archetype name in the image or include any text in the design.
 
 Primary description:
 - A ${archetype.robotType} in a ${archetype.robotPose}.
@@ -54,5 +54,6 @@ Additional constraints:
 
 Output: produce a single, high-quality image suitable for a 2x2 inch sticker.`;
 
+  if (variant) prompt += ` VariantToken:${variant}`;
   return prompt;
 }
