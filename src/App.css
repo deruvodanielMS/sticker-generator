@@ -30,7 +30,7 @@ html[data-theme="light"] .theme-overlay {
   background-size: 60% 60%, 50% 50%, 40% 40%;
   background-position: 10% 15%, 85% 30%, 30% 80%;
   background-image: radial-gradient(circle at center, rgba(14,204,126,0.35) 0%, rgba(14,204,126,0.18) 30%, rgba(14,204,126,0.06) 55%, transparent 70%), radial-gradient(circle at center, rgba(83,192,210,0.28) 0%, rgba(83,192,210,0.12) 30%, transparent 60%), radial-gradient(circle at center, rgba(14,204,126,0.22) 0%, rgba(14,204,126,0.1) 30%, transparent 60%);
-  animation: blobsMove 18s linear infinite;
+  animation: blobsMove 8s linear infinite;
 }
 
 html[data-theme="dark"] .theme-overlay {
@@ -41,7 +41,7 @@ html[data-theme="dark"] .theme-overlay {
   background-size: 55% 55%, 45% 45%, 35% 35%;
   background-position: 15% 20%, 85% 30%, 40% 70%;
   background-image: radial-gradient(circle at center, rgba(14,204,126,0.22) 0%, rgba(14,204,126,0.12) 30%, rgba(14,204,126,0.06) 55%, transparent 70%), radial-gradient(circle at center, rgba(83,192,210,0.14) 0%, rgba(83,192,210,0.06) 30%, transparent 60%), radial-gradient(circle at center, rgba(14,204,126,0.12) 0%, rgba(14,204,126,0.06) 30%, transparent 60%);
-  animation: blobsMove 20s linear infinite reverse;
+  animation: blobsMove 10s linear infinite reverse;
 }
 
 @keyframes blobsMove {
