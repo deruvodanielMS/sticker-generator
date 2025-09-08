@@ -53,7 +53,6 @@ app.post('/api/generate-image', async (req, res) => {
         const base64Data = match[2];
         const imageBuffer = Buffer.from(base64Data, 'base64');
 
-        console.log('📷 Image buffer size:', imageBuffer.length, 'bytes');
 
         // Use OpenAI client images.edit with toFile to pass the selfie buffer
         const imageFile = await toFile(imageBuffer, 'selfie.png', { type: mimeType || 'image/png' });
