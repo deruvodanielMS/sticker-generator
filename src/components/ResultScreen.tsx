@@ -86,8 +86,9 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
       onPrint(); // Navigate even if print fails
       return;
     }
+    const outSrc = composedUrl || imageUrl;
     w.document.write(`<html><head><title>${archetype.name} Sticker</title></head><body style="margin:0;display:flex;align-items:center;justify-content:center;background:#fff;">
-      <img src="${imageUrl}" style="width:80vmin;height:80vmin;object-fit:contain;"/>
+      <img src="${outSrc}" style="width:80vmin;height:80vmin;object-fit:contain;"/>
       <script>window.onload=function(){setTimeout(function(){window.print();}, 300)}<\/script>
     </body></html>`);
     w.document.close();
