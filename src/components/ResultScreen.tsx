@@ -12,33 +12,25 @@ type Props = {
 
 const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint }) => {
   const { archetype, imageUrl, prompt, source, providerError } = result as any;
-  const [composedUrl, setComposedUrl] = useState<string | null>(null);
-
-  // Frame image to center sticker into — using the provided frame asset
   const FRAME_URL = "https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F010f4a48978b4a8484a4a294233d5a95?format=webp&width=800";
 
-  // Choose sticker source (prefer server-provided resized data URL)
+  // Choose sticker source (prefer server-provided full image URL or data URL)
   const stickerSource = (result as any)?.imageDataUrl || imageUrl;
 
-  // Compose the generated sticker centered into the frame
-  useEffect(() => {
-    let cancelled = false;
-    async function compose() {
-      try {
-        if (!stickerSource) {
-          setComposedUrl(null);
-          return;
-        }
-        const loadImg = (src: string) => new Promise<HTMLImageElement>((resolve, reject) => {
-          const img = new Image();
-          img.crossOrigin = 'anonymous';
-          img.onload = () => resolve(img);
-          img.onerror = reject;
-          img.src = src;
-        });
+  // We will NOT pre-compose the image to avoid downsampling/pixelation. Instead, render the original sticker
+  // and overlay the frame via CSS. For share/print, compose on-demand at the sticker's natural resolution to include the frame.
 
-        // Proxy the frame image to a data URL to avoid CORS issues and allow safe canvas composition
-    let proxiedFrameSrc = FRAME_URL;
+  // Helper: load image with crossOrigin and return HTMLImageElement
+  const loadImage = (src: string) => new Promise<HTMLImageElement>((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => resolve(img);
+    img.onerror = (e) => reject(e);
+    img.src = src;
+  });
+
+  // Helper: proxy frame to dataUrl to avoid CORS issues when composing
+  const proxyFrame = async () => {
     try {
       const proxyResp = await fetch('/api/proxy-image', {
         method: 'POST',
@@ -47,79 +39,67 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
       });
       if (proxyResp.ok) {
         const pj = await proxyResp.json();
-        if (pj?.dataUrl) proxiedFrameSrc = pj.dataUrl;
+        if (pj?.dataUrl) return pj.dataUrl;
       }
     } catch (e) {
-      // fallback to FRAME_URL on failure
+      // ignore
     }
+    return FRAME_URL;
+  };
 
-        const [frameImg, stickerImg] = await Promise.all([loadImg(proxiedFrameSrc), loadImg(stickerSource)]);
+  // Compose sticker+frame at original sticker resolution for printing/sharing
+  const composeStickerWithFrame = async (): Promise<string> => {
+    if (!stickerSource) return '';
+    try {
+      const proxiedFrameSrc = await proxyFrame();
+      const [stickerImg, frameImg] = await Promise.all([loadImage(stickerSource), loadImage(proxiedFrameSrc)]);
+      const canvas = document.createElement('canvas');
+      const w = stickerImg.naturalWidth || stickerImg.width || 1024;
+      const h = stickerImg.naturalHeight || stickerImg.height || 1024;
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) throw new Error('No canvas context');
 
-        // Use frame dimensions as canvas size
-        const canvas = document.createElement('canvas');
-        const canvasW = frameImg.naturalWidth || frameImg.width || 1024;
-        const canvasH = frameImg.naturalHeight || frameImg.height || 1024;
-        canvas.width = canvasW;
-        canvas.height = canvasH;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
+      // Draw sticker full-bleed
+      ctx.drawImage(stickerImg, 0, 0, w, h);
+      // Draw frame on top, scaled to cover canvas
+      ctx.drawImage(frameImg, 0, 0, w, h);
 
-        // Draw frame first as background
-        ctx.drawImage(frameImg, 0, 0, canvasW, canvasH);
-
-        // Compute inner square area where sticker should be drawn
-        const paddingPercent = 0.12;
-        const padding = Math.round(canvasW * paddingPercent);
-        const bw = canvasW - padding * 2;
-        const bh = canvasH - padding * 2;
-        const boxSide = Math.min(bw, bh);
-        const bxCenter = Math.floor((canvasW - boxSide) / 2);
-        const byCenter = Math.floor((canvasH - boxSide) / 2);
-
-        // Draw white background inside box
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(bxCenter, byCenter, boxSide, boxSide);
-
-        // Crop sticker to centered square and draw into box
-        const sW = stickerImg.naturalWidth || stickerImg.width;
-        const sH = stickerImg.naturalHeight || stickerImg.height;
-        const sSide = Math.min(sW, sH);
-        const sx = Math.floor((sW - sSide) / 2);
-        const sy = Math.floor((sH - sSide) / 2);
-        ctx.drawImage(stickerImg, sx, sy, sSide, sSide, bxCenter, byCenter, boxSide, boxSide);
-
-        const dataUrl = canvas.toDataURL('image/png');
-        if (!cancelled) setComposedUrl(dataUrl);
-      } catch (e) {
-        console.error('Failed to compose sticker with frame', e);
-        setComposedUrl(imageUrl);
-      }
+      return canvas.toDataURL('image/png');
+    } catch (e) {
+      console.error('Failed to compose sticker for export', e);
+      return stickerSource;
     }
-    compose();
-    return () => { cancelled = true; };
-  }, [stickerSource]);
+  };
 
-  const printSticker = () => {
+  const printSticker = async () => {
     const w = window.open('', '_blank');
     if (!w) {
-      onPrint(); // Navigate even if print fails
+      onPrint();
       return;
     }
-    const outSrc = composedUrl || imageUrl;
+    let outSrc = stickerSource || FRAME_URL;
+    try {
+      outSrc = await composeStickerWithFrame();
+    } catch (e) {
+      outSrc = stickerSource || FRAME_URL;
+    }
+
     w.document.write(`<html><head><title>${archetype.name} Sticker</title></head><body style="margin:0;display:flex;align-items:center;justify-content:center;background:#fff;">
-      <img src="${outSrc}" style="width:80vmin;height:80vmin;object-fit:contain;"/>
+      <img src="${outSrc}" style="max-width:90vw;max-height:90vh;object-fit:contain;"/>
       <script>window.onload=function(){setTimeout(function(){window.print();}, 300)}<\/script>
     </body></html>`);
     w.document.close();
-    // Navigate to thank you after a short delay to allow print dialog
     setTimeout(() => onPrint(), 1000);
   };
 
   const shareSticker = async () => {
     const fileName = `${archetype.name.replace(/\s+/g, '-')}-sticker.png`;
     try {
-      const outSrc = composedUrl || imageUrl;
-      const blob = await (await fetch(outSrc)).blob();
+      const composedDataUrl = await composeStickerWithFrame();
+      const res = await fetch(composedDataUrl);
+      const blob = await res.blob();
       if (navigator.share && (navigator as any).canShare?.({ files: [new File([blob], fileName, { type: blob.type })] })) {
         await navigator.share({
           title: `${archetype.name} Sticker`,
@@ -133,10 +113,18 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
         a.click();
         URL.revokeObjectURL(a.href);
       }
-    } catch {
-      // no-op
+    } catch (e) {
+      console.error('Share failed, falling back to raw sticker', e);
+      try {
+        const res = await fetch(stickerSource);
+        const blob = await res.blob();
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = fileName;
+        a.click();
+        URL.revokeObjectURL(a.href);
+      } catch {}
     } finally {
-      // Navigate to thank you after share attempt (success or failure)
       setTimeout(() => onShare(), 500);
     }
   };
