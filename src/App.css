@@ -2755,7 +2755,7 @@ html[data-theme="dark"] .result-button.secondary {
   transition: left 160ms ease, transform 160ms ease, box-shadow 160ms ease;
   pointer-events: none;
   z-index: 4;
-  border: 3px solid rgba(14,204,126,0.12); /* subtle ring matching brand */
+  border: 3px solid #0ECC7E; /* stronger green ring for better contrast */
   overflow: hidden; /* ensure inner mask hides track fill under the thumb */
 }
 
@@ -2780,7 +2780,7 @@ html[data-theme="dark"] .linear-slider-thumb::before {
 html[data-theme="dark"] .linear-slider-thumb {
   background: #162027;
   box-shadow: 0 12px 24px rgba(2, 6, 23, 0.6), 0 1px 8px rgba(2, 6, 23, 0.45);
-  border: 3px solid rgba(14,204,126,0.18);
+  border: 3px solid #0ECC7E; /* consistent green ring in dark mode */
 }
 
 
@@ -2806,7 +2806,7 @@ html[data-theme="dark"] .linear-slider-thumb {
 }
 
 .linear-slider-label-text {
-  color: #757575;
+  color: rgba(17,18,16,0.85); /* improved contrast on light backgrounds */
   font-family: 'Red Hat Display', -apple-system, Roboto, Helvetica, sans-serif;
   font-size: 14px;
   font-weight: 400;
@@ -2824,7 +2824,7 @@ html[data-theme="dark"] .linear-slider-thumb {
 }
 
 html[data-theme="dark"] .linear-slider-label-text {
-  color: #9ca3af;
+  color: rgba(247,250,252,0.92); /* brighter labels in dark mode for readability */
 }
 
 /* Mobile styles for PhotoCapture */
