@@ -245,7 +245,7 @@ function App() {
       const promptToUse = promptTemplate;
       const arche = generatedArchetype ?? fallbackArche;
       const photoStep = capturedPhoto ? 'sent' : 'skipped';
-      const res = await generateSticker(arche, capturedPhoto, promptToUse, photoStep, userEmail);
+      const res = await generateSticker(arche, capturedPhoto, promptToUse, photoStep);
       setResult(res);
       setStep(STEPS.Result);
     } catch (e: any) {
