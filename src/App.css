@@ -55,15 +55,15 @@ html[data-theme="light"] .theme-overlay {
 }
 
 html[data-theme="dark"] .theme-overlay {
-  background-image: linear-gradient(180deg, rgba(6,10,14,0.98), rgba(8,12,18,0.98));
-  background-color: #051218;
+  background-image: linear-gradient(180deg, rgba(2,4,6,0.99), rgba(3,5,8,0.99));
+  background-color: #02060a; /* much darker background for dark theme */
   transform: scale(1);
   background-repeat: no-repeat;
   background-size: 35% 35%, 28% 28%, 22% 22%, 18% 18%, 30% 30%, 20% 20%;
   background-position: 12% 18%, 82% 22%, 35% 68%, 58% 32%, 18% 58%, 75% 62%;
-  background-image: radial-gradient(circle at center, rgba(14,204,126,0.65) 0%, rgba(14,204,126,0.42) 25%, rgba(14,204,126,0.22) 45%, transparent 65%), radial-gradient(circle at center, rgba(83,192,210,0.52) 0%, rgba(83,192,210,0.28) 25%, transparent 50%), radial-gradient(circle at center, rgba(14,204,126,0.38) 0%, rgba(14,204,126,0.18) 25%, transparent 50%), radial-gradient(circle at center, rgba(83,192,210,0.32) 0%, rgba(83,192,210,0.14) 25%, transparent 45%), radial-gradient(circle at center, rgba(14,204,126,0.28) 0%, rgba(14,204,126,0.12) 25%, transparent 45%), radial-gradient(circle at center, rgba(83,192,210,0.22) 0%, rgba(83,192,210,0.1) 25%, transparent 40%);
+  background-image: radial-gradient(circle at center, rgba(14,204,126,0.55) 0%, rgba(14,204,126,0.32) 25%, rgba(14,204,126,0.16) 45%, transparent 65%), radial-gradient(circle at center, rgba(83,192,210,0.42) 0%, rgba(83,192,210,0.22) 25%, transparent 50%), radial-gradient(circle at center, rgba(14,204,126,0.28) 0%, rgba(14,204,126,0.12) 25%, transparent 50%), radial-gradient(circle at center, rgba(83,192,210,0.22) 0%, rgba(83,192,210,0.12) 25%, transparent 45%), radial-gradient(circle at center, rgba(14,204,126,0.18) 0%, rgba(14,204,126,0.08) 25%, transparent 45%), radial-gradient(circle at center, rgba(83,192,210,0.14) 0%, rgba(83,192,210,0.06) 25%, transparent 40%);
   animation: blobsMove 5s ease-in-out infinite reverse;
-  filter: saturate(1.22) contrast(1.12);
+  filter: saturate(1.05) contrast(1.08);
 }
 
 @keyframes blobsMove {
@@ -342,7 +342,7 @@ html[data-theme="light"] .app-root {
 }
 
 html[data-theme="dark"] .app-root {
-  background: #1a1f2e; /* dark solid background */
+  background: #05060a; /* darker solid background for improved contrast */
 }
 
 /* Remove decorative backgrounds - using solid colors instead */
@@ -2827,6 +2827,11 @@ html[data-theme="dark"] .linear-slider-thumb {
 html[data-theme="dark"] .linear-slider-label-text {
   color: rgba(247,250,252,0.92); /* brighter labels in dark mode for readability */
 }
+
+/* Sticker display helpers: ensure sticker image displays at its native resolution and frame overlays above it */
+.sticker-raw-container { position: relative; width: min(60vmin, 420px); height: min(60vmin, 420px); margin: 0 auto; display: flex; align-items: center; justify-content: center; }
+.sticker-raw-img { width: 100%; height: 100%; object-fit: contain; image-rendering: auto; }
+.sticker-frame-overlay { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; object-fit: contain; }
 
 /* Mobile styles for PhotoCapture */
 @media (max-width: 480px) {
