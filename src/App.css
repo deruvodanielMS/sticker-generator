@@ -606,7 +606,7 @@ html[data-theme="dark"] .question-option.selected {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 32px;
+  gap: 18px; /* reduced gap between options */
   flex-wrap: wrap;
   width: 100%;
 }
