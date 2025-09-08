@@ -1886,8 +1886,8 @@ html[data-theme="dark"] .camera-frame {
   height: 56px;
 }
 
-.spinner-circle {
-  animation: spin 1.5s linear infinite;
+.loading-spinner svg {
+  animation: spin 2s linear infinite;
   transform-origin: center;
 }
 
