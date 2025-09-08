@@ -2553,17 +2553,6 @@ html[data-theme="dark"] .result-button.secondary {
   border: 3px solid rgba(14,204,126,0.12); /* subtle ring matching brand */
 }
 
-/* Inner dot for contrast */
-.linear-slider-thumb::after {
-  content: '';
-  display: block;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: #0b0f10;
-  margin: 0 auto;
-  transform: translateY(6px);
-}
 
 html[data-theme="dark"] .linear-slider-thumb {
   background: #162027;
@@ -2571,9 +2560,6 @@ html[data-theme="dark"] .linear-slider-thumb {
   border: 3px solid rgba(14,204,126,0.18);
 }
 
-html[data-theme="dark"] .linear-slider-thumb::after {
-  background: #0b1517;
-}
 
 .linear-slider-input {
   position: absolute;
