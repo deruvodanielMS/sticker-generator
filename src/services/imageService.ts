@@ -15,6 +15,37 @@ async function dataUrlToBlob(dataUrl: string) {
   return await res.blob();
 }
 
+// Try requesting generation from server-side endpoint first (more reliable)
+async function generateViaServer(prompt: string, selfieDataUrl?: string): Promise<string> {
+  try {
+    const resp = await fetch('/api/generate-image', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ prompt, selfieDataUrl }),
+    });
+
+    const json = await resp.json();
+    if (!resp.ok) {
+      throw new Error(json?.error || json?.bodyText || 'Server generation failed');
+    }
+
+    const bodyJson = json?.bodyJson || json;
+    const data = bodyJson?.data || bodyJson?.images || bodyJson;
+
+    const b64 = data?.[0]?.b64_json || data?.[0]?.b64 || data?.[0]?.b64_json;
+    const url = data?.[0]?.url || data?.[0]?.image_url || data?.[0]?.src;
+
+    if (b64) return await b64ToObjectUrl(b64);
+    if (url) return url;
+
+    throw new Error('Server returned no image data');
+  } catch (err: any) {
+    throw new Error(`Server generation failed: ${err?.message || String(err)}`);
+  }
+}
+
 // Call OpenAI REST API directly from the client (no backend). Expects VITE_OPENAI_API_KEY to be set.
 async function generateViaOpenAI(prompt: string, selfieDataUrl?: string, photoStep?: string): Promise<string> {
   const key = (import.meta.env.VITE_OPENAI_API_KEY as string) || '';
