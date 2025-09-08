@@ -69,7 +69,6 @@ app.post('/api/generate-image', async (req, res) => {
         // Use regular generation for no photo or when explicitly skipped
         console.log('🚀 Using regular image generation (gpt-image-1 via REST)...');
 
-        console.log('Calling OpenAI images.generate with model gpt-image-1...');
         const genResult = await openai.images.generate({
           model: 'gpt-image-1',
           prompt,
