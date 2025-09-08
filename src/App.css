@@ -783,7 +783,7 @@ html[data-theme="dark"] .nav-button.secondary {
   }
 
   .question-content {
-    padding: calc(var(--header-height) + 64px + 28px) 16px 20px;
+    padding: calc(var(--header-height) + 64px + 40px) 16px 20px;
   }
 
   .question-content {
