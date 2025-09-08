@@ -8,6 +8,7 @@ type Props = {
   userEmail?: string;
   onShare: () => void;
   onPrint: () => void;
+  onRequestEmail?: () => void;
 };
 
 const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint }) => {
