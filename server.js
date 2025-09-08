@@ -78,8 +78,6 @@ app.post('/api/generate-image', async (req, res) => {
         result = genResult;
       }
 
-      console.log('📊 Result structure keys:', Object.keys(result || {}));
-      console.log('📊 Result data length:', (result?.data || result?.images || []).length);
 
       // Extract base64 image if present
       const b64 = result?.data?.[0]?.b64_json || result?.data?.[0]?.b64 || result?.data?.[0]?.base64 || null;
