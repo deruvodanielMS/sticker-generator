@@ -56,6 +56,13 @@ function App() {
   useEffect(() => {
     setThemeOnDocument('light');
 
+    // Temporarily reduce animations on initial mount to avoid first-render flicker
+    const reducedClass = 'reduced-animations';
+    document.documentElement.classList.add(reducedClass);
+    const releaseTimer = window.setTimeout(() => {
+      document.documentElement.classList.remove(reducedClass);
+    }, 600);
+
     // Try to enter fullscreen mode once (guarded to avoid repeated prompts or reload-like behavior)
     const fullscreenAttemptedRef = { current: false } as { current: boolean };
     const requestFullscreen = async () => {
@@ -67,7 +74,7 @@ function App() {
           localStorage.setItem('fullscreenPreference', 'enabled');
         }
       } catch (error) {
-        console.log('Fullscreen not supported or denied');
+        // avoid noisy console logs
       }
     };
 
@@ -90,7 +97,9 @@ function App() {
     document.addEventListener('fullscreenchange', handleFullscreenChange);
 
     return () => {
+      window.clearTimeout(releaseTimer);
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.documentElement.classList.remove(reducedClass);
     };
   }, []);
 
