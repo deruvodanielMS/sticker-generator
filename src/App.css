@@ -566,13 +566,24 @@ html[data-theme="dark"] .secondary-button { background: rgba(255,255,255,0.06); 
   left: 0;
   right: 0;
   height: 64px;
-  background: #F9F9F9;
   display: flex;
   align-items: center;
   gap: 48px;
-  padding: 24px 24px 24px 40px;
+  padding: 20px 24px;
   z-index: 9999;
   box-sizing: border-box;
+  backdrop-filter: blur(6px);
+  /* match header background via gradient to hide seam */
+  background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(250,251,250,0.88));
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+  box-shadow: 0 8px 24px rgba(2,6,23,0.06);
+}
+
+/* Dark theme stepper should match dark header */
+html[data-theme="dark"] .stepper-navigation {
+  background: linear-gradient(180deg, rgba(6,10,14,0.98), rgba(8,12,18,0.96));
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
 }
 
 .stepper-steps {
