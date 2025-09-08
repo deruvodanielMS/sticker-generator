@@ -80,7 +80,7 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
         // Draw sticker into the centered square (fill entirely)
         ctx.drawImage(stickerImg, sx, sy, sSide, sSide, bxCenter, byCenter, boxSide, boxSide);
 
-        // Create a temporary canvas to modify frame alpha in the center box
+        // Create a temporary canvas to modify frame alpha by clearing near-white pixels (make center transparent)
         const tmpCanvas = document.createElement('canvas');
         tmpCanvas.width = canvas.width;
         tmpCanvas.height = canvas.height;
@@ -88,10 +88,25 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
         if (!tmpCtx) throw new Error('Failed to create temp canvas context');
         tmpCtx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
 
-        // Clear the center square area to make it transparent so sticker shows through
-        tmpCtx.clearRect(bxCenter, byCenter, boxSide, boxSide);
+        try {
+          const frameData = tmpCtx.getImageData(0, 0, canvas.width, canvas.height);
+          const threshold = 245; // near-white threshold
+          for (let i = 0; i < frameData.data.length; i += 4) {
+            const r = frameData.data[i];
+            const g = frameData.data[i + 1];
+            const b = frameData.data[i + 2];
+            const a = frameData.data[i + 3];
+            if (a > 200 && r >= threshold && g >= threshold && b >= threshold) {
+              frameData.data[i + 3] = 0; // make pixel transparent
+            }
+          }
+          tmpCtx.putImageData(frameData, 0, 0);
+        } catch (e) {
+          // getImageData may fail due to CORS; in that case, fallback to drawing frame as-is on top
+          console.warn('Could not access frame pixel data (CORS?), drawing frame as-is', e);
+        }
 
-        // Draw modified frame (with transparent center) on top
+        // Draw modified frame (with transparent center where possible) on top
         ctx.drawImage(tmpCanvas, 0, 0, canvas.width, canvas.height);
 
         const dataUrl = canvas.toDataURL('image/png');
