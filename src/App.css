@@ -1815,8 +1815,9 @@ html[data-theme="dark"] .result-button.selected img {
   width: 100%;
   max-width: 300px;
   margin: 0 auto;
-  border-radius: 50%;
-  overflow: hidden;
+  border-radius: 0; /* square frame */
+  overflow: visible;
+  aspect-ratio: 1 / 1; /* ensure square container */
 }
 
 .result-image {
