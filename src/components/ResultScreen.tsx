@@ -9,8 +9,8 @@ type Props = {
   onPrint: () => void;
 };
 
-const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint }) => {
-  const { archetype, imageUrl, prompt, source, providerError } = result as any;
+const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint }) => {
+  const { archetype, imageUrl } = result as any;
   const FRAME_URL = "https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F010f4a48978b4a8484a4a294233d5a95?format=webp&width=800";
 
   // Choose sticker source (prefer server-provided full image URL or data URL)
