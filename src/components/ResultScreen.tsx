@@ -173,6 +173,11 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
 
   const sendByEmail = async () => {
     if (!emailState || !/[^@\s]+@[^@\s]+\.[^@\s]+/.test(emailState)) {
+      // If no email is present, request email via parent flow
+      if (onRequestEmail) {
+        onRequestEmail();
+        return;
+      }
       setSendSuccess(false);
       return;
     }
