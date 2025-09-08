@@ -32,13 +32,11 @@ async function generateViaOpenAI(prompt: string, selfieDataUrl?: string, photoSt
     // The images edit endpoint expects one or more files under the key 'image[]' in some implementations.
     // We'll append as 'image' which the OpenAI images/edits endpoint also accepts.
     // Use image[] key for edits and set necessary params
-    fd.append('image[]', blob, 'selfie.png');
+    fd.append('image', blob, 'selfie.png');
     fd.append('model', 'gpt-image-1');
     fd.append('prompt', personalizedPrompt);
     fd.append('size', '1024x1024');
     fd.append('n', '1');
-    // Request base64 JSON so we can construct an object URL in-browser
-    fd.append('response_format', 'b64_json');
 
     const resp = await fetch('https://api.openai.com/v1/images/edits', {
       method: 'POST',
