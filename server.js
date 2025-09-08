@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'path';
+import fs from 'fs';
 import nodemailer from 'nodemailer';
 import OpenAI, { toFile } from 'openai';
 
@@ -178,12 +179,21 @@ app.post('/api/send-sticker-email', async (req, res) => {
   }
 });
 
-// Serve static built site
+// Serve static built site if present, otherwise fall back to project index.html (development)
 const distPath = path.join(process.cwd(), 'dist');
-app.use(express.static(distPath));
-app.get('*', (req, res) => {
-  res.sendFile(path.join(distPath, 'index.html'));
-});
+const distIndex = path.join(distPath, 'index.html');
+const rootIndex = path.join(process.cwd(), 'index.html');
+
+if (fs.existsSync(distIndex)) {
+  app.use(express.static(distPath));
+  app.get('*', (req, res) => res.sendFile(distIndex));
+} else if (fs.existsSync(rootIndex)) {
+  // In dev mode serve the project index.html directly
+  app.get('*', (req, res) => res.sendFile(rootIndex));
+} else {
+  // No index available
+  app.get('*', (req, res) => res.status(404).send('Not Found'));
+}
 
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () => console.log(`Server listening on ${port}`));
