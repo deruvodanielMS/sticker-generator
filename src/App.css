@@ -830,8 +830,8 @@ html[data-theme="dark"] .question-option.selected {
 }
 
 .option-icon {
-  width: 40px;
-  height: 40px;
+  width: 56px;
+  height: 56px;
   object-fit: contain;
   flex-shrink: 0;
   display: block;
@@ -987,8 +987,8 @@ html[data-theme="dark"] .nav-button.secondary {
   }
 
   .option-icon {
-    width: 40px;
-    height: 40px;
+    width: 56px;
+    height: 56px;
   }
 
   .option-label {
@@ -2586,7 +2586,7 @@ html[data-theme="dark"] .result-button.secondary {
 }
 
 /* Override option-icon sizes set earlier */
-.option-icon { width: 40px; height: 40px; }
+.option-icon { width: 56px; height: 56px; }
 
 /* Keep mobile stacking at <= 480px as column (existing rules apply) */
 
@@ -2595,9 +2595,9 @@ html[data-theme="dark"] .result-button.secondary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: auto;
-  height: auto;
-  border-radius: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
   background: transparent;
   padding: 0;
 }
