@@ -116,7 +116,7 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint }) => {
   const providerError = (result as any)?.providerError || null;
 
   return (
-    <div className={styles.resultScreen}>
+    <div className="screen-container">
       <div className={styles.resultSection}>
         <h1 className={styles.resultTitle}>{userName ? `${userName}, you are a ${archetype.name}!` : `You are ${archetype.name}!`}</h1>
 
