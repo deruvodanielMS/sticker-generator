@@ -34,7 +34,7 @@ const ThankYouScreen: FC<Props> = ({ onRestart }) => {
         </p>
 
         <div className={styles.ctaWrap}>
-          <Button variant="primary" onClick={onRestart}>START OVER</Button>
+          <Button variant="text" onClick={onRestart}>START OVER</Button>
         </div>
       </div>
     </div>
