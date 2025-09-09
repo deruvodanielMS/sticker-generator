@@ -221,9 +221,16 @@
   min-height: calc(100vh - var(--header-height) - var(--footer-height));
 }
 
-/* Adjust main content when stepper is visible */
-.appRoot .mainContentWithStepper {
+/* Main content with stepper visible */
+.mainContentWithStepper {
+  flex: 1;
+  width: 100%;
   padding-top: calc(var(--header-height) + 64px);
+  padding-bottom: var(--footer-height);
+  box-sizing: border-box;
+  position: relative;
+  z-index: 2;
+  min-height: calc(100vh - var(--header-height) - var(--footer-height) - 64px);
 }
 
 /* Footer */
