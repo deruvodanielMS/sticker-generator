@@ -103,7 +103,7 @@ const QuestionScreen: FC<Props> = ({
         onClose={onClose}
       />
       
-      <div className="question-content">
+      <div className={styles.questionContent}>
         <div className="question-section">
           <h1 className="question-title">{question.title}</h1>
           
