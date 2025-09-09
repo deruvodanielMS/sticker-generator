@@ -73,8 +73,9 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint }) => {
       const dx = (size - drawW) / 2;
       const dy = (size - drawH) / 2;
 
-      // Optional: fill background with transparent (keep alpha) so resulting PNG stays clean
-      ctx.clearRect(0, 0, size, size);
+      // Fill background with white to hide any rounded/transparency in generated sticker (prevents visible gaps)
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, size, size);
 
       // Draw the sticker centered and scaled to cover the square canvas
       ctx.drawImage(stickerImg, dx, dy, drawW, drawH);
