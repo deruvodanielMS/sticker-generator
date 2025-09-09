@@ -106,7 +106,7 @@ export default function PhotoCapture({ onConfirm, onSkip }: Props) {
           Take a selfie to customize your robot's features to match your unique style.
         </p>
         
-        {error && <div className="error-banner" role="alert">{error}</div>}
+        {error && <div className={styles.errorBanner} role="alert">{error}</div>}
 
         <div className={styles.cameraContainer}>
           {cameraStarted && !snapshot && (
