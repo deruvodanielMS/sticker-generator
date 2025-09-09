@@ -79,7 +79,7 @@ const QuestionScreen: FC<Props> = ({
                 onClick={() => handleOptionClick(option.id)}
               >
                 {option.icon && (
-                  <span className="option-icon-wrap">
+                  <span className={styles.optionIconWrap}>
                     <img
                       src={option.icon}
                       alt={`${option.label} icon`}
