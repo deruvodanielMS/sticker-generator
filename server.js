@@ -53,7 +53,7 @@ app.post('/api/generate-image', async (req, res) => {
         const editResult = await openai.images.edit({
           model: 'gpt-image-1',
           image: imageFile,
-          prompt: `${prompt}. Transform this into a circular sticker design incorporating the person's appearance and features from the reference image. Make it creative and stylized while maintaining the person's recognizable characteristics. Do NOT include text, white borders, or rounded masks.`,
+          prompt: `${prompt}. Incorporate the person's appearance and features from the reference image into the composition. Make it creative and stylized while maintaining the person's recognizable characteristics. Keep the square format and full-bleed design. Do NOT include text, white borders, rounded masks, or circular crops.`,
           size: '1024x1024',
           n: 1,
         });
