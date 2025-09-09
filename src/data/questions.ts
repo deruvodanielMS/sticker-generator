@@ -37,12 +37,12 @@ export const QUESTIONS: Question[] = [
   {
     id: 'team_dynamics',
     title: 'When working with portfolio company teams, what\'s your default style?',
-    layout: 'radio-list',
+    layout: 'icons',
     options: [
-      { id: 'hands_on', label: 'Hands-on — I directly guide execution and decisions' },
-      { id: 'collaborative', label: 'Collaborative — I work side-by-side with leadership teams' },
-      { id: 'advisory', label: 'Advisory — I provide insights and let teams implement' },
-      { id: 'delegative', label: 'Delegative — I trust management to run operations independently' },
+      { id: 'independent', label: 'Independent', icon: 'https://api.builder.io/api/v1/image/assets/TEMP/07bc8535d78138efef9d77a8db3b62907525c1e7?width=150' },
+      { id: 'team_player', label: 'Team player', icon: 'https://api.builder.io/api/v1/image/assets/TEMP/8fb194a4000ebffa552aa2939002a52b3c5b7a93?width=150' },
+      { id: 'networker', label: 'Networker', icon: 'https://api.builder.io/api/v1/image/assets/TEMP/d50eed6283dfd5b3aeca7fe04f7541b5a9b40e10?width=150' },
+      { id: 'xfunctional_lead', label: 'Cross-functional leader', icon: 'https://api.builder.io/api/v1/image/assets/TEMP/164e51f9e7d3f94218adc5720da7c1485c3c90e4?width=150' },
     ],
   },
   {
