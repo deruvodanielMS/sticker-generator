@@ -2117,23 +2117,25 @@ html[data-theme="dark"] .service-card {
   }
 
   .services-carousel {
-    flex-direction: column;
+    /* Keep horizontal swipe on tablet and small desktops */
+    flex-direction: row;
     align-items: center;
-    gap: 12px;
-    padding: 0;
-    overflow-x: visible;
+    gap: 16px;
+    padding: 0 8px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
   }
 
   .service-card {
-    min-width: 280px;
-    max-width: 300px;
-    width: 100%;
+    min-width: 220px;
+    max-width: 260px;
+    width: auto;
     padding: 20px;
   }
 
   .service-card svg {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
   }
 
   .loading-content {
