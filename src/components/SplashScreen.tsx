@@ -4,6 +4,8 @@ import React from 'react';
 import styles from './SplashScreen.module.css';
 import Button from './ui/Button';
 
+type Props = { onStart: () => void };
+
 const SplashScreen = ({ onStart }: Props) => {
   return (
     <div className={styles.welcomeScreen}>
