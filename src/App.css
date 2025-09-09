@@ -761,8 +761,8 @@ html[data-theme="dark"] .question-option.selected {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: calc(var(--header-height) + 64px + 40px) 24px 40px;
-  min-height: calc(100vh - var(--header-height) - 64px);
+  padding: calc(var(--header-height) + 64px + 40px) 24px calc(var(--footer-height) + env(safe-area-inset-bottom) + 24px);
+  min-height: calc(100vh - var(--header-height) - 64px - var(--footer-height));
   box-sizing: border-box;
 }
 
