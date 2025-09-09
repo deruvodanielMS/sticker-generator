@@ -75,7 +75,7 @@ const QuestionScreen: FC<Props> = ({
             {question.options.map((option) => (
               <button
                 key={option.id}
-                className={`question-option ${selected?.choice === option.id ? 'selected' : ''}`}
+                className={`${styles.questionOption} ${selected?.choice === option.id ? styles.questionOptionSelected : ''}`}
                 onClick={() => handleOptionClick(option.id)}
               >
                 {option.icon && (
