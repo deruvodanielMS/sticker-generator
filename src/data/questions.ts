@@ -28,10 +28,10 @@ export const QUESTIONS: Question[] = [
     title: 'When a new technology emerges in the market, how do you respond?',
     layout: 'radio-list',
     options: [
-      { id: 'disruptor', label: 'Disruptor — I implement as soon as possible' },
-      { id: 'strategic_tester', label: 'Strategic tester — I run pilots before scaling' },
-      { id: 'measured_observer', label: 'Measured observer — I wait for proven industry cases' },
-      { id: 'cautious_adopter', label: 'Cautious adopter — I only move when it\'s the established standard' },
+      { id: 'conservative', label: 'Conservative' },
+      { id: 'experimental', label: 'Experimental' },
+      { id: 'early_adopter', label: 'Early adopter' },
+      { id: 'disruptive', label: 'Disruptive' },
     ],
   },
   {
