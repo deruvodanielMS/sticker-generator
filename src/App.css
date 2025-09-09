@@ -2084,7 +2084,51 @@ html[data-theme="dark"] .camera-frame {
   }
 
   .loading-description {
+    font-size: 16px;
+  }
+
+  .loading-subtitle {
+    font-size: 16px;
+  }
+
+  .loading-features {
+    max-width: 100%;
+  }
+
+  .feature-item {
     font-size: 14px;
+  }
+
+  .services-carousel {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 0;
+    overflow-x: visible;
+  }
+
+  .service-card {
+    min-width: 280px;
+    max-width: 300px;
+    width: 100%;
+    padding: 20px;
+  }
+
+  .service-card svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .loading-content {
+    gap: 24px;
+  }
+
+  .loading-description-section {
+    gap: 16px;
+  }
+
+  .loading-services-section {
+    gap: 20px;
   }
 }
 
