@@ -1,9 +1,11 @@
 import type { FC } from 'react';
+import React, { FC } from 'react';
 import type { Question } from '../types';
 import Stepper from './Stepper';
 import LinearSlider from './LinearSlider';
-
 import RadioListQuestion from './RadioListQuestion';
+import styles from './QuestionScreen.module.css';
+import Button from './ui/Button';
 
 type Props = {
   question: Question;
