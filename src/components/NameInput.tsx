@@ -15,7 +15,7 @@ const NameInput = ({ onContinue }: Props) => {
   };
 
   return (
-    <div className={styles.nameScreen}>
+    <div className="screen-container">
       <div className={styles.nameSection}>
         <div className={styles.nameContent}>
           <div className={styles.nameHeaderSection}>

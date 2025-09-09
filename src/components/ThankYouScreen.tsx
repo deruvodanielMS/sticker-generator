@@ -8,7 +8,7 @@ type Props = {
 
 const ThankYouScreen: FC<Props> = ({ onRestart }) => {
   return (
-    <div className={styles.root}>
+    <div className="screen-container">
       <div className={styles.section}>
         <h1 className={styles.title}>
           Leading digital transformation for<br />

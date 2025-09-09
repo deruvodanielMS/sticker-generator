@@ -6,7 +6,7 @@ type Props = { onStart: () => void };
 
 const SplashScreen = ({ onStart }: Props) => {
   return (
-    <div className={styles.welcomeScreen}>
+    <div className="screen-container">
       <div className={styles.sectionOne}>
         <div className={styles.heroSection}>
           <h1 className={styles.heroTitle}>Find Your AI Agent</h1>
