@@ -1,12 +1,13 @@
 /* iPad 11 Pro optimized linear slider matching Figma design */
 .container {
   display: flex;
-  width: 673px;
+  width: 100%;
+  max-width: 673px;
   padding: 0 28px 32px 28px;
   flex-direction: column;
   align-items: center;
   gap: 24px;
-  max-width: 100%;
+  margin: 0 auto;
   box-sizing: border-box;
 }
 
