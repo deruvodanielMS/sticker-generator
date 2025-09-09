@@ -96,7 +96,7 @@ const QuestionScreen: FC<Props> = ({
   };
 
   return (
-    <div className="question-screen">
+    <div className={styles.questionScreen}>
       <Stepper 
         currentStep={step} 
         totalSteps={total} 
