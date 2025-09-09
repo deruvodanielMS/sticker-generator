@@ -6,6 +6,10 @@ type Props = {
   onSkip: () => void;
 };
 
+import React, { useCallback, useEffect } from 'react';
+import styles from './PhotoCapture.module.css';
+import Button from './ui/Button';
+
 export default function PhotoCapture({ onConfirm, onSkip }: Props) {
   const webcamRef = useRef<Webcam | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -78,14 +82,14 @@ export default function PhotoCapture({ onConfirm, onSkip }: Props) {
   };
 
   return (
-    <div className="photo-capture-screen">
-      <div className="photo-capture-section">
-        <h1 className="photo-capture-title">
+    <div className={styles.photoScreen}>
+      <div className={styles.photoSection}>
+        <h1 className={styles.photoTitle}>
           Go beyond and<br />
           personalize your robot
         </h1>
         
-        <div className="photo-capture-divider">
+        <div className={styles.photoDivider}>
           <div className="divider-line"></div>
           <svg width="5" height="4" viewBox="0 0 5 4" fill="none" xmlns="http://www.w3.org/2000/svg" className="divider-dot">
             <circle cx="2.5" cy="2" r="2" fill="url(#paint0_linear)"/>
@@ -98,56 +102,54 @@ export default function PhotoCapture({ onConfirm, onSkip }: Props) {
           </svg>
         </div>
         
-        <p className="photo-capture-description">
+        <p className={styles.photoDescription}>
           Take a selfie to customize your robot's features to match your unique style.
         </p>
         
         {error && <div className="error-banner" role="alert">{error}</div>}
 
-        <div className="camera-container">
+        <div className={styles.cameraContainer}>
           {cameraStarted && !snapshot && (
-            <div className="camera-frame">
+            <div className={styles.cameraFrame}>
               <Webcam
                 audio={false}
                 ref={webcamRef}
                 mirrored
                 screenshotFormat="image/jpeg"
                 videoConstraints={videoConstraints}
-                className="camera-video"
+                className={styles.cameraVideo}
               />
             </div>
           )}
 
           {snapshot && (
-            <div className="photo-preview">
-              <img src={snapshot} alt="Selfie preview" className="preview-image" />
+            <div className={styles.photoPreview}>
+              <img src={snapshot} alt="Selfie preview" className={styles.previewImage} />
             </div>
           )}
         </div>
 
 
-        <div className="photo-capture-buttons">
+        <div className={styles.photoButtons}>
           {!snapshot && !cameraStarted && (
             <>
-              <button className="nav-button secondary outlined" onClick={onSkip}>SKIP</button>
-              <button className="nav-button primary" onClick={startCamera}>OPEN CAMERA</button>
+              <Button variant="secondary" onClick={onSkip}>SKIP</Button>
+              <Button variant="primary" onClick={startCamera}>OPEN CAMERA</Button>
 
             </>
           )}
           
           {cameraStarted && !snapshot && (
             <>
-              <button className="nav-button secondary" onClick={stopCamera}>CLOSE</button>
-              <button className="nav-button primary" onClick={takePhoto} disabled={loading}>
-                {loading ? 'TAKING...' : 'TAKE PHOTO'}
-              </button>
+              <Button variant="secondary" onClick={stopCamera}>CLOSE</Button>
+              <Button variant="primary" onClick={takePhoto} disabled={loading}>{loading ? 'TAKING...' : 'TAKE PHOTO'}</Button>
             </>
           )}
           
           {snapshot && (
             <>
-              <button className="nav-button secondary" onClick={retake}>RETAKE</button>
-              <button className="nav-button primary" onClick={confirm}>USE PHOTO</button>
+              <Button variant="secondary" onClick={retake}>RETAKE</Button>
+              <Button variant="primary" onClick={confirm}>USE PHOTO</Button>
             </>
           )}
         </div>
