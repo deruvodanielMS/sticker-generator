@@ -123,21 +123,19 @@ const QuestionScreen: FC<Props> = ({
       {/* Main Content */}
       <div className={styles.questionMain}>
         <div className={styles.questionSection}>
-          <div className={styles.questionContent}>
-            <div className={styles.questionHeaderSection}>
-              <h1 className={styles.questionTitle}>{question.title}</h1>
-            </div>
-            
-            {renderQuestionContent()}
-            
-            <div className={styles.questionNavigation}>
-              <Button variant="secondary" onClick={onPrevious} disabled={step === 1}>
-                PREVIOUS
-              </Button>
-              <Button variant="primary" onClick={onNext} disabled={!selected}>
-                {step === total ? 'FINISH' : 'NEXT'}
-              </Button>
-            </div>
+          <div className={styles.questionHeaderSection}>
+            <h1 className={styles.questionTitle}>{question.title}</h1>
+          </div>
+
+          {renderQuestionContent()}
+
+          <div className={styles.questionNavigation}>
+            <Button variant="secondary" onClick={onPrevious} disabled={step === 1}>
+              PREVIOUS
+            </Button>
+            <Button variant="primary" onClick={onNext} disabled={!selected}>
+              {step === total ? 'FINISH' : 'NEXT'}
+            </Button>
           </div>
         </div>
       </div>
