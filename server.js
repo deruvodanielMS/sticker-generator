@@ -7,6 +7,9 @@ import submitUserDataHandler from './api/submit-user-data.js';
 const app = express();
 app.use(express.json({ limit: '30mb' }));
 
+// Mount submit-user-data API at top level so frontend requests to /api/submit-user-data are handled
+app.post('/api/submit-user-data', async (req, res) => submitUserDataHandler(req, res));
+
 // Support multiple possible environment variable names for OpenAI key (helps on different hosting setups)
 const OPENAI_KEY = process.env.OPENAI_API_KEY || process.env.VITE_API_KEY_IMAGE_GENERATION || process.env.NEXT_PUBLIC_OPENAI_API_KEY || process.env.VERCEL_OPENAI_API_KEY || process.env.OPENAI_API_KEY_SERVER || null;
 if (!OPENAI_KEY) {
