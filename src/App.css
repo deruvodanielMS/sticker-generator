@@ -945,9 +945,10 @@ html[data-theme="dark"] .result-button.secondary .result-button-icon {
 }
 
 html[data-theme="dark"] .question-option {
-  background: rgba(255, 255, 255, 0.05);
+  background: linear-gradient(180deg, rgba(6,10,14,1), rgba(8,12,18,1)); /* solid dark background */
   color: var(--gradient1-textContrast);
-  box-shadow: 0 50px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 40px 60px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255,255,255,0.04);
 }
 
 html[data-theme="dark"] .question-option.selected {
