@@ -28,8 +28,7 @@ const STEPS = {
 } as const;
 
 function App() {
-  const LOGO_LIGHT = 'https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F361d511becfe4af99cffd14033941816?format=webp&width=800';
-  const LOGO_DARK = 'https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F8a91974e9a9e4d5399b528034240d956?format=webp&width=800';
+  const LOGO_FIGMA = 'https://api.builder.io/api/v1/image/assets/TEMP/7ac03e2ebbcf31266708d63245588e89126c6e4a?width=442';
 
   const [step, setStep] = useState<number>(STEPS.Splash);
   const [userName, setUserName] = useState<string>('');
