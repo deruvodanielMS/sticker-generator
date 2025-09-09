@@ -1,7 +1,7 @@
 import type { GenerationResult } from '../types';
 import styles from './ResultScreen.module.css';
 import Button from './ui/Button';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 
 type Props = {
   result: GenerationResult;
