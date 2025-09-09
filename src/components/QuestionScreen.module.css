@@ -66,12 +66,13 @@
 
 .questionCardsContainer {
   display: flex;
+  width: 100%;
   max-width: 696px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 32px;
-  align-self: stretch;
+  margin: 0 auto;
 }
 
 .questionOptions {
