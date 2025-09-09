@@ -1,4 +1,3 @@
-import type { FC } from 'react';
 import React, { FC } from 'react';
 import type { GenerationResult } from '../types';
 import styles from './ResultScreen.module.css';
