@@ -4,9 +4,11 @@ const LoadingScreen = () => {
   const [currentStep, setCurrentStep] = useState(1);
 
   useEffect(() => {
-    const timer1 = setTimeout(() => setCurrentStep(2), 2000); // Step 1 for 2 seconds
-    const timer2 = setTimeout(() => setCurrentStep(3), 4000); // Step 2 for 2 seconds
-    
+    // Show each step for ~3.5s so users can perceive the content (3-4s requested)
+    const STEP_DURATION = 3500;
+    const timer1 = setTimeout(() => setCurrentStep(2), STEP_DURATION); // Step 1
+    const timer2 = setTimeout(() => setCurrentStep(3), STEP_DURATION * 2); // Step 2
+
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
