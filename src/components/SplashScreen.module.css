@@ -16,8 +16,7 @@
   justify-content: center;
   align-items: center;
   gap: 170px;
-  /* Use decorative gradient (avoids embedding duplicate text inside background image) */
-  background: linear-gradient(180deg, rgba(29,221,142,0.06), rgba(83,192,210,0.06)) center center / cover no-repeat;
+  background: transparent; /* allow theme-overlay to paint behind content */
   box-sizing: border-box;
 }
 
