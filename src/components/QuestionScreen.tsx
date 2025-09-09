@@ -58,13 +58,11 @@ const QuestionScreen: FC<Props> = ({
 
       case 'radio-list':
         return (
-          <div className={styles.questionCardsContainer}>
-            <RadioListQuestion
-              options={question.options}
-              selectedId={selected?.choice}
-              onSelect={(optId) => onSelect(optId)}
-            />
-          </div>
+          <RadioListQuestion
+            options={question.options}
+            selectedId={selected?.choice}
+            onSelect={(optId) => onSelect(optId)}
+          />
         );
 
       case 'icons':
