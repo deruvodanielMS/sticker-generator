@@ -1856,6 +1856,7 @@ html[data-theme="dark"] .camera-frame {
   padding: 40px 24px;
   box-sizing: border-box;
   animation: fadeIn 360ms ease both;
+  background: url('https://api.builder.io/api/v1/image/assets/TEMP/2daae285b955325545eb368d278f9ec114218624?width=1488') lightgray center / cover no-repeat;
 }
 
 .loading-section {
@@ -1867,6 +1868,35 @@ html[data-theme="dark"] .camera-frame {
   width: 100%;
   gap: 80px;
   padding: 0 32px;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  width: 100%;
+}
+
+.loading-main-title {
+  margin: 0;
+  color: var(--gradient1-textContrast);
+  font-family: 'Red Hat Display', system-ui, sans-serif;
+  font-size: clamp(32px, 4.5vw, 48px);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.loading-subtitle {
+  margin: 0;
+  color: var(--gradient1-textContrast);
+  font-family: 'Red Hat Display', system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.22;
+  text-align: center;
 }
 
 .loading-title {
@@ -1896,15 +1926,128 @@ html[data-theme="dark"] .camera-frame {
   position: relative;
 }
 
-.loading-description {
-  margin: 0;
+.divider-line {
+  width: 42px;
+  height: 4px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #0ECC7E 0%, #53C0D2 100%);
+}
+
+.divider-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 4px;
+}
+
+.loading-features {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+  max-width: 480px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding-top: 16px;
+  border-top: 1px solid rgba(14, 204, 126, 0.2);
   color: var(--gradient1-textContrast);
   font-family: 'Red Hat Display', system-ui, sans-serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 1.25;
-  opacity: 0.9;
-  align-self: stretch;
+}
+
+.feature-item:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.loading-description-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.loading-description {
+  margin: 0;
+  color: var(--gradient1-textContrast);
+  font-family: 'Red Hat Display', system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.22;
+  text-align: center;
+}
+
+.loading-services-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+}
+
+.services-carousel {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  overflow-x: auto;
+  padding: 0 16px;
+  justify-content: center;
+}
+
+.service-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 24px;
+  min-width: 200px;
+  max-width: 220px;
+  border-radius: 8px;
+  border: 1px solid rgba(14, 204, 126, 0.3);
+  background: var(--common-white);
+  color: var(--gradient1-textContrast);
+  font-family: 'Red Hat Display', system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.625;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.service-card svg {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+}
+
+.carousel-indicators {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 16px;
+}
+
+.indicator {
+  width: 4px;
+  height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #0ECC7E 0%, #53C0D2 100%);
+  opacity: 0.4;
+  transition: all 0.3s ease;
+}
+
+.indicator.active {
+  width: 20px;
+  opacity: 1;
 }
 
 .loading-spinner {
