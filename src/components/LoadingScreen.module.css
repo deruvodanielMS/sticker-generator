@@ -38,6 +38,11 @@
   transition: opacity 150ms ease-in-out;
 }
 
+/* Titles inside the animated content should be hidden because the
+   main title is rendered statically above. This preserves layout
+   while allowing only the variable content below the title to animate. */
+.loadingContentWrapper .loadingMainTitle { display: none; }
+
 .fadeIn {
   opacity: 1;
 }
