@@ -1,42 +1,86 @@
 .btn {
-  border-radius: var(--radius-rounded);
-  padding: var(--btn-padding);
-  min-width: 140px;
-  display: inline-flex;
-  align-items: center;
+  display: flex;
+  height: 54px;
+  padding: 0 24px;
   justify-content: center;
+  align-items: center;
+  gap: 16px;
+  border-radius: 40px;
+  font-family: 'Red Hat Display', system-ui, sans-serif;
+  font-size: 16px;
+  font-style: normal;
   font-weight: 700;
-  letter-spacing: .2px;
+  line-height: 20px; /* 125% */
+  text-align: center;
   border: none;
   cursor: pointer;
-  transition: background 200ms ease, transform 160ms ease, box-shadow 160ms ease;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+  min-width: auto;
+  box-shadow: 0 4px 40px 0 rgba(0, 0, 0, 0.10);
+  /* Safari compatibility */
+  -webkit-appearance: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.btn:disabled { opacity: .6; cursor: not-allowed; }
+.btn:disabled { 
+  opacity: 0.6; 
+  cursor: not-allowed; 
+}
 
-/* variants */
+.btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 50px 0 rgba(0, 0, 0, 0.15);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Primary Button - matches Figma exactly */
 .primary {
-  background: linear-gradient(90deg, var(--primary-main), var(--secondary-main));
-  color: #fff;
-  box-shadow: 0 6px 16px rgba(2,6,8,0.45);
+  background: linear-gradient(90deg, #0ECC7E 0%, #53C0D2 100%);
+  color: #111210; /* Dark text on gradient background as per Figma */
+  border: none;
 }
+
+/* Secondary Button - matches Figma exactly */
 .secondary {
   background: #ffffff;
-  color: #071018;
-  border: 1px solid rgba(3,6,9,0.08);
-  font-weight: 600;
+  color: #102532; /* Figma color */
+  border: 2px solid #0ECC7E;
+  font-weight: 700;
 }
+
+/* Ghost Button */
 .ghost {
   background: transparent;
   color: var(--gradient1-textContrast);
   border: 1px solid rgba(255,255,255,0.12);
 }
 
-/* Mobile first: full-width on small screens when inside actions row (applies via class composition) */
+/* Mobile responsiveness for iPad and smaller */
 @media (max-width: 600px) {
-  .fullWidthOnMobile { width: calc(100% - 32px); max-width: none; display: block; }
+  .fullWidthOnMobile { 
+    width: calc(100% - 32px); 
+    max-width: none; 
+    display: flex; 
+  }
 }
 
-/* Preserve dark theme overrides via global selectors where needed */
-:global(html[data-theme="light"]) .secondary { background: #ffffff; color: #071018; box-shadow: 0 6px 16px rgba(3,6,9,0.12); }
-:global(html[data-theme="dark"]) .secondary { background: rgba(255,255,255,0.06); color: var(--gradient1-textContrast); border: 1px solid rgba(255,255,255,0.12); box-shadow: none; }
+/* Dark theme overrides using global selectors */
+:global(html[data-theme="light"]) .secondary { 
+  background: #ffffff; 
+  color: #102532; 
+  border: 2px solid #0ECC7E;
+}
+
+:global(html[data-theme="dark"]) .secondary { 
+  background: rgba(255,255,255,0.06); 
+  color: var(--gradient1-textContrast); 
+  border: 2px solid #0ECC7E;
+}
+
+:global(html[data-theme="dark"]) .primary {
+  color: #111210; /* Keep dark text even in dark theme for readability on gradient */
+}
