@@ -222,7 +222,7 @@
 }
 
 /* Adjust main content when stepper is visible */
-.appRoot:has(.stepper) .mainContent {
+.appRoot .mainContentWithStepper {
   padding-top: calc(var(--header-height) + 64px);
 }
 

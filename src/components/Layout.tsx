@@ -108,7 +108,7 @@ const Layout: FC<Props> = ({ children, showProgress = false, currentStep = 1, to
       )}
 
       {/* Main Content */}
-      <main className={styles.mainContent}>
+      <main className={showProgress ? styles.mainContentWithStepper : styles.mainContent}>
         {children}
       </main>
 
