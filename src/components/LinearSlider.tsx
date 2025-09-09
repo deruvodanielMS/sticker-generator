@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import type { FC } from 'react';
+import React, { useState, useEffect } from 'react';
+import styles from './LinearSlider.module.css';
 
 type Props = {
   value: number;
   onChange: (value: number) => void;
 };
 
-const LinearSlider: FC<Props> = ({ value, onChange }) => {
+const LinearSlider = ({ value, onChange }: Props) => {
   const [localValue, setLocalValue] = useState(value);
 
   useEffect(() => {
@@ -23,27 +23,27 @@ const LinearSlider: FC<Props> = ({ value, onChange }) => {
   };
 
   return (
-    <div className="linear-slider-container">
-      <div className="linear-slider-result">
-        <div className="linear-slider-percentage">{Math.round(localValue)}%</div>
-        <div className="linear-slider-label">RISK TOLERANCE</div>
+    <div className={styles.container}>
+      <div className={styles.result}>
+        <div className={styles.percentage}>{Math.round(localValue)}%</div>
+        <div className={styles.label}>RISK TOLERANCE</div>
       </div>
-      
-      <div className="linear-slider-controls">
-        <div className="linear-slider-track-container">
-          <div className="linear-slider-track-bg"></div>
-          <div className="linear-slider-track-white"></div>
-          <div 
-            className="linear-slider-track-filled"
-            style={{ width: `${(localValue / 100) * 100}%` }}
-          ></div>
+
+      <div className={styles.controls}>
+        <div className={styles.trackContainer}>
+          <div className={styles.trackBg} />
+          <div className={styles.trackWhite} />
+          <div
+            className={styles.trackFilled}
+            style={{ ['--filled-width' as any]: `${(localValue / 100) * 100}%` } as React.CSSProperties}
+          />
           <input
             type="range"
             min={0}
             max={100}
             value={localValue}
             onChange={handleInputChange}
-            className="linear-slider-input"
+            className={styles.input}
             aria-label="Adjust value"
           />
         </div>
