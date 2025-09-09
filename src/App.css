@@ -1978,6 +1978,19 @@ html[data-theme="dark"] .result-decoratives {
   font-size: 12px;
 }
 
+/* Provider error banner shown when generator fallback is used */
+.result-provider-error {
+  margin: 12px auto 0;
+  padding: 10px 14px;
+  background: rgba(224,72,72,0.08);
+  color: #a02b2b;
+  border: 1px solid rgba(224,72,72,0.18);
+  border-radius: 8px;
+  font-size: 13px;
+  max-width: 720px;
+  text-align: center;
+}
+
 /* Dark theme variant for debug panel */
 html[data-theme="dark"] .result-debug-panel {
   background: rgba(8,12,16,0.92);
