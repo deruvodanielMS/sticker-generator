@@ -331,7 +331,8 @@ html[data-theme="dark"] .option-card { border-color: rgba(14,204,126,0.18); }
   letter-spacing: .2px;
 }
 .primary-button:disabled { opacity: .6; cursor: not-allowed; }
-.secondary-button { border-radius: 9999px; padding: 12px 20px; background: transparent; color: var(--gradient1-textContrast); border: 1px solid rgba(255,255,255,0.12); font-weight: 600; }
+.secondary-button { border-radius: 9999px; padding: 12px 20px; background: #ffffff; color: #071018; border: 1px solid rgba(3,6,9,0.08); font-weight: 600; }
+html[data-theme="dark"] .secondary-button { background: rgba(16,24,32,1); color: var(--gradient1-textContrast); border-color: var(--primary-main); }
 .ghost-button { border-radius: 9999px; padding: 12px 20px; background: transparent; color: var(--gradient1-textContrast); border: 1px solid rgba(255,255,255,0.12); }
 
 .next-button { margin-top: 4px; }
