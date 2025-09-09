@@ -18,6 +18,10 @@ const openai = new OpenAI({ apiKey: OPENAI_KEY });
 
 
 app.post('/api/generate-image', async (req, res) => {
+
+// Mount submit-user-data API from api/submit-user-data.js so fetches to /api/submit-user-data are handled
+app.post('/api/submit-user-data', async (req, res) => submitUserDataHandler(req, res));
+
   try {
     // Only accept generation requests from the UI to avoid accidental CLI usage and credit consumption
     // Client must include header: 'x-source': 'ui'
