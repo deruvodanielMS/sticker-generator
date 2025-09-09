@@ -269,8 +269,19 @@ function App() {
       </div>
 
       <header className="app-header" aria-hidden>
-        <img className="brand-logo-img logo-light persistent-logo" src={LOGO_LIGHT} alt="Making Sense logo light" />
-        <img className="brand-logo-img logo-dark persistent-logo" src={LOGO_DARK} alt="Making Sense logo dark" />
+        <img
+          src={LOGO_FIGMA}
+          alt="Making Sense"
+          style={{
+            display: 'flex',
+            width: '221px',
+            height: '28px',
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+            flexShrink: 0,
+            aspectRatio: '221/28'
+          }}
+        />
       </header>
 
       {error && <ErrorBanner>{error}</ErrorBanner>}
