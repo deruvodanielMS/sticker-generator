@@ -1,9 +1,9 @@
-/* iPad 11 Pro optimized linear slider matching Figma design */
+/* Linear slider matching Figma design exactly */
 .container {
   display: flex;
-  width: 100%;
-  max-width: 673px;
-  padding: 0 28px 32px 28px;
+  width: 673.295px;
+  max-width: 100%;
+  padding: 0 28.727px 32px 28.727px;
   flex-direction: column;
   align-items: center;
   gap: 24px;
@@ -35,9 +35,6 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
-  /* Safari font rendering */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 .label {
@@ -49,9 +46,6 @@
   font-weight: 600;
   line-height: normal;
   text-transform: uppercase;
-  /* Safari font rendering */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 .controls {
@@ -64,12 +58,14 @@
 
 .sliderContainer {
   width: 616px;
-  height: 50px;
+  height: 50.286px;
   aspect-ratio: 49/4;
   position: relative;
   max-width: 100%;
+  margin: 0 auto;
 }
 
+/* Blur track behind */
 .trackBlur {
   width: 100%;
   height: 7px;
@@ -80,9 +76,9 @@
   position: absolute;
   left: 0;
   top: 22px;
-  border-radius: 3px;
 }
 
+/* White background track */
 .trackWhite {
   width: 100%;
   height: 8px;
@@ -94,38 +90,21 @@
   top: 21px;
 }
 
+/* Filled gradient track */
 .trackFilled {
-  display: flex;
   height: 7px;
-  justify-content: space-between;
-  align-items: center;
   flex-shrink: 0;
-  border-radius: 3.5px;
+  border-radius: 3.591px;
   background: linear-gradient(90deg, #0ECC7E 0%, #53C0D2 100%);
   position: absolute;
   left: 0;
   top: 22px;
   width: var(--filled-width, 10%);
+  min-width: 63px; /* Minimum width as shown in Figma */
   transition: width 200ms ease;
 }
 
-.sliderThumb {
-  position: absolute;
-  left: var(--thumb-position, 0%);
-  top: -14px;
-  transform: translateX(-50%);
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: #F9F9F9;
-  box-shadow: 
-    0 10px 21px 0 rgba(0, 0, 0, 0.1),
-    0 1px 7px 0 rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: left 200ms ease;
-  z-index: 10;
-}
-
+/* Thumb glow effect */
 .sliderThumbGlow {
   position: absolute;
   left: var(--thumb-position, 0%);
@@ -135,13 +114,30 @@
   height: 70px;
   border-radius: 50%;
   background: linear-gradient(90deg, #0ECC7E 0%, #53C0D2 100%);
-  opacity: 0.5;
-  filter: blur(35px);
+  fill-opacity: 0.5;
   pointer-events: none;
   transition: left 200ms ease;
-  z-index: 5;
+  z-index: 1;
 }
 
+/* Main thumb handle */
+.sliderThumb {
+  position: absolute;
+  left: var(--thumb-position, 0%);
+  top: -21px;
+  transform: translateX(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #F9F9F9;
+  cursor: pointer;
+  transition: left 200ms ease;
+  z-index: 10;
+  /* Drop shadow as specified in Figma */
+  filter: drop-shadow(0 10.7727px 21.5455px rgba(0, 0, 0, 0.1)) drop-shadow(0 0.897727px 7.18182px rgba(0, 0, 0, 0.1));
+}
+
+/* Hidden input for interaction */
 .input {
   position: absolute;
   left: 0;
@@ -153,14 +149,32 @@
   opacity: 0;
   cursor: pointer;
   z-index: 15;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
+.input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.input::-moz-range-thumb {
+  border: none;
+  background: transparent;
+}
+
+/* Labels section */
 .labels {
   display: flex;
-  width: 100%;
-  max-width: 616px;
+  width: 616px;
+  max-width: 100%;
   justify-content: space-between;
   align-items: flex-start;
+  margin: 0 auto;
 }
 
 .labelItem {
@@ -171,12 +185,9 @@
   font-style: normal;
   font-weight: 400;
   line-height: 18px; /* 128.571% */
-  /* Safari font rendering */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Responsive adjustments for smaller screens while maintaining iPad Pro optimization */
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .container {
     width: 100%;
@@ -205,13 +216,17 @@
   .sliderThumb {
     width: 36px;
     height: 36px;
-    top: -12px;
+    top: -18px;
   }
   
   .sliderThumbGlow {
     width: 60px;
     height: 60px;
     top: -30px;
+  }
+  
+  .trackFilled {
+    min-width: 50px;
   }
   
   .labels {
@@ -250,13 +265,17 @@
   .sliderThumb {
     width: 32px;
     height: 32px;
-    top: -10px;
+    top: -16px;
   }
   
   .sliderThumbGlow {
     width: 50px;
     height: 50px;
     top: -25px;
+  }
+  
+  .trackFilled {
+    min-width: 40px;
   }
   
   .labels {
@@ -269,47 +288,19 @@
   }
 }
 
-/* iPad Pro 11" specific optimization */
-@media (min-width: 744px) and (max-width: 1024px) {
+/* Ensure no overflow on larger screens */
+@media (min-width: 769px) {
   .container {
-    width: 673px;
-    padding: 0 28px 32px 28px;
-  }
-  
-  .percentage {
-    font-size: 44px;
-    line-height: 36px;
-    width: 66px;
-    height: 42px;
-  }
-  
-  .label {
-    font-size: 16px;
+    width: 673.295px;
+    padding: 0 28.727px 32px 28.727px;
   }
   
   .sliderContainer {
     width: 616px;
-    height: 50px;
-  }
-  
-  .sliderThumb {
-    width: 42px;
-    height: 42px;
-    top: -14px;
-  }
-  
-  .sliderThumbGlow {
-    width: 70px;
-    height: 70px;
-    top: -35px;
+    height: 50.286px;
   }
   
   .labels {
     width: 616px;
-  }
-  
-  .labelItem {
-    font-size: 14px;
-    line-height: 18px;
   }
 }

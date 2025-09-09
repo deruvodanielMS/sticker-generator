@@ -22,7 +22,7 @@ const LinearSlider = ({ value, onChange }: Props) => {
     handleChange(Number(e.target.value));
   };
 
-  const filledWidth = Math.max((localValue / 100) * 100, 10); // Minimum 10% to show some progress
+  const filledWidth = Math.max((localValue / 100) * 100, 10.2); // Minimum width to show progress
   const thumbPosition = (localValue / 100) * 100;
 
   return (

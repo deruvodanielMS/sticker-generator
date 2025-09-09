@@ -164,23 +164,16 @@ html[data-theme="dark"] .theme-overlay::after { opacity: 1; filter: blur(64px) s
   flex-direction: column;
   gap: 24px;
   align-items: center;
+  justify-content: center;
   width: min(900px, 96vw);
   max-width: 900px;
-  padding: 32px 24px 48px; /* increased top and bottom padding to avoid touching header/footer */
+  min-height: calc(100vh - 120px); /* Account for header + footer */
+  padding: 20px 24px;
   box-sizing: border-box;
-  max-height: calc(100vh - var(--header-height) - var(--footer-height) - 48px);
-  overflow-y: auto;
-  justify-content: center;
-  animation: fadeIn 360ms ease both;
-  transition: opacity 260ms ease;
-  /* refined scrollbars for better UX */
-  scrollbar-width: thin; /* Firefox */
-  -ms-overflow-style: auto; /* IE 10+ */
   margin: 0 auto;
-  border-radius: 14px;
-  background: transparent; /* ensure centered container is transparent so full viewport background is painted by theme-overlay */
-  backdrop-filter: none;
-  box-shadow: none;
+  background: transparent;
+  animation: fadeIn 360ms ease both;
+  overflow: visible;
 }
 
 /* Webkit browsers */
