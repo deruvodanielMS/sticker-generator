@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { Archetype } from '../types';
 import tokens from '../styles/tokens.module.css';
+import styles from './PromptPreview.module.css';
 import Button from './ui/Button';
 
 type Props = {
@@ -16,14 +17,14 @@ export default function PromptPreview({ archetype, prompt, onChange, onGenerate,
   const [local, setLocal] = useState(prompt);
 
   return (
-    <div className={`${tokens.container}`}>
-      <h2 className={`${tokens.title}`}>Prompt preview</h2>
-      <p className={`${tokens.subtle}`}>Review or tweak the prompt that will be sent to the image generator.</p>
+    <div className={`${tokens.container} ${styles.previewRoot}`}>
+      <h2 className={tokens.title}>Prompt preview</h2>
+      <p className={tokens.subtle}>Review or tweak the prompt that will be sent to the image generator.</p>
 
-      <div className="" style={{ width: '100%' }}>
-        <div className={`${tokens.textCenter}`} style={{ marginBottom: 8 }}>
-          <strong style={{ color: 'var(--gradient1-textContrast)' }}>{archetype.name}</strong>
-          <div className={`${tokens.subtle}`}>{archetype.descriptor}</div>
+      <div className={styles.previewInner}>
+        <div className={styles.previewHeader}>
+          <strong className={styles.archetypeName}>{archetype.name}</strong>
+          <div className={tokens.subtle}>{archetype.descriptor}</div>
         </div>
 
         <textarea
@@ -41,7 +42,7 @@ export default function PromptPreview({ archetype, prompt, onChange, onGenerate,
         <Button variant="primary" onClick={onGenerate} disabled={loading}>{loading ? 'Generating...' : 'Generate Image'}</Button>
       </div>
 
-      <p className="privacy-note">You can edit the prompt to adjust style or remove personal references. Changes are not stored.</p>
+      <p className={styles.privacyNote}>You can edit the prompt to adjust style or remove personal references. Changes are not stored.</p>
     </div>
   );
 }
