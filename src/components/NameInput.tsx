@@ -40,5 +40,3 @@ const NameInput = ({ onContinue }: Props) => {
 };
 
 export default NameInput;
-
-export default NameInput;
