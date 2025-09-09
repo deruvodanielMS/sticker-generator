@@ -151,7 +151,8 @@
 
 .questionNavigation {
   display: flex;
-  align-items: flex-start;
+  align-items: center; /* center vertically */
+  justify-content: center; /* center horizontally */
   gap: 24px;
   /* ensure navigation sits above options */
   position: relative;
