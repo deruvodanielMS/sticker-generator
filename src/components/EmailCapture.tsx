@@ -59,7 +59,7 @@ const EmailCapture = ({ onSubmit, onSkip }: Props) => {
         </form>
 
         <div className={styles.emailSkipButton}>
-          <Button variant="ghost" onClick={handleSkip}>SKIP</Button>
+          <Button variant="text" onClick={handleSkip}>SKIP</Button>
         </div>
       </div>
     </div>
