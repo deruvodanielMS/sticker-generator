@@ -77,7 +77,7 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint, onRestart
   const shareSticker = async () => {
     const fileName = `${archetype.name.replace(/\s+/g, '-')}-sticker.png`;
     try {
-      const composedDataUrl = await composeStickerWithFrame();
+      const composedDataUrl = await composeSticker();
       const res = await fetch(composedDataUrl);
       const blob = await res.blob();
       if (navigator.share && (navigator as any).canShare?.({ files: [new File([blob], fileName, { type: blob.type })] })) {
