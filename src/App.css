@@ -2359,6 +2359,7 @@ html[data-theme="dark"] .result-screen {
 }
 
 html[data-theme="dark"] .result-button.secondary {
+  background: rgba(16,24,32,1);
   color: var(--gradient1-textContrast);
   border-color: var(--primary-main);
 }
