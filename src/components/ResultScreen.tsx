@@ -161,14 +161,14 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint }) => {
   };
 
   return (
-    <div className="result-screen">
+    <div className={styles.resultScreen}>
 
-      <div className="result-section">
-        <h1 className="result-title">{userName ? `${userName}, you are a ${archetype.name}!` : `You are ${archetype.name}!`}</h1>
+      <div className={styles.resultSection}>
+        <h1 className={styles.resultTitle}>{userName ? `${userName}, you are a ${archetype.name}!` : `You are ${archetype.name}!`}</h1>
 
-        <div className="result-divider">
-          <div className="divider-line"></div>
-          <svg width="5" height="4" viewBox="0 0 5 4" fill="none" xmlns="http://www.w3.org/2000/svg" className="divider-dot">
+        <div className={styles.resultDivider}>
+          <div className={styles.dividerLine}></div>
+          <svg width="5" height="4" viewBox="0 0 5 4" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.dividerDot}>
             <circle cx="2.5" cy="2" r="2" fill="url(#paint0_linear)"/>
             <defs>
               <linearGradient id="paint0_linear" x1="0.688744" y1="1.47298" x2="2.12203" y2="3.02577" gradientUnits="userSpaceOnUse">
@@ -179,32 +179,32 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint }) => {
           </svg>
         </div>
 
-        <div className="result-description">
-          <p className="result-line-1">{archetype.descriptor}</p>
-          <p className="result-line-2">{archetype.valueLine}</p>
+        <div className={styles.resultDescription}>
+          <p className={styles.resultLine1}>{archetype.descriptor}</p>
+          <p className={styles.resultLine2}>{archetype.valueLine}</p>
         </div>
 
         {providerError && (
-          <div className="result-provider-error">Generation fallback used: {String(providerError)}</div>
+          <div className={styles.resultProviderError}>Generation fallback used: {String(providerError)}</div>
         )}
 
         {/* Archetype label layer (text) */}
-        <div className="archetype-label">{archetype?.name}</div>
+        <div className={styles.archetypeLabel}>{archetype?.name}</div>
 
         {/* Sticker displayed as provided by the generator (no pre-composition to avoid pixelation). Frame is overlaid on top. */}
-        <div className="sticker-raw-container">
-          <img src={stickerSource || FRAME_URL} alt="Sticker" className="sticker-raw-img" />
-          <img src={FRAME_URL} alt="Frame overlay" className="sticker-frame-overlay" />
+        <div className={styles.stickerRawContainer}>
+          <img src={stickerSource || FRAME_URL} alt="Sticker" className={styles.stickerRawImg} />
+          <img src={FRAME_URL} alt="Frame overlay" className={styles.stickerFrameOverlay} />
         </div>
 
-        <div className="result-buttons">
-          <button className="result-button primary" onClick={printSticker}>
-            <img src="https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F1146f9e4771b4cff95e916ed9381032d?format=svg" alt="Print" className="result-button-icon" />
+        <div className={styles.resultButtons}>
+          <Button variant="primary" onClick={printSticker}>
+            <img src="https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F1146f9e4771b4cff95e916ed9381032d?format=svg" alt="Print" className={styles.resultButtonIcon} />
             PRINT
-          </button>
+          </Button>
         </div>
 
-        <div className="result-email">
+        <div className={styles.resultEmail}>
         </div>
       </div>
 
