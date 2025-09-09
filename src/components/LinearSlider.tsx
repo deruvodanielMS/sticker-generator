@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import React, { useState, useEffect } from 'react';
 import type { FC } from 'react';
 
 type Props = {
@@ -38,25 +37,15 @@ const LinearSlider: FC<Props> = ({ value, onChange }) => {
             className="linear-slider-track-filled"
             style={{ width: `${(localValue / 100) * 100}%` }}
           ></div>
-          <div 
-            className="linear-slider-thumb"
-            style={{ left: `${(localValue / 100) * 100}%` }}
-          ></div>
           <input
             type="range"
-            min="0"
-            max="100"
+            min={0}
+            max={100}
             value={localValue}
             onChange={handleInputChange}
             className="linear-slider-input"
-            aria-label="Risk tolerance percentage"
+            aria-label="Adjust value"
           />
-        </div>
-        
-        <div className="linear-slider-labels">
-          <span className="linear-slider-label-text">LOW</span>
-          <span className="linear-slider-label-text">MEDIUM</span>
-          <span className="linear-slider-label-text">HIGH</span>
         </div>
       </div>
     </div>
