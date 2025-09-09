@@ -1,4 +1,3 @@
-import type { FC } from 'react';
 import React, { FC } from 'react';
 import type { Question } from '../types';
 import Stepper from './Stepper';
