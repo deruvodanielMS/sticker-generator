@@ -76,6 +76,9 @@ const LinearSlider = ({ value, onChange }: Props) => {
           onPointerUp={endPointer}
           onPointerCancel={endPointer}
           onPointerLeave={endPointer}
+          onTouchStart={(e) => { const t = e.touches[0]; if (t) { const val = computeValueFromEvent(t.clientX); handleChange(val); e.preventDefault(); } }}
+          onTouchMove={(e) => { const t = e.touches[0]; if (t) { const val = computeValueFromEvent(t.clientX); handleChange(val); e.preventDefault(); } }}
+          onTouchEnd={(e) => { /* release drag state */ }}
         >
           {/* Blur shadow effect */}
           <div className={styles.trackBlur} />
