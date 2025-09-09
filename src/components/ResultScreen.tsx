@@ -15,8 +15,6 @@ type Props = {
 const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint, onRestart }) => {
   const { archetype, imageUrl } = result as any;
   // Use the frame URL directly - no complex composition
-  const FRAME_URL = "https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F5505fb97c053430187064b5c6e31e0b3?format=webp&width=800";
-
   // Choose sticker source (prefer server-provided full image URL or data URL)
   const stickerSource = (result as any)?.imageDataUrl || imageUrl;
 
@@ -29,11 +27,11 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint, onRestart
     img.src = src;
   });
 
-  // Simple composition for print/share only
-  const composeStickerWithFrame = async (): Promise<string> => {
+  // Compose sticker for export (no frame overlay)
+  const composeSticker = async (): Promise<string> => {
     if (!stickerSource) return '';
     try {
-      const [stickerImg, frameImg] = await Promise.all([loadImage(stickerSource), loadImage(FRAME_URL)]);
+      const stickerImg = await loadImage(stickerSource);
       const canvas = document.createElement('canvas');
       const size = 1024; // Fixed high resolution
       canvas.width = size;
@@ -47,9 +45,6 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint, onRestart
 
       // Draw sticker to fill canvas
       ctx.drawImage(stickerImg, 0, 0, size, size);
-
-      // Draw frame on top
-      ctx.drawImage(frameImg, 0, 0, size, size);
 
       return canvas.toDataURL('image/png');
     } catch (e) {
