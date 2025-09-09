@@ -216,8 +216,7 @@
 /* Responsive adjustments for smaller screens while maintaining iPad Pro optimization */
 @media (max-width: 768px) {
   .questionMain {
-    padding: 120px 24px 40px 24px;
-    gap: 80px;
+    padding: 20px 24px;
     height: calc(100vh - 124px);
   }
   
