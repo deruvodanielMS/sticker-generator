@@ -91,7 +91,7 @@ export default function PhotoCapture({ onConfirm, onSkip }: Props) {
         
         <div className={styles.photoDivider}>
           <div className={styles.dividerLine}></div>
-          <svg width="5" height="4" viewBox="0 0 5 4" fill="none" xmlns="http://www.w3.org/2000/svg" className="divider-dot">
+          <svg width="5" height="4" viewBox="0 0 5 4" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.dividerDot}>
             <circle cx="2.5" cy="2" r="2" fill="url(#paint0_linear)"/>
             <defs>
               <linearGradient id="paint0_linear" x1="0.688744" y1="1.47298" x2="2.12203" y2="3.02577" gradientUnits="userSpaceOnUse">
