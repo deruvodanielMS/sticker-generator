@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import type { FC } from 'react';
-import type { FC } from 'react';
 
 type Props = {
   value: number;
