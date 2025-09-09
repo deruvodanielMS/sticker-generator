@@ -2,7 +2,7 @@
 .questionScreen {
   width: 100%;
   height: 100vh;
-  background: #FFF;
+  background: transparent; /* allow theme-overlay background to show */
   position: relative;
   overflow: hidden;
 }
