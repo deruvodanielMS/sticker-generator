@@ -1,4 +1,6 @@
 import React, { FC } from 'react';
+import styles from './ThankYouScreen.module.css';
+import Button from './ui/Button';
 
 type Props = {
   onRestart: () => void;
@@ -6,16 +8,16 @@ type Props = {
 
 const ThankYouScreen: FC<Props> = ({ onRestart }) => {
   return (
-    <div className="thankyou-screen">
-      <div className="thankyou-section">
-        <h1 className="thankyou-title">
+    <div className={styles.root}>
+      <div className={styles.section}>
+        <h1 className={styles.title}>
           Leading digital transformation for<br />
           mid-market companies
         </h1>
-        
-        <div className="thankyou-divider">
-          <div className="divider-line"></div>
-          <svg width="5" height="4" viewBox="0 0 5 4" fill="none" xmlns="http://www.w3.org/2000/svg" className="divider-dot">
+
+        <div className={styles.divider}>
+          <div className={styles.dividerLine}></div>
+          <svg width="5" height="4" viewBox="0 0 5 4" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.dividerDot}>
             <circle cx="2.5" cy="2" r="2" fill="url(#paint0_linear)"/>
             <defs>
               <linearGradient id="paint0_linear" x1="0.688744" y1="1.47298" x2="2.12203" y2="3.02577" gradientUnits="userSpaceOnUse">
@@ -25,15 +27,15 @@ const ThankYouScreen: FC<Props> = ({ onRestart }) => {
             </defs>
           </svg>
         </div>
-        
-        <p className="thankyou-description">
+
+        <p className={styles.description}>
           We create tailored technology solutions that enhance customer experiences,<br />
           drive lasting growth, and future-proof businesses.
         </p>
-        
-        <button className="thankyou-cta" onClick={onRestart}>
-          START OVER
-        </button>
+
+        <div className={styles.ctaWrap}>
+          <Button variant="primary" onClick={onRestart}>START OVER</Button>
+        </div>
       </div>
     </div>
   );
