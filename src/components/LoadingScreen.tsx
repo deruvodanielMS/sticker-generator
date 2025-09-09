@@ -1,17 +1,63 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const LoadingScreen = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const carouselRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    // Show each step for ~3.5s so users can perceive the content (3-4s requested)
+    // Loop through steps continuously; each step shows ~3.5s
     const STEP_DURATION = 3500;
-    const timer1 = setTimeout(() => setCurrentStep(2), STEP_DURATION); // Step 1
-    const timer2 = setTimeout(() => setCurrentStep(3), STEP_DURATION * 2); // Step 2
+    const totalSteps = 3;
+    let step = 1;
+    setCurrentStep(step);
+    const interval = setInterval(() => {
+      step = step % totalSteps + 1;
+      setCurrentStep(step);
+    }, STEP_DURATION);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Simple drag-to-scroll support for desktop/tablet (touch works by default)
+  useEffect(() => {
+    const el = carouselRef.current;
+    if (!el) return;
+    let isDown = false;
+    let startX = 0;
+    let scrollLeft = 0;
+
+    const onMouseDown = (e: MouseEvent) => {
+      isDown = true;
+      el.classList.add('dragging');
+      startX = e.pageX - el.offsetLeft;
+      scrollLeft = el.scrollLeft;
+    };
+    const onMouseLeave = () => {
+      isDown = false;
+      el.classList.remove('dragging');
+    };
+    const onMouseUp = () => {
+      isDown = false;
+      el.classList.remove('dragging');
+    };
+    const onMouseMove = (e: MouseEvent) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - el.offsetLeft;
+      const walk = (x - startX) * 1; // scroll-fast multiplier
+      el.scrollLeft = scrollLeft - walk;
+    };
+
+    el.addEventListener('mousedown', onMouseDown);
+    el.addEventListener('mouseleave', onMouseLeave);
+    el.addEventListener('mouseup', onMouseUp);
+    el.addEventListener('mousemove', onMouseMove);
 
     return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
+      el.removeEventListener('mousedown', onMouseDown);
+      el.removeEventListener('mouseleave', onMouseLeave);
+      el.removeEventListener('mouseup', onMouseUp);
+      el.removeEventListener('mousemove', onMouseMove);
     };
   }, []);
 
