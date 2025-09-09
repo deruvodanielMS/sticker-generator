@@ -1,21 +1,22 @@
 /* iPad 11 Pro optimized radio list matching Figma design */
 .radioListContainer {
-  display: flex;
-  height: 280px;
+  /* Use a responsive 4-column grid for desktop/tablet to match design */
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
   width: 100%;
-  max-width: 696px;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  max-width: 1100px; /* allow more horizontal space so options don't overlap CTAs */
   margin: 0 auto;
+  align-items: start;
+  box-sizing: border-box;
 }
 
 .radioOption {
   display: flex;
-  width: 286px;
-  padding: 16px 40px;
+  width: 100%;
+  padding: 18px 28px; /* slightly increased horizontal space for touch targets */
   align-items: center;
-  gap: 24px;
+  gap: 20px;
   border-radius: 10px;
   background: #FFF;
   box-shadow: 0 50px 60px 0 rgba(6, 6, 6, 0.10);
