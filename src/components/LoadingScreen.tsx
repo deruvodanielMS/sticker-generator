@@ -3,17 +3,31 @@ import styles from './LoadingScreen.module.css';
 
 const LoadingScreen = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const carouselRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    // Loop through steps continuously; increase each step to ~4.5s per request
-    const STEP_DURATION = 4500; // 4.5s per step
+    // Loop through steps continuously; increased duration for better UX
+    const STEP_DURATION = 6500; // 6.5s per step
+    const FADE_DURATION = 300; // 300ms fade transition
     const totalSteps = 3;
     let step = 1;
     setCurrentStep(step);
+
     const interval = setInterval(() => {
-      step = step % totalSteps + 1;
-      setCurrentStep(step);
+      // Start fade out
+      setIsTransitioning(true);
+
+      setTimeout(() => {
+        // Change step during fade
+        step = step % totalSteps + 1;
+        setCurrentStep(step);
+
+        // End fade out, start fade in
+        setTimeout(() => {
+          setIsTransitioning(false);
+        }, FADE_DURATION / 2);
+      }, FADE_DURATION / 2);
     }, STEP_DURATION);
 
     return () => clearInterval(interval);
@@ -265,9 +279,11 @@ const LoadingScreen = () => {
   return (
     <div className={styles.loadingScreen}>
       <div className={styles.loadingSection}>
-        {currentStep === 1 && renderStep1()}
-        {currentStep === 2 && renderStep2()}
-        {currentStep === 3 && renderStep3()}
+        <div className={`${styles.loadingContentWrapper} ${isTransitioning ? styles.fadeOut : styles.fadeIn}`}>
+          {currentStep === 1 && renderStep1()}
+          {currentStep === 2 && renderStep2()}
+          {currentStep === 3 && renderStep3()}
+        </div>
 
         <div className={styles.loadingSpinner}>
           <svg className={styles.loadingSpinnerSvg} width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
