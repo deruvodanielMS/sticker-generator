@@ -216,21 +216,17 @@ export async function generateSticker(archetype: Archetype, selfieDataUrl?: stri
   const online = typeof navigator !== 'undefined' ? navigator.onLine : true;
 
   if (online) {
-    // Prefer server-side generation to avoid client-side CORS and key issues
+    // Prefer server-side generation to avoid client-side CORS and exposing keys.
     try {
       const url = await generateViaServer(prompt, selfieDataUrl);
       // Mark as 'openai' source to satisfy GenerationResult type (server proxies OpenAI)
       return { imageUrl: url, archetype, prompt, source: 'openai' };
     } catch (serverErr: any) {
-      // If server fails, fall back to client-side direct OpenAI call
-      try {
-        const url = await generateViaOpenAI(prompt, selfieDataUrl, photoStep);
-        return { imageUrl: url, archetype, prompt, source: 'openai' };
-      } catch (clientErr: any) {
-        const errMsg = clientErr?.message || serverErr?.message || String(clientErr || serverErr);
-        const dataUrl = svgDataUrl(archetype, selfieDataUrl);
-        return { imageUrl: dataUrl, archetype, prompt, source: 'fallback', providerError: errMsg };
-      }
+      // Do NOT attempt client-side OpenAI from the browser (would require exposing keys).
+      // Instead, return a graceful fallback image and include providerError so the UI can show details.
+      const errMsg = serverErr?.message || String(serverErr);
+      const dataUrl = svgDataUrl(archetype, selfieDataUrl);
+      return { imageUrl: dataUrl, archetype, prompt, source: 'fallback', providerError: errMsg };
     }
   }
 
