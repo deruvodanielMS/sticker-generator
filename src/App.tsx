@@ -89,7 +89,7 @@ function App() {
 
   // Particle background: generate deterministic particle config on mount to avoid reflows
   const particleConfig = useMemo(() => {
-    const amount = 18;
+    const amount = 3; // simplified: only up to three moving spots
     const dark = document.documentElement.getAttribute('data-theme') === 'dark';
     // Greens only: darker palette for dark theme, lighter palette for light theme
     const colors = dark
@@ -97,16 +97,16 @@ function App() {
       : ['#bff7eb', '#73e6c9', '#0ecc7e']; // light greens -> soft, mid, bright
 
     const arr = new Array(amount).fill(0).map((_, i) => {
-      const sizeVw = 8 + Math.floor(Math.random() * 18); // between 8vw and 26vw roughly
-      const top = Math.floor(Math.random() * 100);
-      const left = Math.floor(Math.random() * 100);
-      const duration = (4 + Math.random() * 8).toFixed(2) + 's';
-      const delay = '-' + (Math.random() * 12).toFixed(2) + 's';
+      const sizeVw = 10 + Math.floor(Math.random() * 12); // between 10vw and 22vw roughly
+      const top = Math.floor(Math.random() * 90);
+      const left = Math.floor(Math.random() * 90);
+      const duration = (6 + Math.random() * 6).toFixed(2) + 's';
+      const delay = '-' + (Math.random() * 6).toFixed(2) + 's';
       const color = colors[Math.floor(Math.random() * colors.length)];
-      const blur = Math.floor(8 + Math.random() * 30);
+      const blur = Math.floor(8 + Math.random() * 24);
       const x = Math.random() > 0.5 ? -1 : 1;
-      const boxShadow = `${sizeVw * 2 * x}px 0 ${blur}px ${color}`;
-      const transformOrigin = `${Math.floor((Math.random() - 0.5) * 50)}vw ${Math.floor((Math.random() - 0.5) * 50)}vh`;
+      const boxShadow = `${sizeVw * 1.8 * x}px 0 ${blur}px ${color}`;
+      const transformOrigin = `${Math.floor((Math.random() - 0.5) * 40)}vw ${Math.floor((Math.random() - 0.5) * 40)}vh`;
       return { sizeVw, top, left, duration, delay, color, boxShadow, transformOrigin, key: `p-${i}` };
     });
     return arr;
@@ -254,17 +254,16 @@ function App() {
         {particleConfig.map((p) => (
           <span
             key={p.key}
-            className="particle"
+            className="theme-particle"
             style={{
-              top: p.top + '%',
-              left: p.left + '%',
-              width: `min(${p.sizeVw}vmin, 140px)`,
-              height: `min(${p.sizeVw}vmin, 140px)`,
-              background: p.color,
-              boxShadow: p.boxShadow,
-              transformOrigin: p.transformOrigin,
-              animationDuration: p.duration,
-              animationDelay: p.delay,
+              ['--tp-top' as any]: p.top + '%',
+              ['--tp-left' as any]: p.left + '%',
+              ['--tp-size' as any]: `min(${p.sizeVw}vmin, 140px)`,
+              ['--tp-bg' as any]: p.color,
+              ['--tp-shadow' as any]: p.boxShadow,
+              ['--tp-transform-origin' as any]: p.transformOrigin,
+              ['--tp-duration' as any]: p.duration,
+              ['--tp-delay' as any]: p.delay,
             }}
           />
         ))}
