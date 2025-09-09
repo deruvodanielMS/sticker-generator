@@ -2883,6 +2883,46 @@ html[data-theme="dark"] .linear-slider-label-text {
 .sticker-raw-img { width: 100%; height: 100%; object-fit: contain; image-rendering: auto; }
 .sticker-frame-overlay { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; object-fit: cover; transform-origin: center center; transform: scale(1.06); }
 
+/* Strong override: ensure no transparency remains on interactive buttons/options in dark theme */
+html[data-theme="dark"] .question-option,
+html[data-theme="dark"] .question-option.selected,
+html[data-theme="dark"] .radio-option,
+html[data-theme="dark"] .radio-option.selected,
+html[data-theme="dark"] .nav-button,
+html[data-theme="dark"] .nav-button.secondary,
+html[data-theme="dark"] .nav-button.outlined,
+html[data-theme="dark"] .result-button,
+html[data-theme="dark"] .result-button.secondary,
+html[data-theme="dark"] .secondary-button,
+html[data-theme="dark"] .ghost-button,
+html[data-theme="dark"] .primary-button,
+html[data-theme="dark"] .option-card,
+html[data-theme="dark"] .option-card.selected {
+  background-image: none !important;
+  background: rgba(16,24,32,1) !important; /* solid dark bg */
+  background-color: rgba(16,24,32,1) !important;
+  color: var(--gradient1-textContrast) !important;
+  border-color: rgba(255,255,255,0.06) !important;
+  box-shadow: 0 30px 50px rgba(0,0,0,0.5) !important;
+}
+
+html[data-theme="dark"] .nav-button.secondary,
+html[data-theme="dark"] .result-button.secondary,
+html[data-theme="dark"] .nav-button.outlined,
+html[data-theme="dark"] .secondary-button {
+  border: 2px solid var(--primary-main) !important;
+  background: rgba(16,24,32,1) !important;
+  color: var(--gradient1-textContrast) !important;
+}
+
+html[data-theme="dark"] .question-option:hover,
+html[data-theme="dark"] .nav-button:hover,
+html[data-theme="dark"] .result-button:hover,
+html[data-theme="dark"] .nav-button:focus-visible,
+html[data-theme="dark"] .question-option:focus-visible {
+  background: rgba(20,28,36,1) !important;
+}
+
 /* Mobile styles for PhotoCapture */
 @media (max-width: 480px) {
   .photo-capture-title {
