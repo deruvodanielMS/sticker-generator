@@ -26,7 +26,7 @@ const PhotoIntro = ({ onOpenCamera, onSkip }: Props) => {
         <p className={styles.photoIntroDescription}>Take a selfie to customize your robot's features to match your unique style.</p>
 
         <div className={styles.photoIntroButtons}>
-          <Button variant="secondary" onClick={onSkip}>SKIP</Button>
+          <Button variant="text" onClick={onSkip}>SKIP</Button>
           <Button variant="primary" onClick={onOpenCamera}>OPEN CAMERA</Button>
         </div>
       </div>
