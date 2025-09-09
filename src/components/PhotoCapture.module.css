@@ -12,6 +12,10 @@
 .photoButtons { display:flex; gap:10px; flex-direction:column; width:100%; align-items:center; }
 .photoButtonsRow { display:flex; gap:10px; }
 
+.dividerLine { width:42px; height:4px; border-radius:3px; background: linear-gradient(90deg,#0ECC7E 0%,#53C0D2 100%); }
+.dividerDot { width:4px; height:4px; border-radius:4px; }
+.errorBanner { background: rgba(255,80,80,0.06); color: #ff5b5b; padding:8px 12px; border-radius:8px; }
+
 @media (min-width:769px) {
   .photoTitle { font-size:24px; }
   .photoButtons { flex-direction:row; }
