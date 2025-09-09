@@ -257,8 +257,7 @@
 
 @media (max-width: 480px) {
   .questionMain {
-    padding: 80px 16px 32px 16px;
-    gap: 60px;
+    padding: 16px;
   }
   
   .questionContent {
