@@ -1,4 +1,5 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
+import Layout from './components/Layout';
 import SplashScreen from './components/SplashScreen';
 import NameInput from './components/NameInput';
 import QuestionScreen from './components/QuestionScreen';
@@ -27,8 +28,6 @@ const STEPS = {
 } as const;
 
 function App() {
-  const LOGO_FIGMA = 'https://api.builder.io/api/v1/image/assets/TEMP/7ac03e2ebbcf31266708d63245588e89126c6e4a?width=442';
-
   const [step, setStep] = useState<number>(STEPS.Splash);
   const [userName, setUserName] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>('');
@@ -49,15 +48,9 @@ function App() {
     } catch (e) {}
   };
 
-  // Simplified: set default theme and enable overlay after a short delay
+  // Set default theme
   useEffect(() => {
     setThemeOnDocument('light');
-
-    // ensure overlay starts hidden, then show after a small timeout
-    document.documentElement.classList.remove('overlay-ready');
-    const t = window.setTimeout(() => {
-      document.documentElement.classList.add('overlay-ready');
-    }, 300);
 
     // ONE-TIME fullscreen attempt triggered by first user interaction (gesture required by browsers)
     let attemptedFull = false;
@@ -79,35 +72,8 @@ function App() {
     window.addEventListener('pointerdown', tryFullscreen, { once: true });
 
     return () => {
-      window.clearTimeout(t);
-      document.documentElement.classList.remove('overlay-ready');
       try { window.removeEventListener('pointerdown', tryFullscreen); } catch (e) {}
     };
-  }, []);
-
-  // Particle background: generate deterministic particle config on mount to avoid reflows
-  const particleConfig = useMemo(() => {
-    const amount = 3; // simplified: only up to three moving spots
-    const dark = document.documentElement.getAttribute('data-theme') === 'dark';
-    // Greens only: darker palette for dark theme, lighter palette for light theme
-    const colors = dark
-      ? ['#042f28', '#0a6b55', '#0ecc7e'] // dark greens -> deep, mid, bright
-      : ['#bff7eb', '#73e6c9', '#0ecc7e']; // light greens -> soft, mid, bright
-
-    const arr = new Array(amount).fill(0).map((_, i) => {
-      const sizeVw = 10 + Math.floor(Math.random() * 12); // between 10vw and 22vw roughly
-      const top = Math.floor(Math.random() * 90);
-      const left = Math.floor(Math.random() * 90);
-      const duration = (6 + Math.random() * 6).toFixed(2) + 's';
-      const delay = '-' + (Math.random() * 6).toFixed(2) + 's';
-      const color = colors[Math.floor(Math.random() * colors.length)];
-      const blur = Math.floor(8 + Math.random() * 24);
-      const x = Math.random() > 0.5 ? -1 : 1;
-      const boxShadow = `${sizeVw * 1.8 * x}px 0 ${blur}px ${color}`;
-      const transformOrigin = `${Math.floor((Math.random() - 0.5) * 40)}vw ${Math.floor((Math.random() - 0.5) * 40)}vh`;
-      return { sizeVw, top, left, duration, delay, color, boxShadow, transformOrigin, key: `p-${i}` };
-    });
-    return arr;
   }, []);
 
   const handleSelect = (optId: string, intensity?: number) => {
@@ -246,43 +212,17 @@ function App() {
     setThemeOnDocument('light');
   };
 
+  // Determine if we should show progress stepper
+  const showProgress = step === STEPS.Questions;
+  const currentStepForProgress = step === STEPS.Questions ? questionIndex + 1 : 1;
+
   return (
-    <div className="app-root">
-      <div className="theme-overlay" aria-hidden>
-        {particleConfig.map((p) => (
-          <span
-            key={p.key}
-            className="theme-particle"
-            style={{
-              ['--tp-top' as any]: p.top + '%',
-              ['--tp-left' as any]: p.left + '%',
-              ['--tp-size' as any]: `min(${p.sizeVw}vmin, 140px)`,
-              ['--tp-bg' as any]: p.color,
-              ['--tp-shadow' as any]: p.boxShadow,
-              ['--tp-transform-origin' as any]: p.transformOrigin,
-              ['--tp-duration' as any]: p.duration,
-              ['--tp-delay' as any]: p.delay,
-            }}
-          />
-        ))}
-      </div>
-
-      <header className="app-header" aria-hidden>
-        <img
-          src={LOGO_FIGMA}
-          alt="Making Sense"
-          style={{
-            display: 'flex',
-            width: '221px',
-            height: '28px',
-            justifyContent: 'center',
-            alignItems: 'flex-start',
-            flexShrink: 0,
-            aspectRatio: '221/28'
-          }}
-        />
-      </header>
-
+    <Layout
+      showProgress={showProgress}
+      currentStep={currentStepForProgress}
+      totalSteps={total}
+      onClose={handleCloseQuestions}
+    >
       {error && <ErrorBanner>{error}</ErrorBanner>}
 
       {step === STEPS.Splash && <SplashScreen onStart={() => setStep(STEPS.NameInput)} />}
@@ -306,13 +246,10 @@ function App() {
         <PhotoCapture onConfirm={(dataUrl?: string) => preparePrompt(dataUrl)} onSkip={() => preparePrompt(undefined)} />
       )}
 
-
       {step === STEPS.Generating && <LoadingScreen />}
       {step === STEPS.Result && result && <ResultScreen result={result} userName={userName} userEmail={userEmail} onShare={goToThankYou} onPrint={goToThankYou} onRestart={restart} />}
       {step === STEPS.ThankYou && <ThankYouScreen onRestart={restart} />}
-
-      <footer className="app-footer">Making Sense - 2025. All rights reserved.</footer>
-    </div>
+    </Layout>
   );
 }
 
