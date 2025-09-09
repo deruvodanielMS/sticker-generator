@@ -1,5 +1,3 @@
-import type { FC, ReactNode } from 'react';
-
 import React, { FC } from 'react';
 import styles from './ErrorBanner.module.css';
 
