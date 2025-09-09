@@ -1,7 +1,7 @@
 import type { GenerationResult } from '../types';
 import styles from './ResultScreen.module.css';
 import Button from './ui/Button';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 
 type Props = {
   result: GenerationResult;
@@ -13,14 +13,11 @@ type Props = {
 
 const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint }) => {
   const { archetype, imageUrl } = result as any;
-  // Prefer SVG frame asset for crisp rendering (use provided uploaded SVG if available)
+  // Use the frame URL directly - no complex composition
   const FRAME_URL = "https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F5505fb97c053430187064b5c6e31e0b3?format=webp&width=800";
 
   // Choose sticker source (prefer server-provided full image URL or data URL)
   const stickerSource = (result as any)?.imageDataUrl || imageUrl;
-
-  // Local preview composed at higher resolution to avoid pixelation in the UI
-  const [previewSrc, setPreviewSrc] = useState<string | null>(null);
 
   // Helper: load image with crossOrigin and return HTMLImageElement
   const loadImage = (src: string) => new Promise<HTMLImageElement>((resolve, reject) => {
@@ -31,106 +28,34 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint }) => {
     img.src = src;
   });
 
-  // Helper: proxy frame to dataUrl to avoid CORS issues when composing
-  const proxyFrame = async () => {
-    try {
-      const proxyResp = await fetch('/api/proxy-image', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-source': 'ui' },
-        body: JSON.stringify({ url: FRAME_URL }),
-      });
-      if (proxyResp.ok) {
-        const pj = await proxyResp.json();
-        if (pj?.dataUrl) return pj.dataUrl;
-      }
-    } catch (e) {
-      // ignore
-    }
-    return FRAME_URL;
-  };
-
-  // Compose sticker+frame at original sticker resolution for printing/sharing
-  const providerError = (result as any)?.providerError || null;
-
-  const composeStickerWithFrame = async (targetSizeOverride?: number): Promise<string> => {
+  // Simple composition for print/share only
+  const composeStickerWithFrame = async (): Promise<string> => {
     if (!stickerSource) return '';
     try {
-      const proxiedFrameSrc = await proxyFrame();
-      const [stickerImg, frameImg] = await Promise.all([loadImage(stickerSource), loadImage(proxiedFrameSrc)]);
+      const [stickerImg, frameImg] = await Promise.all([loadImage(stickerSource), loadImage(FRAME_URL)]);
       const canvas = document.createElement('canvas');
-
-      // Make output square to avoid rounded empty corners inside the overlay
-      const srcW = stickerImg.naturalWidth || stickerImg.width || 1024;
-      const srcH = stickerImg.naturalHeight || stickerImg.height || 1024;
-      const baseSize = Math.max(srcW, srcH);
-      const size = targetSizeOverride ? Math.max(targetSizeOverride, baseSize) : baseSize;
+      const size = 1024; // Fixed high resolution
       canvas.width = size;
       canvas.height = size;
       const ctx = canvas.getContext('2d');
       if (!ctx) throw new Error('No canvas context');
 
-      // Enable high quality resizing
-      ctx.imageSmoothingEnabled = true;
-      // @ts-ignore
-      ctx.imageSmoothingQuality = 'high';
-
-      // Draw sticker using cover strategy so it fills the square canvas completely
-      const stickerScale = Math.max(size / srcW, size / srcH) * 1.05; // small overshoot to avoid gaps
-      const drawW = srcW * stickerScale;
-      const drawH = srcH * stickerScale;
-      const dx = (size - drawW) / 2;
-      const dy = (size - drawH) / 2;
-
-      // Fill background with white to hide any rounded/transparency in generated sticker (prevents visible gaps)
+      // Fill white background
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, size, size);
 
-      // Draw the sticker centered and scaled to cover the square canvas
-      ctx.drawImage(stickerImg, dx, dy, drawW, drawH);
+      // Draw sticker to fill canvas
+      ctx.drawImage(stickerImg, 0, 0, size, size);
 
-      // Draw frame on top, scaled to COVER canvas (like background-size: cover)
-      const ovW = frameImg.naturalWidth || frameImg.width || size;
-      const ovH = frameImg.naturalHeight || frameImg.height || size;
-      const safeOvW = ovW > 0 ? ovW : size;
-      const safeOvH = ovH > 0 ? ovH : size;
-
-      const frameScale = Math.max(size / safeOvW, size / safeOvH) * 1.05; // ensure overlay slightly larger
-      const frameDrawW = safeOvW * frameScale;
-      const frameDrawH = safeOvH * frameScale;
-      const fdx = (size - frameDrawW) / 2;
-      const fdy = (size - frameDrawH) / 2;
-
-      ctx.drawImage(frameImg, fdx, fdy, frameDrawW, frameDrawH);
+      // Draw frame on top
+      ctx.drawImage(frameImg, 0, 0, size, size);
 
       return canvas.toDataURL('image/png');
     } catch (e) {
       console.error('Failed to compose sticker for export', e);
-      return stickerSource as string;
+      return stickerSource;
     }
   };
-
-  // Build a high-quality preview for the UI to avoid visible pixelation
-  useEffect(() => {
-    let mounted = true;
-    if (!stickerSource) {
-      setPreviewSrc(null);
-      return;
-    }
-
-    (async () => {
-      try {
-        // create a preview sized for UI but high enough to avoid pixelation
-        const targetPreviewSize = 1024; // fixed preview size for crispness
-        const composed = await composeStickerWithFrame(targetPreviewSize);
-        if (mounted) setPreviewSrc(composed);
-      } catch (e) {
-        // fall back to raw sticker
-        if (mounted) setPreviewSrc(null);
-      }
-    })();
-
-    return () => { mounted = false; };
-  }, [stickerSource]);
 
   const printSticker = async () => {
     const w = window.open('', '_blank');
@@ -138,11 +63,11 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint }) => {
       onPrint();
       return;
     }
-    let outSrc = previewSrc || stickerSource || FRAME_URL;
+    let outSrc = stickerSource || FRAME_URL;
     try {
       outSrc = await composeStickerWithFrame();
     } catch (e) {
-      outSrc = previewSrc || stickerSource || FRAME_URL;
+      outSrc = stickerSource || FRAME_URL;
     }
 
     w.document.write(`<html><head><title>${archetype.name} Sticker</title></head><body style="margin:0;display:flex;align-items:center;justify-content:center;background:#fff;">
@@ -175,7 +100,7 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint }) => {
     } catch (e) {
       console.error('Share failed, falling back to raw sticker', e);
       try {
-        const res = await fetch(stickerSource as string);
+        const res = await fetch(stickerSource);
         const blob = await res.blob();
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
@@ -188,9 +113,10 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint }) => {
     }
   };
 
+  const providerError = (result as any)?.providerError || null;
+
   return (
     <div className={styles.resultScreen}>
-
       <div className={styles.resultSection}>
         <h1 className={styles.resultTitle}>{userName ? `${userName}, you are a ${archetype.name}!` : `You are ${archetype.name}!`}</h1>
 
@@ -219,11 +145,10 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint }) => {
         {/* Archetype label layer (text) */}
         <div className={styles.archetypeLabel}>{archetype?.name}</div>
 
-        {/* Sticker displayed as composed preview when available. Frame is incorporated into the preview to avoid CSS overlay pixelation. */}
-        <div className={styles.stickerRawContainer}>
-          <img src={previewSrc || stickerSource || FRAME_URL} alt="Sticker" className={styles.stickerRawImg} />
-          {/* If preview is not available, keep the frame overlay for visual fidelity */}
-          {!previewSrc && <img src={FRAME_URL} alt="Frame overlay" className={styles.stickerFrameOverlay} />}
+        {/* Simple sticker display - raw sticker with frame overlay using CSS */}
+        <div className={styles.stickerContainer}>
+          <img src={stickerSource || FRAME_URL} alt="Sticker" className={styles.stickerImage} />
+          <img src={FRAME_URL} alt="Frame overlay" className={styles.frameOverlay} />
         </div>
 
         <div className={styles.resultButtons}>
@@ -236,7 +161,6 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint }) => {
         <div className={styles.resultEmail}>
         </div>
       </div>
-
     </div>
   );
 };
