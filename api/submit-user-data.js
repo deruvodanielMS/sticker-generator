@@ -115,7 +115,63 @@ export default async function handler(req, res) {
       }
     }
 
-    // TODO: At this point you can also persist userData to a DB or trigger other side effects
+    // Trigger external webhook (n8n) with the standardized payload. Use env var N8N_WEBHOOK_URL if provided,
+    // otherwise pick test/prod defaults depending on NODE_ENV. This should not block the main response —
+    // failures here are logged but we still return success to the client.
+    const DEFAULT_N8N_TEST = 'https://nano-ms.app.n8n.cloud/webhook-test/sticker-app';
+    const DEFAULT_N8N_PROD = 'https://nano-ms.app.n8n.cloud/webhook/sticker-app';
+    const configuredN8n = (process.env.N8N_WEBHOOK_URL || (process.env.NODE_ENV === 'production' ? DEFAULT_N8N_PROD : DEFAULT_N8N_TEST));
+
+    // Build survey payload expected by n8n: numeric keys question_1/answer_1 ... up to 10 pairs
+    const surveyObj = {};
+    try {
+      const entries = Object.entries(userData.respuestas || {});
+      for (let i = 0; i < Math.min(entries.length, 10); i++) {
+        const [qid, ans] = entries[i];
+        surveyObj[`question_${i + 1}`] = qid;
+        // try to derive a readable answer label if possible
+        if (typeof ans === 'object') {
+          surveyObj[`answer_${i + 1}`] = ans.choice ?? (ans.intensity != null ? String(ans.intensity) : JSON.stringify(ans));
+        } else {
+          surveyObj[`answer_${i + 1}`] = String(ans);
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to build survey object for webhook:', e);
+    }
+
+    const webhookPayload = {
+      email: userData.email,
+      name: userData.nombre,
+      timestamp: userData.timestamp,
+      sticker: userData.imagenGenerada || null,
+      photo: req.body.photo || null,
+      archetype: userData.arquetipo || null,
+      survey: surveyObj
+    };
+
+    (async () => {
+      try {
+        if (!configuredN8n) {
+          console.warn('No n8n webhook URL configured; skipping webhook call');
+          return;
+        }
+        const resp = await fetch(configuredN8n, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(webhookPayload),
+          // allow a short timeout by using AbortController if desired
+        });
+        if (!resp.ok) {
+          const txt = await resp.text().catch(() => '');
+          console.warn('n8n webhook responded with non-OK status', resp.status, resp.statusText, txt);
+        } else {
+          console.log('n8n webhook called successfully');
+        }
+      } catch (e) {
+        console.error('Failed to call n8n webhook:', e?.message || e);
+      }
+    })();
 
     return res.status(200).json({
       success: true,
