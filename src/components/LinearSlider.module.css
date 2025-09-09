@@ -76,7 +76,8 @@
   filter: blur(10px);
   position: absolute;
   left: 0;
-  top: 22px;
+  top: 50%;
+  transform: translateY(-50%);
   pointer-events: none;
 }
 
@@ -89,7 +90,8 @@
   background: #FFF;
   position: absolute;
   left: 0;
-  top: 21px;
+  top: 50%;
+  transform: translateY(-50%);
   pointer-events: none;
 }
 
@@ -101,7 +103,8 @@
   background: linear-gradient(90deg, #0ECC7E 0%, #53C0D2 100%);
   position: absolute;
   left: 0;
-  top: 22px;
+  top: 50%;
+  transform: translateY(-50%);
   width: var(--filled-width, 10%);
   min-width: 63px; /* Minimum width as shown in Figma */
   transition: width 200ms ease;
@@ -112,8 +115,8 @@
 .sliderThumbGlow {
   position: absolute;
   left: var(--thumb-position, 0%);
-  top: -35px;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
   width: 70px;
   height: 70px;
   border-radius: 50%;
@@ -128,8 +131,8 @@
 .sliderThumb {
   position: absolute;
   left: var(--thumb-position, 0%);
-  top: -21px;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
   width: 42px;
   height: 42px;
   border-radius: 50%;
@@ -147,13 +150,13 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: -40px; /* extend above to cover the visible thumb */
-  bottom: -40px; /* extend below to ensure ample touch area */
+  top: 0;
+  bottom: 0;
   width: 100%;
-  height: calc(100% + 80px);
+  height: 100%;
   opacity: 0;
   cursor: pointer;
-  z-index: 15;
+  z-index: 9999; /* ensure the input sits above decorative layers */
   margin: 0;
   padding: 0;
   border: none;
@@ -161,6 +164,7 @@
   -webkit-appearance: none;
   appearance: none;
   touch-action: pan-x; /* make horizontal dragging smoother on touch devices */
+  pointer-events: auto;
 }
 
 .input::-webkit-slider-thumb {
@@ -222,13 +226,13 @@
   .sliderThumb {
     width: 36px;
     height: 36px;
-    top: -18px;
+    /* keep centered */
   }
   
   .sliderThumbGlow {
     width: 60px;
     height: 60px;
-    top: -30px;
+    /* keep centered */
   }
   
   .trackFilled {
@@ -271,13 +275,13 @@
   .sliderThumb {
     width: 32px;
     height: 32px;
-    top: -16px;
+    /* keep centered */
   }
   
   .sliderThumbGlow {
     width: 50px;
     height: 50px;
-    top: -25px;
+    /* keep centered */
   }
   
   .trackFilled {
