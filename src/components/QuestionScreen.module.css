@@ -113,7 +113,8 @@
 .questionOptionSelected {
   transform: translateY(-4px);
   box-shadow: 0 60px 80px 0 rgba(6, 6, 6, 0.20);
-  background: linear-gradient(180deg, rgba(14,204,126,0.08), rgba(83,192,210,0.06));
+  /* use a pale, non-transparent background to ensure clear selected state */
+  background: linear-gradient(180deg, #E8FFF4 0%, #DFF8FB 100%);
 }
 
 .optionIcon {
