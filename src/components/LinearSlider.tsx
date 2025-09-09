@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import type { FC } from 'react';
 import type { FC } from 'react';
 
 type Props = {
