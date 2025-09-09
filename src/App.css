@@ -825,13 +825,10 @@ html[data-theme="dark"] .question-option.selected {
 }
 
 .question-option.selected {
-  background: linear-gradient(180deg, rgba(14,204,126,0.08), rgba(83,192,210,0.06));
-  border: 2px solid transparent;
-  background-image: linear-gradient(180deg, rgba(14,204,126,0.08), rgba(83,192,210,0.06)), linear-gradient(90deg, var(--primary-main), var(--secondary-main));
-  background-origin: padding-box, border-box;
-  background-clip: padding-box, border-box;
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 60px 80px rgba(6, 6, 6, 0.2);
+  background: #fff; /* keep solid background on selection */
+  border: 2px solid var(--primary-main); /* focus border to highlight selection */
+  transform: translateY(-4px);
+  box-shadow: 0 40px 60px rgba(6, 6, 6, 0.12);
 }
 
 .option-icon {
