@@ -14,7 +14,7 @@ type Props = {
 const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint }) => {
   const { archetype, imageUrl } = result as any;
   // Prefer SVG frame asset for crisp rendering (use provided uploaded SVG if available)
-  const FRAME_URL = "https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F8822292feba8457299fe95b2e072c9f8?format=svg";
+  const FRAME_URL = "https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F5505fb97c053430187064b5c6e31e0b3?format=webp&width=800";
 
   // Choose sticker source (prefer server-provided full image URL or data URL)
   const stickerSource = (result as any)?.imageDataUrl || imageUrl;
