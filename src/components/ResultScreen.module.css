@@ -49,6 +49,8 @@
 
 .resultButtons { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:12px; }
 
+.resultButtonIcon { width: 18px; height: 18px; margin-right: 8px; display: inline-block; vertical-align: middle; }
+
 .privacyNote { font-size:12px; color:var(--muted); }
 
 @media (min-width: 769px) {
