@@ -2292,9 +2292,9 @@ html[data-theme="dark"] .result-button.selected img {
 }
 
 .result-button.secondary {
-  background: transparent;
+  background: #ffffff; /* solid background */
   border: 2px solid var(--primary-main);
-  color: #102532;
+  color: var(--primary-main);
 }
 
 .result-button:hover {
