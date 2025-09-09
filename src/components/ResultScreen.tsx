@@ -56,31 +56,42 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint }) => {
       const proxiedFrameSrc = await proxyFrame();
       const [stickerImg, frameImg] = await Promise.all([loadImage(stickerSource), loadImage(proxiedFrameSrc)]);
       const canvas = document.createElement('canvas');
-      const w = stickerImg.naturalWidth || stickerImg.width || 1024;
-      const h = stickerImg.naturalHeight || stickerImg.height || 1024;
-      canvas.width = w;
-      canvas.height = h;
+
+      // Make output square to avoid rounded empty corners inside the overlay
+      const srcW = stickerImg.naturalWidth || stickerImg.width || 1024;
+      const srcH = stickerImg.naturalHeight || stickerImg.height || 1024;
+      const size = Math.max(srcW, srcH);
+      canvas.width = size;
+      canvas.height = size;
       const ctx = canvas.getContext('2d');
       if (!ctx) throw new Error('No canvas context');
 
-      // Draw sticker full-bleed
-      ctx.drawImage(stickerImg, 0, 0, w, h);
+      // Draw sticker using cover strategy so it fills the square canvas completely
+      const stickerScale = Math.max(size / srcW, size / srcH) * 1.05; // small overshoot to avoid gaps
+      const drawW = srcW * stickerScale;
+      const drawH = srcH * stickerScale;
+      const dx = (size - drawW) / 2;
+      const dy = (size - drawH) / 2;
+
+      // Optional: fill background with transparent (keep alpha) so resulting PNG stays clean
+      ctx.clearRect(0, 0, size, size);
+
+      // Draw the sticker centered and scaled to cover the square canvas
+      ctx.drawImage(stickerImg, dx, dy, drawW, drawH);
 
       // Draw frame on top, scaled to COVER canvas (like background-size: cover)
-      const ovW = frameImg.naturalWidth || frameImg.width || w;
-      const ovH = frameImg.naturalHeight || frameImg.height || h;
-      // if frame is SVG it may have 0 naturalWidth; fall back to canvas size
-      const safeOvW = ovW > 0 ? ovW : w;
-      const safeOvH = ovH > 0 ? ovH : h;
+      const ovW = frameImg.naturalWidth || frameImg.width || size;
+      const ovH = frameImg.naturalHeight || frameImg.height || size;
+      const safeOvW = ovW > 0 ? ovW : size;
+      const safeOvH = ovH > 0 ? ovH : size;
 
-      // scale a bit larger to ensure no gaps (5% overshoot)
-      const scale = Math.max(w / safeOvW, h / safeOvH) * 1.05;
-      const drawW = safeOvW * scale;
-      const drawH = safeOvH * scale;
-      const dx = (w - drawW) / 2;
-      const dy = (h - drawH) / 2;
+      const frameScale = Math.max(size / safeOvW, size / safeOvH) * 1.05; // ensure overlay slightly larger
+      const frameDrawW = safeOvW * frameScale;
+      const frameDrawH = safeOvH * frameScale;
+      const fdx = (size - frameDrawW) / 2;
+      const fdy = (size - frameDrawH) / 2;
 
-      ctx.drawImage(frameImg, dx, dy, drawW, drawH);
+      ctx.drawImage(frameImg, fdx, fdy, frameDrawW, frameDrawH);
 
       return canvas.toDataURL('image/png');
     } catch (e) {
