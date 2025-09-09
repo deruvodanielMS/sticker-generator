@@ -16,7 +16,7 @@
   justify-content: center;
   align-items: center;
   gap: 170px;
-  background: url('https://api.builder.io/api/v1/image/assets/TEMP/5d8c897895293e24fbc7e0462fd3f8375d27b5d5?width=1488') lightgray center center / cover no-repeat;
+  background: transparent;
   box-sizing: border-box;
 }
 
