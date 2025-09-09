@@ -68,5 +68,3 @@ const EmailCapture = ({ onSubmit, onSkip }: Props) => {
 };
 
 export default EmailCapture;
-
-export default EmailCapture;
