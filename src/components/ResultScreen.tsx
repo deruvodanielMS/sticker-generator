@@ -195,11 +195,6 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint }) => {
         </div>
 
         <div className="result-buttons">
-          <button className="result-button secondary" onClick={shareSticker}>
-            <img src="https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F46582c5b707c47f389cf1daf4acaea9d?format=svg" alt="Share" className="result-button-icon" />
-            SHARE
-          </button>
-
           <button className="result-button primary" onClick={printSticker}>
             <img src="https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F1146f9e4771b4cff95e916ed9381032d?format=svg" alt="Print" className="result-button-icon" />
             PRINT
