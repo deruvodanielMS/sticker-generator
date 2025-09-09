@@ -83,7 +83,7 @@ const QuestionScreen: FC<Props> = ({
                     <img
                       src={option.icon}
                       alt={`${option.label} icon`}
-                      className="option-icon"
+                      className={styles.optionIcon}
                     />
                   </span>
                 )}
