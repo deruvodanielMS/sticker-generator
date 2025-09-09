@@ -16,7 +16,7 @@
   justify-content: center;
   align-items: center;
   gap: 170px;
-  background: linear-gradient(180deg, rgba(29,221,142,0.06), rgba(83,192,210,0.06)) center center / cover no-repeat;
+  background: transparent;
   box-sizing: border-box;
   margin-top: 144px; /* Header + stepper height */
 }
