@@ -852,7 +852,8 @@ html[data-theme="dark"] .question-option.selected {
 .question-navigation {
   display: flex;
   align-items: center;
-  gap: 12px; /* tightened navigation spacing */
+  gap: 20px; /* increased navigation spacing */
+  margin-top: 36px; /* ensure buttons are further away from options */
 }
 
 .nav-button {
