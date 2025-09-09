@@ -9,9 +9,10 @@ type Props = {
   userEmail?: string;
   onShare: () => void;
   onPrint: () => void;
+  onRestart?: () => void;
 };
 
-const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint }) => {
+const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint, onRestart }) => {
   const { archetype, imageUrl } = result as any;
   // Use the frame URL directly - no complex composition
   const FRAME_URL = "https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F5505fb97c053430187064b5c6e31e0b3?format=webp&width=800";
@@ -159,7 +160,7 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint }) => {
         </div>
 
         <div className={styles.startOverSection}>
-          <Button variant="text" onClick={() => window.location.reload()}>
+          <Button variant="text" onClick={onRestart || (() => window.location.reload())}>
             START OVER
           </Button>
         </div>
