@@ -199,11 +199,7 @@ html[data-theme="dark"] .theme-overlay::after { opacity: 1; filter: blur(64px) s
 .brand-header { display: flex; flex-direction: column; gap: 6px; align-items: center; padding-top: 8px; }
 .brand-logo { width: 80px; height: 80px; border-radius: 18px; background: linear-gradient(135deg,var(--gradient1-start),var(--gradient1-end)); box-shadow: 0 16px 40px rgba(11,18,32,0.45); }
 .brand-logo-img { width: 160px; height: auto; display: block; }
-/* Show appropriate logo based on data-theme */
-html[data-theme="dark"] .logo-dark { display: block; }
-html[data-theme="dark"] .logo-light { display: none; }
-html[data-theme="light"] .logo-light { display: block; }
-html[data-theme="light"] .logo-dark { display: none; }
+/* Single logo for all themes */
 .brand-title { margin: 0; font-size: 22px; line-height: 1.05; color: var(--gradient1-textContrast); }
 .brand-sub { display: block; font-size: 13px; color: var(--gradient1-textContrast); font-weight: 700; }
 html[data-theme="light"] .brand-sub { color: rgba(17,18,16,0.7); }
