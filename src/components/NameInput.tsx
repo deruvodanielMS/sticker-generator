@@ -17,22 +17,32 @@ const NameInput = ({ onContinue }: Props) => {
   return (
     <div className={styles.nameScreen}>
       <div className={styles.nameSection}>
-        <h1 className={styles.nameTitle}>What should I call you?</h1>
-
-        <form onSubmit={handleSubmit} className={styles.nameForm}>
-          <div className={styles.nameInputWrapper}>
-            <input
-              type="text"
-              className={styles.nameInput}
-              placeholder="Enter your name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              autoFocus
-            />
+        <div className={styles.nameContent}>
+          <div className={styles.nameHeaderSection}>
+            <h1 className={styles.nameTitle}>What should I call you?</h1>
+            <form onSubmit={handleSubmit} className={styles.nameForm}>
+              <div className={styles.nameInputWrapper}>
+                <div className={styles.nameInputField}>
+                  <div className={styles.nameInputContainer}>
+                    <input
+                      type="text"
+                      className={styles.nameInput}
+                      placeholder="Enter your name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      autoFocus
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className={styles.nameButtonWrapper}>
+                <Button type="submit" variant="primary" disabled={!name.trim()}>
+                  CONTINUE
+                </Button>
+              </div>
+            </form>
           </div>
-
-          <Button type="submit" variant="primary" disabled={!name.trim()}>CONTINUE</Button>
-        </form>
+        </div>
       </div>
     </div>
   );
