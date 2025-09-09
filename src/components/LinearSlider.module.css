@@ -156,7 +156,7 @@
   height: 100%;
   opacity: 0;
   cursor: pointer;
-  z-index: 9999; /* ensure the input sits above decorative layers */
+  z-index: 2; /* keep input present for keyboard/a11y but allow container to handle touch/pointer */
   margin: 0;
   padding: 0;
   border: none;
@@ -164,7 +164,7 @@
   -webkit-appearance: none;
   appearance: none;
   touch-action: pan-x; /* make horizontal dragging smoother on touch devices */
-  pointer-events: auto;
+  pointer-events: none; /* let the container capture touch/pointer events for consistent behavior */
 }
 
 .input::-webkit-slider-thumb {
