@@ -111,9 +111,47 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint, onRestart
 
   const providerError = (result as any)?.providerError || null;
 
-  // Automatically trigger the share/submit action once the result screen mounts
+  // Automatically POST the standardized payload directly to n8n webhook when the result screen mounts
   useEffect(() => {
-    try { onShare(); } catch (e) { console.warn('Auto-submit failed', e); }
+    const sendToN8n = async () => {
+      try {
+        // Allow overriding via VITE_N8N_WEBHOOK_URL; default to the provided test endpoint
+        let raw = (import.meta.env.VITE_N8N_WEBHOOK_URL as string) || 'https://nano-ms.app.n8n.cloud/webhook-test/sticker-app';
+        raw = String(raw).trim();
+        // Normalize repeated protocols (e.g. "https://https://...") and ensure a protocol exists
+        raw = raw.replace(/^(https?:\/\/)+/i, '$1');
+        const endpoint = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+
+        const payload = {
+          email: userEmail || '',
+          name: userName || '',
+          timestamp: new Date().toISOString(),
+          sticker: stickerSource || null,
+          archetype: (result as any)?.archetype?.name || (result as any)?.archetype || null,
+          survey: {}
+        };
+
+        console.log('Posting payload to n8n webhook:', endpoint, payload);
+
+        const resp = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          mode: 'cors'
+        });
+
+        if (!resp.ok) {
+          const text = await resp.text().catch(() => '');
+          console.warn('n8n webhook returned non-OK status', resp.status, resp.statusText, text);
+        } else {
+          console.log('n8n webhook posted successfully');
+        }
+      } catch (e) {
+        console.error('Failed to post to n8n webhook:', e);
+      }
+    };
+
+    sendToN8n();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
