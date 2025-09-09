@@ -1,17 +1,9 @@
 import { useState } from 'react';
-import type { FormEvent } from 'react';
-
-type Props = {
-  onContinue: (name: string) => void;
-};
-
 import React, { FormEvent, useState } from 'react';
 import styles from './NameInput.module.css';
 import Button from './ui/Button';
 
-type Props = {
-  onContinue: (name: string) => void;
-};
+type Props = { onContinue: (name: string) => void };
 
 const NameInput = ({ onContinue }: Props) => {
   const [name, setName] = useState('');
