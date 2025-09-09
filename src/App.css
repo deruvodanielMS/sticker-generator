@@ -1228,9 +1228,18 @@ html[data-theme="dark"] .nav-button.secondary {
 
 /* Dark theme adjustments for new components */
 html[data-theme="dark"] .radio-option {
-  background: rgba(255, 255, 255, 0.05);
+  background: linear-gradient(180deg, rgba(6,10,14,1), rgba(8,12,18,1));
   color: var(--gradient1-textContrast);
-  box-shadow: 0 50px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 40px 60px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Ensure keyboard focus uses an explicit outline/border rather than changing background */
+.question-option:focus-visible,
+.radio-option:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(14,204,126,0.12);
+  border: 2px solid var(--primary-main);
 }
 
 html[data-theme="dark"] .radio-option.selected {
