@@ -1,5 +1,5 @@
 .app-root {
-  --header-height: 64px; /* reduced header height to avoid overlap with stepper */
+  --header-height: 80px; /* Figma design header height */
   position: relative;
   z-index: 2;
   width: 100%;
