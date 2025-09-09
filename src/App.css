@@ -2151,6 +2151,24 @@ html[data-theme="dark"] .service-card {
   }
 }
 
+@media (max-width: 480px) {
+  /* Mobile-only: stack carousel cards vertically for small screens */
+  .services-carousel {
+    flex-direction: column !important;
+    align-items: center;
+    gap: 12px;
+    padding: 0;
+    overflow-x: visible;
+  }
+
+  .service-card {
+    min-width: 280px;
+    max-width: 100%;
+    width: 100%;
+    padding: 20px;
+  }
+}
+
 /* Result Screen Styles */
 .result-screen {
   position: relative;
