@@ -2562,6 +2562,16 @@ html[data-theme="dark"] .result-button.secondary {
   border-color: var(--primary-main);
 }
 
+/* Ensure primary buttons keep their green gradient in dark theme (fix issue where they became black) */
+html[data-theme="dark"] .result-button.primary,
+html[data-theme="dark"] .nav-button.primary,
+html[data-theme="dark"] .primary-button {
+  background: linear-gradient(90deg, var(--primary-main) 0%, var(--secondary-main) 100%) !important;
+  border: none !important;
+  color: var(--gradient1-textContrast) !important;
+  box-shadow: 0 6px 36px rgba(5, 40, 30, 0.18);
+}
+
 html[data-theme="dark"] .debug-info {
   background: rgba(16, 24, 32, 0.9);
   color: var(--gradient1-textContrast);
