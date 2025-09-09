@@ -6,7 +6,7 @@ type Props = {
   onSkip: () => void;
 };
 
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './PhotoCapture.module.css';
 import Button from './ui/Button';
 
