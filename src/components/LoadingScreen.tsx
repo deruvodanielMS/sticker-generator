@@ -289,6 +289,28 @@ const LoadingScreen = () => {
   return (
     <div className={styles.loadingScreen}>
       <div className={styles.loadingSection}>
+        {/* Static title block: stays fixed while content below animates */}
+        <div className={styles.loadingContent}>
+          <h1 className={styles.loadingMainTitle}>
+            Making Sense<br />
+            Technology for smarter<br />
+            investments.
+          </h1>
+
+          <div className={styles.loadingDivider}>
+            <div className={styles.dividerLine}></div>
+            <svg width="5" height="4" viewBox="0 0 5 4" fill="none" xmlns="http://www.w3.org/2000/svg" className={styles.dividerDot}>
+              <circle cx="2.5" cy="2" r="2" fill="url(#paint0_linear_static)"/>
+              <defs>
+                <linearGradient id="paint0_linear_static" x1="0.5" y1="2" x2="4.5" y2="2" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#0ECC7E"/>
+                  <stop offset="1" stopColor="#53C0D2"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </div>
+
         <div className={`${styles.loadingContentWrapper} ${isTransitioning ? styles.fadeOut : styles.fadeIn}`}>
           {currentStep === 1 && renderStep1()}
           {currentStep === 2 && renderStep2()}
