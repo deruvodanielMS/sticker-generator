@@ -143,8 +143,7 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint, onRestart
 
         {/* Simple sticker display - raw sticker with frame overlay using CSS */}
         <div className={styles.stickerContainer}>
-          <img src={stickerSource || FRAME_URL} alt="Sticker" className={styles.stickerImage} />
-          <img src={FRAME_URL} alt="Frame overlay" className={styles.frameOverlay} />
+          <img src={stickerSource} alt="Sticker" className={styles.stickerImage} />
         </div>
 
         <div className={styles.resultButtons}>
