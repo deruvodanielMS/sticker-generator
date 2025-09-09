@@ -16,7 +16,8 @@
   justify-content: center;
   align-items: center;
   gap: 170px;
-  background: url('https://api.builder.io/api/v1/image/assets/TEMP/0da098d3e988745e4e9ed218d3122be50e178fde?width=1488') lightgray center center / cover no-repeat;
+  /* Use decorative gradient (avoids embedding duplicate text inside background image) */
+  background: linear-gradient(180deg, rgba(29,221,142,0.06), rgba(83,192,210,0.06)) center center / cover no-repeat;
   box-sizing: border-box;
 }
 
