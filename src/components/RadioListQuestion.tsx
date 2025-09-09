@@ -1,11 +1,11 @@
 import type { QuestionOption } from '../types';
 
 import React from 'react';
-import type { QuestionOption } from '../types';
+import type { QuestionOption as QOption } from '../types';
 import styles from './RadioListQuestion.module.css';
 
 type Props = {
-  options: QuestionOption[];
+  options: QOption[];
   selectedId?: string;
   onSelect: (optionId: string) => void;
 };
