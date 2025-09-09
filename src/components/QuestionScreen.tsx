@@ -87,7 +87,7 @@ const QuestionScreen: FC<Props> = ({
                     />
                   </span>
                 )}
-                <span className="option-label">{option.label}</span>
+                <span className={styles.optionLabel}>{option.label}</span>
               </button>
             ))}
           </div>
