@@ -4,12 +4,12 @@ export const QUESTIONS: Question[] = [
   {
     id: 'decision_making',
     title: 'When evaluating a potential investment, how do you typically approach decision-making?',
-    layout: 'radio-list',
+    layout: 'icons',
     options: [
-      { id: 'fully_data_driven', label: 'Fully data-driven — I rely on analytics before moving forward' },
-      { id: 'mostly_data_instinct', label: 'Mostly data with some instinct for market timing' },
-      { id: 'balanced_mix', label: 'Balanced mix — I give equal weight to numbers and gut feeling' },
-      { id: 'primarily_intuition', label: 'Primarily intuition — I trust my experience to guide decisions' },
+      { id: 'fully_data_driven', label: 'Analytical', icon: 'https://api.builder.io/api/v1/image/assets/TEMP/a401344c9969a5d400f54f55c2592626ea2c0298?width=150' },
+      { id: 'mostly_data_instinct', label: 'Intuitive', icon: 'https://api.builder.io/api/v1/image/assets/TEMP/0ac811bd05f6ddc8bf847ddb3489b5c2754116e8?width=150' },
+      { id: 'balanced_mix', label: 'Collaborative', icon: 'https://api.builder.io/api/v1/image/assets/TEMP/99cb3257a361ef479d90e8b0e558ef7cf2d532af?width=150' },
+      { id: 'primarily_intuition', label: 'Opportunistic', icon: 'https://api.builder.io/api/v1/image/assets/TEMP/e289af3638361847320c030d3370ce41e910bb8d?width=150' },
     ],
   },
   {
