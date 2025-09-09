@@ -273,14 +273,7 @@ const LoadingScreen = () => {
             <g clipPath="url(#clipPath)">
               <g transform="matrix(0.028 0 0 0.028 28 28)">
                 <foreignObject x="-1035.71" y="-1035.71" width="2071.43" height="2071.43">
-                  <div
-                    style={{
-                      background: 'conic-gradient(from 90deg, rgba(14, 204, 126, 1) 0deg, rgba(83, 192, 210, 0) 360deg)',
-                      height: '100%',
-                      width: '100%',
-                      opacity: 1,
-                    }}
-                  />
+                  <div className="spinner-conic" />
                 </foreignObject>
               </g>
             </g>
