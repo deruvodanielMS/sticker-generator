@@ -68,7 +68,7 @@
 .questionCardsContainer {
   display: flex;
   width: 100%;
-  max-width: 696px;
+  max-width: 760px; /* allow a bit more room so long labels fit */
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -81,7 +81,7 @@
   justify-content: center;
   align-items: center;
   align-content: center;
-  gap: 32px;
+  gap: 24px;
   align-self: stretch;
   flex-wrap: wrap;
   /* keep options below navigation in stacking order */
@@ -91,9 +91,11 @@
 
 .questionOption {
   display: flex;
-  width: 226px;
+  flex: 1 1 220px; /* allow items to grow/shrink with available space */
+  min-width: 150px;
+  max-width: 280px;
   height: 124px;
-  padding: 16px 40px 24px 40px;
+  padding: 12px 20px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -103,6 +105,7 @@
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
+  text-align: center;
 }
 
 .questionOption:hover {
@@ -119,8 +122,8 @@
 
 .optionIcon {
   display: flex;
-  width: 75px;
-  height: 75px;
+  width: 64px;
+  height: 64px;
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
@@ -128,8 +131,8 @@
 }
 
 .optionIcon img {
-  width: 75px;
-  height: 75px;
+  width: 64px;
+  height: 64px;
   object-fit: contain;
 }
 
@@ -138,12 +141,14 @@
   color: #111210;
   text-align: center;
   font-family: 'Red Hat Display', system-ui, sans-serif;
-  font-size: 16px;
+  font-size: 14px; /* slightly smaller to avoid wrapping */
   font-style: normal;
   font-weight: 600;
-  line-height: normal;
+  line-height: 1.1;
   text-transform: uppercase;
   margin: 0;
+  white-space: normal;
+  overflow-wrap: anywhere; /* allow long words to break */
   /* Safari font rendering */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
