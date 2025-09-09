@@ -15,12 +15,11 @@ export const QUESTIONS: Question[] = [
   {
     id: 'risk_appetite',
     title: 'When considering a new opportunity, what best describes your risk tolerance?',
-    layout: 'radio-list',
+    layout: 'dial',
     options: [
-      { id: 'high_risk', label: 'High — I take bold bets for potentially high returns' },
-      { id: 'moderate_high', label: 'Moderate-High — I\'m comfortable with calculated risks for upside' },
-      { id: 'moderate_low', label: 'Moderate-Low — I focus on stability while seeking some growth' },
-      { id: 'low_risk', label: 'Low — I prioritize capital preservation and predictable outcomes' },
+      { id: 'low', label: 'Low', value: 0 },
+      { id: 'medium', label: 'Medium', value: 50 },
+      { id: 'high', label: 'High', value: 100 },
     ],
   },
   {
