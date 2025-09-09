@@ -1645,14 +1645,20 @@ html[data-theme="dark"] .email-input::placeholder {
 
 /* Outlined button style */
 .nav-button.outlined {
-  background: transparent;
+  background: #ffffff; /* solid outlined buttons */
   border: 2px solid var(--primary-main);
-  color: var(--custom-2-main);
-  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.1);
+  color: var(--primary-main);
+  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.08);
 }
 
 .nav-button.outlined:hover {
-  background: rgba(14, 204, 126, 0.05);
+  background: rgba(14, 204, 126, 0.06);
+}
+
+html[data-theme="dark"] .nav-button.outlined {
+  background: rgba(16,24,32,1);
+  color: var(--gradient1-textContrast);
+  border-color: var(--primary-main);
 }
 
 /* Apply transparent background universally for centered screen containers */
