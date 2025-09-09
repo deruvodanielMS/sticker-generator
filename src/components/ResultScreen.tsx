@@ -48,6 +48,8 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint }) => {
   };
 
   // Compose sticker+frame at original sticker resolution for printing/sharing
+  const providerError = (result as any)?.providerError || null;
+
   const composeStickerWithFrame = async (): Promise<string> => {
     if (!stickerSource) return '';
     try {
@@ -63,8 +65,22 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint }) => {
 
       // Draw sticker full-bleed
       ctx.drawImage(stickerImg, 0, 0, w, h);
-      // Draw frame on top, scaled to cover canvas
-      ctx.drawImage(frameImg, 0, 0, w, h);
+
+      // Draw frame on top, scaled to COVER canvas (like background-size: cover)
+      const ovW = frameImg.naturalWidth || frameImg.width || w;
+      const ovH = frameImg.naturalHeight || frameImg.height || h;
+      // if frame is SVG it may have 0 naturalWidth; fall back to canvas size
+      const safeOvW = ovW > 0 ? ovW : w;
+      const safeOvH = ovH > 0 ? ovH : h;
+
+      // scale a bit larger to ensure no gaps (5% overshoot)
+      const scale = Math.max(w / safeOvW, h / safeOvH) * 1.05;
+      const drawW = safeOvW * scale;
+      const drawH = safeOvH * scale;
+      const dx = (w - drawW) / 2;
+      const dy = (h - drawH) / 2;
+
+      ctx.drawImage(frameImg, dx, dy, drawW, drawH);
 
       return canvas.toDataURL('image/png');
     } catch (e) {
