@@ -7,7 +7,6 @@ import EmailCapture from './components/EmailCapture';
 import PhotoCapture from './components/PhotoCapture';
 import LoadingScreen from './components/LoadingScreen';
 import ResultScreen from './components/ResultScreen';
-import ThankYouScreen from './components/ThankYouScreen';
 import ErrorBanner from './components/ErrorBanner';
 import { QUESTIONS } from './data/questions';
 import type { Answers, GenerationResult } from './types';
@@ -195,9 +194,9 @@ function App() {
     }
   };
 
-  const goToThankYou = async () => {
+  const submitAndStay = async () => {
     await submitUserData();
-    setStep(STEPS.ThankYou);
+    // remain on the current screen after submitting
   };
 
   const restart = () => {
@@ -247,8 +246,7 @@ function App() {
       )}
 
       {step === STEPS.Generating && <LoadingScreen />}
-      {step === STEPS.Result && result && <ResultScreen result={result} userName={userName} userEmail={userEmail} onShare={goToThankYou} onPrint={goToThankYou} onRestart={restart} />}
-      {step === STEPS.ThankYou && <ThankYouScreen onRestart={restart} />}
+      {step === STEPS.Result && result && <ResultScreen result={result} userName={userName} userEmail={userEmail} onShare={submitAndStay} onPrint={submitAndStay} onRestart={restart} />}
     </Layout>
   );
 }
