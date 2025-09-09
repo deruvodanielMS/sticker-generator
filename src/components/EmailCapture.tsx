@@ -1,19 +1,9 @@
 import { useState } from 'react';
-import type { FormEvent } from 'react';
-
-type Props = {
-  onSubmit: (email: string) => void;
-  onSkip?: () => void;
-};
-
 import React, { FormEvent, useState } from 'react';
 import styles from './EmailCapture.module.css';
 import Button from './ui/Button';
 
-type Props = {
-  onSubmit: (email: string) => void;
-  onSkip?: () => void;
-};
+type Props = { onSubmit: (email: string) => void; onSkip?: () => void; };
 
 const EmailCapture = ({ onSubmit, onSkip }: Props) => {
   const [email, setEmail] = useState('');
