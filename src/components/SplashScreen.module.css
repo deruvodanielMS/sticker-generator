@@ -2,7 +2,7 @@
 .welcomeScreen {
   width: 100%;
   height: 100vh;
-  background: #FFF;
+  background: transparent; /* allow theme-overlay to paint the viewport background */
   position: relative;
   overflow: hidden;
 }
