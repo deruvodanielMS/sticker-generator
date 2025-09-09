@@ -104,7 +104,7 @@ const QuestionScreen: FC<Props> = ({
       />
       
       <div className={styles.questionContent}>
-        <div className="question-section">
+        <div className={styles.questionSection}>
           <h1 className="question-title">{question.title}</h1>
           
           {renderQuestionContent()}
