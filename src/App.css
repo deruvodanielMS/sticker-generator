@@ -878,9 +878,16 @@ html[data-theme="dark"] .question-option.selected {
 }
 
 .nav-button.secondary {
-  background: transparent;
+  background: #ffffff; /* solid background */
   border: 2px solid var(--primary-main);
-  color: #102532;
+  color: var(--primary-main);
+}
+
+/* Dark theme override for secondary buttons */
+html[data-theme="dark"] .nav-button.secondary {
+  background: rgba(16,24,32,1);
+  color: var(--gradient1-textContrast);
+  border-color: var(--primary-main);
 }
 
 .nav-button:hover:not(:disabled) {
