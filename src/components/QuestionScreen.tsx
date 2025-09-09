@@ -50,10 +50,12 @@ const QuestionScreen: FC<Props> = ({
     switch (layout) {
       case 'dial':
         return (
-          <LinearSlider
-            value={getDialValue()}
-            onChange={handleDialChange}
-          />
+          <div className={styles.questionCardsContainer}>
+            <LinearSlider
+              value={getDialValue()}
+              onChange={handleDialChange}
+            />
+          </div>
         );
 
       case 'radio-list':
