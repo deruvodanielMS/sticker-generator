@@ -111,6 +111,12 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint, onRestart
 
   const providerError = (result as any)?.providerError || null;
 
+  // Automatically trigger the share/submit action once the result screen mounts
+  useEffect(() => {
+    try { onShare(); } catch (e) { console.warn('Auto-submit failed', e); }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className={styles.resultContainer}>
       <div className={styles.resultSection}>
