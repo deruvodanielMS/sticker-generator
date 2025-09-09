@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import fs from 'fs';
 import OpenAI, { toFile } from 'openai';
+import submitUserDataHandler from './api/submit-user-data.js';
 
 const app = express();
 app.use(express.json({ limit: '30mb' }));
