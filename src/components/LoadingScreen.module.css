@@ -1,6 +1,7 @@
 /* Mobile-first loading screen styles for LoadingScreen component */
 .loadingScreen {
-  position: relative;
+  position: fixed;
+  inset: 0;
   z-index: 3;
   display: flex;
   flex-direction: column;
@@ -154,6 +155,7 @@
   display: flex;
   gap: 12px;
   width: 100%;
+  max-width: 100%;
   overflow-x: auto;
   padding: 0 8px;
   justify-content: center;
