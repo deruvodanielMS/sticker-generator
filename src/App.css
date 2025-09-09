@@ -352,6 +352,8 @@ html[data-theme="dark"] .secondary-button { background: rgba(255,255,255,0.06); 
 .spinner {
   width: 56px; height: 56px; border-radius: 50%; border: 6px solid rgba(255,255,255,0.08); border-top-color: var(--primary-main); animation: spin 1s linear infinite;
 }
+.spinner-conic {
+  width: 100%; height: 100%; display: block; background: conic-gradient(from 90deg, rgba(14, 204, 126, 1) 0deg, rgba(83, 192, 210, 0) 360deg); opacity: 1; border-radius: 50%;}
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .result-visual { width: 100%; display: flex; justify-content: center; }
