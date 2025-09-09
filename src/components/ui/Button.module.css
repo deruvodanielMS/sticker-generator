@@ -1,0 +1,42 @@
+.btn {
+  border-radius: var(--radius-rounded);
+  padding: var(--btn-padding);
+  min-width: 140px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  letter-spacing: .2px;
+  border: none;
+  cursor: pointer;
+  transition: background 200ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.btn:disabled { opacity: .6; cursor: not-allowed; }
+
+/* variants */
+.primary {
+  background: linear-gradient(90deg, var(--primary-main), var(--secondary-main));
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(2,6,8,0.45);
+}
+.secondary {
+  background: #ffffff;
+  color: #071018;
+  border: 1px solid rgba(3,6,9,0.08);
+  font-weight: 600;
+}
+.ghost {
+  background: transparent;
+  color: var(--gradient1-textContrast);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+/* Mobile first: full-width on small screens when inside actions row (applies via class composition) */
+@media (max-width: 600px) {
+  .fullWidthOnMobile { width: calc(100% - 32px); max-width: none; display: block; }
+}
+
+/* Preserve dark theme overrides via global selectors where needed */
+:global(html[data-theme="light"]) .secondary { background: #ffffff; color: #071018; box-shadow: 0 6px 16px rgba(3,6,9,0.12); }
+:global(html[data-theme="dark"]) .secondary { background: rgba(255,255,255,0.06); color: var(--gradient1-textContrast); border: 1px solid rgba(255,255,255,0.12); box-shadow: none; }
