@@ -71,7 +71,7 @@ const QuestionScreen: FC<Props> = ({
       case 'icons':
       default:
         return (
-          <div className="question-options">
+          <div className={styles.questionOptions}>
             {question.options.map((option) => (
               <button
                 key={option.id}
