@@ -63,6 +63,7 @@
   position: relative;
   max-width: 100%;
   margin: 0 auto;
+  overflow: visible; /* allow thumb to be visible and clickable outside the track bounds */
 }
 
 /* Blur track behind */
@@ -76,6 +77,7 @@
   position: absolute;
   left: 0;
   top: 22px;
+  pointer-events: none;
 }
 
 /* White background track */
@@ -88,6 +90,7 @@
   position: absolute;
   left: 0;
   top: 21px;
+  pointer-events: none;
 }
 
 /* Filled gradient track */
@@ -102,6 +105,7 @@
   width: var(--filled-width, 10%);
   min-width: 63px; /* Minimum width as shown in Figma */
   transition: width 200ms ease;
+  pointer-events: none;
 }
 
 /* Thumb glow effect */
@@ -135,6 +139,7 @@
   z-index: 10;
   /* Drop shadow as specified in Figma */
   filter: drop-shadow(0 10.7727px 21.5455px rgba(0, 0, 0, 0.1)) drop-shadow(0 0.897727px 7.18182px rgba(0, 0, 0, 0.1));
+  pointer-events: none; /* let the invisible input capture interactions */
 }
 
 /* Hidden input for interaction */
@@ -142,10 +147,10 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: 0;
-  bottom: 0;
+  top: -40px; /* extend above to cover the visible thumb */
+  bottom: -40px; /* extend below to ensure ample touch area */
   width: 100%;
-  height: 100%;
+  height: calc(100% + 80px);
   opacity: 0;
   cursor: pointer;
   z-index: 15;
@@ -155,6 +160,7 @@
   background: none;
   -webkit-appearance: none;
   appearance: none;
+  touch-action: pan-x; /* make horizontal dragging smoother on touch devices */
 }
 
 .input::-webkit-slider-thumb {
