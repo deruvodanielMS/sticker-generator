@@ -5,8 +5,8 @@ const LoadingScreen = () => {
   const carouselRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    // Loop through steps continuously; each step shows ~3.5s
-    const STEP_DURATION = 3500;
+    // Loop through steps continuously; increase each step to ~4.5s per request
+    const STEP_DURATION = 4500; // 4.5s per step
     const totalSteps = 3;
     let step = 1;
     setCurrentStep(step);
