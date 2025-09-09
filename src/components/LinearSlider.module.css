@@ -20,8 +20,10 @@
 
 .percentage {
   display: flex;
-  width: 66px;
-  height: 42px;
+  width: auto; /* flexible width so percentage never clips */
+  min-width: 48px;
+  height: auto;
+  padding: 4px 8px;
   flex-direction: column;
   justify-content: center;
   font-feature-settings: 'liga' off, 'clig' off;
