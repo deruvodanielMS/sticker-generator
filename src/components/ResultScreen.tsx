@@ -169,6 +169,10 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint }) => {
           <p className="result-line-2">{archetype.valueLine}</p>
         </div>
 
+        {providerError && (
+          <div className="result-provider-error">Generation fallback used: {String(providerError)}</div>
+        )}
+
         {/* Archetype label layer (text) */}
         <div className="archetype-label">{archetype?.name}</div>
 
