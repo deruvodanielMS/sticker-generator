@@ -59,11 +59,11 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint, onRestart
       onPrint();
       return;
     }
-    let outSrc = stickerSource || FRAME_URL;
+    let outSrc = stickerSource;
     try {
-      outSrc = await composeStickerWithFrame();
+      outSrc = await composeSticker();
     } catch (e) {
-      outSrc = stickerSource || FRAME_URL;
+      outSrc = stickerSource;
     }
 
     w.document.write(`<html><head><title>${archetype.name} Sticker</title></head><body style="margin:0;display:flex;align-items:center;justify-content:center;background:#fff;">
