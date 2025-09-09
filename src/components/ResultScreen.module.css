@@ -132,6 +132,10 @@
   flex-shrink: 0;
 }
 
+.startOverSection {
+  margin-top: 20px;
+}
+
 .resultEmail {
   /* Reserved for email input if needed */
 }

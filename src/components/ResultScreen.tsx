@@ -158,6 +158,12 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint }) => {
           </Button>
         </div>
 
+        <div className={styles.startOverSection}>
+          <Button variant="text" onClick={() => window.location.reload()}>
+            START OVER
+          </Button>
+        </div>
+
         <div className={styles.resultEmail}>
         </div>
       </div>
