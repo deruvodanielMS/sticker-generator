@@ -4,10 +4,17 @@
 .emailTitle { margin:0; font-size:20px; color:var(--gradient1-textContrast); font-weight:700; }
 .emailDivider { display:flex; gap:6px; align-items:center; }
 .emailDescription { color:var(--muted); font-size:14px; }
-.emailForm { width:100%; display:flex; gap:12px; justify-content:center; }
+.emailForm { width:100%; display:flex; gap:12px; justify-content:center; align-items:center; }
 .emailInputWrapper { flex:1; }
 .emailInput { width:100%; border-radius:12px; padding:12px; border:1px solid rgba(255,255,255,0.04); background: rgba(255,255,255,0.02); color:var(--gradient1-textContrast); font-size:16px; box-sizing:border-box; }
 .emailSubmitButton {}
 .emailSkipButton { margin-top:8px; }
+
+/* Stack email form vertically on small screens so input and buttons are column */
+@media (max-width: 480px) {
+  .emailForm { flex-direction: column; align-items: stretch; }
+  .emailInputWrapper { width: 100%; }
+  .emailSkipButton { margin-top: 12px; }
+}
 
 @media (min-width:769px) { .emailTitle { font-size:24px; } }
