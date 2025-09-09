@@ -761,7 +761,7 @@ html[data-theme="dark"] .question-option.selected {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: calc(var(--header-height) + 64px + 40px) 24px calc(var(--footer-height) + env(safe-area-inset-bottom) + 24px);
+  padding: calc(var(--header-height) + 64px + 40px) 24px calc(var(--footer-height) + env(safe-area-inset-bottom) + 48px);
   min-height: calc(100vh - var(--header-height) - 64px - var(--footer-height));
   box-sizing: border-box;
 }
@@ -773,7 +773,7 @@ html[data-theme="dark"] .question-option.selected {
   text-align: center;
   max-width: 696px;
   width: 100%;
-  gap: 28px; /* reduced spacing for tighter layout */
+  gap: 40px; /* increased spacing to separate title and options */
 }
 
 .question-title {
@@ -965,15 +965,15 @@ html[data-theme="dark"] .nav-button.secondary {
   }
 
   .question-content {
-    padding: calc(var(--header-height) + 64px + 40px) 16px calc(var(--footer-height) + env(safe-area-inset-bottom) + 16px);
+    padding: calc(var(--header-height) + 64px + 40px) 16px calc(var(--footer-height) + env(safe-area-inset-bottom) + 32px);
   }
 
   .question-content {
-    padding: calc(var(--header-height) + 64px + 20px) 16px calc(var(--footer-height) + env(safe-area-inset-bottom) + 16px);
+    padding: calc(var(--header-height) + 64px + 20px) 16px calc(var(--footer-height) + env(safe-area-inset-bottom) + 32px);
   }
 
   .question-section {
-    gap: 60px;
+    gap: 80px;
   }
 
   .question-options {
@@ -2644,12 +2644,12 @@ html[data-theme="dark"] .result-button.secondary {
 
 /* Reduce global spacings slightly for denser layout */
 .screen-container, .question-section, .photo-capture-section, .result-section {
-  gap: 20px;
+  gap: 32px; /* increased global spacing so content doesn't touch header/footer */
 }
 
 /* Reduce title margins and description spacing for question titles only - keep result title spacing large */
 .question-title {
-  margin-bottom: 8px;
+  margin-bottom: 24px;
 }
 
 /* Linear Slider Styles based on Figma design */
