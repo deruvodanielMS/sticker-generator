@@ -7,30 +7,40 @@ const LoadingScreen = () => {
   const carouselRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    // Loop through steps continuously; increased duration for better UX
+    // Progress through steps automatically, but stop at step 3 for user interaction
     const STEP_DURATION = 6500; // 6.5s per step
     const FADE_DURATION = 300; // 300ms fade transition
-    const totalSteps = 3;
     let step = 1;
     setCurrentStep(step);
 
-    const interval = setInterval(() => {
-      // Start fade out
-      setIsTransitioning(true);
+    const progressToNextStep = () => {
+      // Only progress if we haven't reached step 3 yet
+      if (step < 3) {
+        // Start fade out
+        setIsTransitioning(true);
 
-      setTimeout(() => {
-        // Change step during fade
-        step = step % totalSteps + 1;
-        setCurrentStep(step);
-
-        // End fade out, start fade in
         setTimeout(() => {
-          setIsTransitioning(false);
-        }, FADE_DURATION / 2);
-      }, FADE_DURATION / 2);
-    }, STEP_DURATION);
+          // Change step during fade
+          step = step + 1;
+          setCurrentStep(step);
 
-    return () => clearInterval(interval);
+          // End fade out, start fade in
+          setTimeout(() => {
+            setIsTransitioning(false);
+
+            // Schedule next progression only if not at final step
+            if (step < 3) {
+              setTimeout(progressToNextStep, STEP_DURATION);
+            }
+          }, FADE_DURATION / 2);
+        }, FADE_DURATION / 2);
+      }
+    };
+
+    // Start the first progression
+    const firstTimeout = setTimeout(progressToNextStep, STEP_DURATION);
+
+    return () => clearTimeout(firstTimeout);
   }, []);
 
   // Simple drag-to-scroll support for desktop/tablet (touch works by default)
