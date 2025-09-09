@@ -2629,10 +2629,18 @@ html[data-theme="dark"] .result-button.secondary {
   padding: 0;
 }
 
-/* When option is selected, do not use gradient backgrounds on the option card; use subtle border only */
+/* When option is selected, keep a solid background and highlight with a border */
 .question-option.selected {
-  background: transparent;
-  border: 2px solid rgba(14,204,126,0.12);
+  background: #ffffff; /* solid background for light theme */
+  border: 2px solid var(--primary-main);
+  transform: translateY(-4px);
+  box-shadow: 0 40px 60px rgba(6, 6, 6, 0.12);
+}
+
+/* Dark theme override for selected option */
+html[data-theme="dark"] .question-option.selected {
+  background: linear-gradient(180deg, rgba(14,204,126,0.06), rgba(83,192,210,0.04));
+  border: 2px solid var(--primary-main);
 }
 
 /* Ensure selected icons remain visible and slightly larger but without background */
