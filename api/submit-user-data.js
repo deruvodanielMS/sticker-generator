@@ -56,63 +56,12 @@ export default async function handler(req, res) {
       answersCount: Object.keys(userData.respuestas).length
     });
 
-    // If an image data URL is provided, attempt to upload it to Supabase Storage
-    // Supabase credentials can be set via environment variables SUPABASE_URL and SUPABASE_KEY
-    const SUPABASE_URL = (process.env.SUPABASE_URL || incomingSupabaseUrl || '').replace(/\/$/, '');
-    const SUPABASE_KEY = process.env.SUPABASE_KEY || incomingSupabaseKey || null;
-
-    async function uploadToSupabase(dataUrl, filename) {
-      if (!SUPABASE_URL || !SUPABASE_KEY) {
-        throw new Error('Supabase URL or key not configured');
-      }
-
-      const match = String(dataUrl).match(/^data:(.+);base64,(.*)$/);
-      if (!match) throw new Error('Invalid data URL for image upload');
-      const mime = match[1] || 'image/png';
-      const b64 = match[2] || '';
-      const buffer = Buffer.from(b64, 'base64');
-
-      // Upload using Supabase Storage REST API: PUT to /storage/v1/object/{bucket}/{path}
-      const uploadPath = `${SUPABASE_URL}/storage/v1/object/stickers/${encodeURIComponent(filename)}`;
-
-      const resp = await fetch(uploadPath, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${SUPABASE_KEY}`,
-          'Content-Type': mime,
-          'x-upsert': 'true'
-        },
-        body: buffer
-      });
-
-      if (!resp.ok) {
-        const txt = await resp.text().catch(() => '');
-        throw new Error(`Supabase upload failed: ${resp.status} ${resp.statusText} ${txt}`);
-      }
-
-      // Public URL for the uploaded file (public bucket path)
-      const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/stickers/${encodeURIComponent(filename)}`;
-      return publicUrl;
-    }
-
-    // Attempt upload if imagenGenerada is a data URL
+    // For this deployment we do not persist images server-side. The frontend must provide
+    // a public URL for `imagenGenerada`. If a data URL is provided, we will drop it and log a warning.
     if (userData.imagenGenerada && String(userData.imagenGenerada).startsWith('data:')) {
-      try {
-        // Build a safe filename
-        const safeName = `${Date.now()}_${Math.random().toString(36).slice(2, 9)}.png`;
-        const publicUrl = await uploadToSupabase(userData.imagenGenerada, safeName);
-        // Replace imagenGenerada with the public URL returned by Supabase
-        userData.imagenGenerada = publicUrl;
-        console.log('Uploaded image to Supabase:', publicUrl);
-      } catch (uploadErr) {
-        console.error('Failed to upload image to Supabase:', uploadErr.message || uploadErr);
-        // Keep imagenGenerada as originally provided (data URL) but notify client
-        return res.status(502).json({
-          success: false,
-          error: 'Failed to upload image to Supabase',
-          details: String(uploadErr.message || uploadErr)
-        });
-      }
+      console.warn('Received image as data URL; server will not upload images. Please provide a public URL in imagenGenerada.');
+      // Remove binary data to avoid sending large payloads to downstream services
+      userData.imagenGenerada = null;
     }
 
     // Trigger external webhook (n8n) with the standardized payload. Use env var N8N_WEBHOOK_URL if provided,
