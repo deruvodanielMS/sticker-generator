@@ -13,7 +13,7 @@ type Props = {
   onRestart?: () => void;
 };
 
-const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint, onRestart }) => {
+const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint, onRestart }) => {
   const { archetype, imageUrl } = result as any;
   // Use the frame URL directly - no complex composition
   // Choose sticker source (prefer server-provided full image URL or data URL)
