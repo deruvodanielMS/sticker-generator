@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './SplashScreen.module.css';
 import Button from './ui/Button';
 
