@@ -1,4 +1,5 @@
-import React, { FormEvent, useState } from 'react';
+import { useState } from 'react';
+import type { FormEvent } from 'react';
 import styles from './EmailCapture.module.css';
 import Button from './ui/Button';
 
