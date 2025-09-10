@@ -67,19 +67,17 @@ export default async function handler(req, res) {
     // Trigger external webhook (n8n) with the standardized payload. Use env var N8N_WEBHOOK_URL if provided,
     // otherwise pick test/prod defaults depending on NODE_ENV. This should not block the main response —
     // failures here are logged but we still return success to the client.
-    const DEFAULT_N8N_TEST = 'https://nano-ms.app.n8n.cloud/webhook-test/sticker-app';
-    const DEFAULT_N8N_PROD = 'https://nano-ms.app.n8n.cloud/webhook/sticker-app';
-    const configuredN8n = (process.env.N8N_WEBHOOK_URL || (process.env.NODE_ENV === 'production' ? DEFAULT_N8N_PROD : DEFAULT_N8N_TEST));
+    const configuredN8n = process.env.N8N_WEBHOOK_URL || 'https://nano-ms.app.n8n.cloud/webhook-test/sticker-app';
 
     // Build survey payload expected by n8n: numeric keys question_1/answer_1 for the 5 known questions
     const surveyObj = {};
     try {
-      // Explicit mapping to preserve order and friendly labels
+      // Explicit mapping to preserve order and friendly labels (text matches expected payload)
       const questionMap = [
         {
           id: 'decision_making',
           question: 'Which best describes your approach to making business decisions?',
-          options: { data_driven: 'Data-driven', hybrid: 'Hybrid', 'balanced_mix': 'Balanced mix', intuition: 'Intuition' }
+          options: { data_driven: 'Data-driven', hybrid: 'Hybrid', balanced_mix: 'Balanced mix', intuition: 'Intuition' }
         },
         {
           id: 'tech_adoption',
@@ -93,7 +91,7 @@ export default async function handler(req, res) {
         },
         {
           id: 'team_dynamics',
-          question: "When working on a team project, which approach best describes your style?",
+          question: 'When working on a team project, which approach best describes your style?',
           options: { hands_on: 'Hands-on', collaborative: 'Collaborative', advisory: 'Advisory', delegative: 'Delegative' }
         },
         {
@@ -114,6 +112,7 @@ export default async function handler(req, res) {
         // ansObj expected shape: { choice: 'option_id', intensity?: number }
         if (typeof ansObj === 'object') {
           const choice = ansObj.choice ?? String(ansObj);
+          // Map choice id to friendly label if available, otherwise stringify
           surveyObj[`answer_${slot}`] = qm.options[choice] || String(choice);
         } else {
           surveyObj[`answer_${slot}`] = String(ansObj);
