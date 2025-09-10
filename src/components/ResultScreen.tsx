@@ -185,9 +185,22 @@ const ResultScreen: FC<Props> = ({ result, userName, onShare, onPrint, onRestart
         {/* Archetype label layer (text) */}
         <div className={styles.archetypeLabel}>{archetype?.name}</div>
 
-        {/* Simple sticker display - raw sticker with frame overlay using CSS */}
+        {/* Sticker display contained within a frame overlay */}
         <div className={styles.stickerContainer}>
-          <img src={stickerSource} alt="Sticker" className={styles.stickerImage} />
+          <div className={styles.stickerInner}>
+            {stickerSource ? (
+              <img src={stickerSource} alt="Sticker" className={styles.stickerImage} />
+            ) : (
+              <div className={styles.stickerPlaceholder} />
+            )}
+          </div>
+
+          {/* Frame overlay (decorative) */}
+          <img
+            src="https://cdn.builder.io/api/v1/image/assets%2Fae236f9110b842838463c282b8a0dfd9%2F22ecb8e2464b40dd8952c31710f2afe2?format=webp&width=800"
+            alt="frame"
+            className={styles.frameOverlay}
+          />
         </div>
 
         <div className={styles.resultButtons}>
