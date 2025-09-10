@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import type { FC } from 'react';
 import styles from './ErrorBanner.module.css';
 
 type Props = { children: React.ReactNode };
