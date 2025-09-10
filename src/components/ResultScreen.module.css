@@ -105,18 +105,45 @@
 /* Simple sticker container - follows Figma design exactly */
 .stickerContainer {
   position: relative;
-  width: 300px;
-  height: 300px;
+  width: 340px;
+  height: 340px;
   flex-shrink: 0;
   margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Inner area where the actual sticker image is drawn. This provides padding so the
+   sticker never overlaps the decorative frame, and guarantees the same visual
+   container whether an image is present or not. */
+.stickerInner {
+  position: relative;
+  width: calc(100% - 32px);
+  height: calc(100% - 32px);
+  background: #fff; /* keep white background for printable stickers */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 6px;
+  z-index: 1;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
 .stickerImage {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain; /* ensure whole sticker fits inside the frame */
   display: block;
-  border-radius: 0;
+}
+
+.stickerPlaceholder {
+  width: 80%;
+  height: 80%;
+  background: linear-gradient(180deg, #f2f6f5 0%, #eaf3f2 100%);
+  border-radius: 4px;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.04);
 }
 
 .frameOverlay {
@@ -125,9 +152,9 @@
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   pointer-events: none;
-  z-index: 2;
+  z-index: 3;
 }
 
 .resultButtons {
