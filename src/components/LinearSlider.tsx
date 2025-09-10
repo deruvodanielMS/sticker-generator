@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import styles from './LinearSlider.module.css';
 
 type Props = {
@@ -78,7 +78,7 @@ const LinearSlider = ({ value, onChange }: Props) => {
           onPointerLeave={endPointer}
           onTouchStart={(e) => { const t = e.touches[0]; if (t) { const val = computeValueFromEvent(t.clientX); handleChange(val); e.preventDefault(); } }}
           onTouchMove={(e) => { const t = e.touches[0]; if (t) { const val = computeValueFromEvent(t.clientX); handleChange(val); e.preventDefault(); } }}
-          onTouchEnd={(e) => { /* release drag state */ }}
+          onTouchEnd={() => { /* release drag state */ }}
         >
           {/* Blur shadow effect */}
           <div className={styles.trackBlur} />
