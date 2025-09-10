@@ -75,40 +75,6 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
     setTimeout(() => onPrint(), 1000);
   };
 
-  const shareSticker = async () => {
-    const fileName = `${archetype.name.replace(/\s+/g, '-')}-sticker.png`;
-    try {
-      const composedDataUrl = await composeSticker();
-      const res = await fetch(composedDataUrl);
-      const blob = await res.blob();
-      if (navigator.share && (navigator as any).canShare?.({ files: [new File([blob], fileName, { type: blob.type })] })) {
-        await navigator.share({
-          title: `${archetype.name} Sticker`,
-          text: archetype.valueLine,
-          files: [new File([blob], fileName, { type: blob.type })],
-        });
-      } else {
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = fileName;
-        a.click();
-        URL.revokeObjectURL(a.href);
-      }
-    } catch (e) {
-      console.error('Share failed, falling back to raw sticker', e);
-      try {
-        const res = await fetch(stickerSource);
-        const blob = await res.blob();
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = fileName;
-        a.click();
-        URL.revokeObjectURL(a.href);
-      } catch {}
-    } finally {
-      setTimeout(() => onShare(), 500);
-    }
-  };
 
   const providerError = (result as any)?.providerError || null;
 
