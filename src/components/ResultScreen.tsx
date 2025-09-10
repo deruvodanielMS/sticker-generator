@@ -115,6 +115,8 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
         }
       } catch (e) {
         console.error('Failed to post to n8n webhook:', e);
+      } finally {
+        try { onShare(); } catch (err) { /* ignore */ }
       }
     };
 
