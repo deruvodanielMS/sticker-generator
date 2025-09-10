@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import type { Archetype } from '../types';
 import tokens from '../styles/tokens.module.css';
 import styles from './PromptPreview.module.css';
