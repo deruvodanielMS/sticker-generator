@@ -129,21 +129,51 @@ function App() {
 
   const submitUserData = async () => {
     try {
-      await fetch('/api/submit-user-data', {
+      // Build survey payload compatible with n8n (question_1..answer_5)
+      const surveyObj: Record<string, string> = {};
+      try {
+        QUESTIONS.forEach((q, idx) => {
+          const slot = idx + 1;
+          surveyObj[`question_${slot}`] = q.title.split('\n')[0] || q.title;
+          const ans = (answers || {})[q.id];
+          if (!ans) {
+            surveyObj[`answer_${slot}`] = '';
+            return;
+          }
+          if (typeof ans === 'object') {
+            const choiceId = ans.choice;
+            const opt = q.options?.find((o: any) => o.id === choiceId);
+            surveyObj[`answer_${slot}`] = (opt && opt.label) ? opt.label : String(choiceId);
+          } else {
+            surveyObj[`answer_${slot}`] = String(ans);
+          }
+        });
+      } catch (e) {
+        console.warn('Failed to build survey payload on client', e);
+      }
+
+      const payload = {
+        email: userEmail || '',
+        name: userName || '',
+        timestamp: new Date().toISOString(),
+        sticker: (result as any)?.imageUrl || (result as any)?.imageDataUrl || null,
+        archetype: generatedArchetype?.name || (result as any)?.archetype?.name || generatedArchetype || (result as any)?.archetype || null,
+        survey: surveyObj
+      };
+
+      // Use VITE_N8N_WEBHOOK_URL if provided, otherwise default to the test webhook
+      let raw = (import.meta.env.VITE_N8N_WEBHOOK_URL as string) || 'https://nano-ms.app.n8n.cloud/webhook-test/sticker-app';
+      raw = String(raw).trim().replace(/^(https?:\/\/)+/i, '$1');
+      const endpoint = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+
+      await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          nombre: userName,
-          email: userEmail,
-          respuestas: answers,
-          arquetipo: generatedArchetype?.name || (result as any)?.archetype?.name || generatedArchetype || result?.archetype || null,
-          imagenGenerada: (result as any)?.imageUrl || (result as any)?.imageDataUrl || null,
-          photo: capturedPhoto || null,
-          timestamp: new Date().toISOString()
-        })
+        body: JSON.stringify(payload),
+        mode: 'cors'
       });
     } catch (error) {
-      console.error('Error submitting user data:', error);
+      console.error('Error submitting user data (direct n8n):', error);
       // Don't block the user experience if submission fails
     }
   };
