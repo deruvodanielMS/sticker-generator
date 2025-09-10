@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './PhotoIntro.module.css';
 import Button from './ui/Button';
 
