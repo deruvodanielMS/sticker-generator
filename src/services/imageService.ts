@@ -118,7 +118,7 @@ async function generateViaServer(prompt: string, selfieDataUrl?: string): Promis
 }
 
 // Call OpenAI REST API directly from the client (no backend). Expects VITE_OPENAI_API_KEY to be set.
-async function generateViaOpenAI(prompt: string, selfieDataUrl?: string, photoStep?: string): Promise<string> {
+export async function generateViaOpenAI(prompt: string, selfieDataUrl?: string, photoStep?: string): Promise<string> {
   const key = (import.meta.env.VITE_OPENAI_API_KEY as string) || '';
   if (!key) throw new Error('No OpenAI key available in client environment (VITE_OPENAI_API_KEY).');
 
