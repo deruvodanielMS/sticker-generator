@@ -1,6 +1,6 @@
 import type { QuestionOption } from '../types';
 
-import type { QuestionOption as QOption } from '../types';
+import type { QuestionOption } from '../types';
 import styles from './RadioListQuestion.module.css';
 
 type Props = {
