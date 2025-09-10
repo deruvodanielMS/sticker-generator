@@ -1,4 +1,3 @@
-import { FC, ReactNode, useEffect, useMemo } from 'react';
 import { useEffect, useMemo } from 'react';
 import type { FC, ReactNode } from 'react';
 import styles from './Layout.module.css';
