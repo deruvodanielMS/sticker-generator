@@ -213,6 +213,8 @@ export async function generateSticker(archetype: Archetype, selfieDataUrl?: stri
   const includeSelfie = Boolean(selfieDataUrl);
   const prompt = promptOverride ?? buildPromptUtil(archetype, includeSelfie);
   const photoStep = photoStepParam ?? (selfieDataUrl ? 'sent' : 'skipped');
+  // reference photoStep to avoid unused variable TypeScript error (may be used for logging or future features)
+  void photoStep;
   const online = typeof navigator !== 'undefined' ? navigator.onLine : true;
 
   if (online) {
