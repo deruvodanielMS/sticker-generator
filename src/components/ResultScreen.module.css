@@ -155,6 +155,8 @@
   object-fit: contain;
   pointer-events: none;
   z-index: 3;
+  image-rendering: auto; /* prefer smooth scaling */
+  will-change: transform; /* hint to browser for smoother compositing */
 }
 
 .resultButtons {
