@@ -136,8 +136,10 @@ function App() {
           nombre: userName,
           email: userEmail,
           respuestas: answers,
-          arquetipo: generatedArchetype || result?.archetype,
-          imagenGenerada: result?.imageUrl
+          arquetipo: generatedArchetype?.name || (result as any)?.archetype?.name || generatedArchetype || result?.archetype || null,
+          imagenGenerada: (result as any)?.imageUrl || (result as any)?.imageDataUrl || null,
+          photo: capturedPhoto || null,
+          timestamp: new Date().toISOString()
         })
       });
     } catch (error) {
