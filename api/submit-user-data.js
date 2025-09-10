@@ -122,20 +122,54 @@ export default async function handler(req, res) {
     const DEFAULT_N8N_PROD = 'https://nano-ms.app.n8n.cloud/webhook/sticker-app';
     const configuredN8n = (process.env.N8N_WEBHOOK_URL || (process.env.NODE_ENV === 'production' ? DEFAULT_N8N_PROD : DEFAULT_N8N_TEST));
 
-    // Build survey payload expected by n8n: numeric keys question_1/answer_1 ... up to 10 pairs
+    // Build survey payload expected by n8n: numeric keys question_1/answer_1 for the 5 known questions
     const surveyObj = {};
     try {
-      const entries = Object.entries(userData.respuestas || {});
-      for (let i = 0; i < Math.min(entries.length, 10); i++) {
-        const [qid, ans] = entries[i];
-        surveyObj[`question_${i + 1}`] = qid;
-        // try to derive a readable answer label if possible
-        if (typeof ans === 'object') {
-          surveyObj[`answer_${i + 1}`] = ans.choice ?? (ans.intensity != null ? String(ans.intensity) : JSON.stringify(ans));
-        } else {
-          surveyObj[`answer_${i + 1}`] = String(ans);
+      // Explicit mapping to preserve order and friendly labels
+      const questionMap = [
+        {
+          id: 'decision_making',
+          question: 'Which best describes your approach to making business decisions?',
+          options: { data_driven: 'Data-driven', hybrid: 'Hybrid', 'balanced_mix': 'Balanced mix', intuition: 'Intuition' }
+        },
+        {
+          id: 'tech_adoption',
+          question: 'Which mindset do you most identify with when new technologies emerge?',
+          options: { disruptor: 'Disruptor', tester: 'Tester', observer: 'Observer', late_adopter: 'Late Adopter' }
+        },
+        {
+          id: 'risk_appetite',
+          question: 'With new opportunities, how would you describe your risk tolerance?',
+          options: { high: 'High', moderate_high: 'Moderate-High', moderate_low: 'Moderate-Low', low: 'Low' }
+        },
+        {
+          id: 'team_dynamics',
+          question: "When working on a team project, which approach best describes your style?",
+          options: { hands_on: 'Hands-on', collaborative: 'Collaborative', advisory: 'Advisory', delegative: 'Delegative' }
+        },
+        {
+          id: 'growth_priorities',
+          question: 'When defining your vision for the future, which area is your primary focus?',
+          options: { operational_efficiency: 'Operational efficiency', market_expansion: 'Market expansion', innovation: 'Innovation', talent_strengthening: 'Talent strengthening' }
         }
-      }
+      ];
+
+      questionMap.forEach((qm, idx) => {
+        const slot = idx + 1;
+        surveyObj[`question_${slot}`] = qm.question;
+        const ansObj = (userData.respuestas || {})[qm.id];
+        if (!ansObj) {
+          surveyObj[`answer_${slot}`] = '';
+          return;
+        }
+        // ansObj expected shape: { choice: 'option_id', intensity?: number }
+        if (typeof ansObj === 'object') {
+          const choice = ansObj.choice ?? String(ansObj);
+          surveyObj[`answer_${slot}`] = qm.options[choice] || String(choice);
+        } else {
+          surveyObj[`answer_${slot}`] = String(ansObj);
+        }
+      });
     } catch (e) {
       console.warn('Failed to build survey object for webhook:', e);
     }
