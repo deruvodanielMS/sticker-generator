@@ -77,16 +77,42 @@
 }
 
 .questionOptions {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* Desktop: 2x2 grid */
   gap: 24px;
   align-self: stretch;
-  flex-wrap: wrap;
-  /* keep options below navigation in stacking order */
   position: relative;
   z-index: 1;
+  justify-items: center;
+}
+
+/* Tablet: use 4-columns to match tablet layout */
+@media (min-width: 744px) and (max-width: 1024px) {
+  .questionOptions {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Small screens: single column stack */
+@media (max-width: 768px) {
+  .questionOptions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+  }
+}
+
+/* Ensure question options size adapts to grid cells */
+.questionOption {
+  width: 100%;
+  max-width: 360px;
+  height: 124px;
+  padding: 12px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .questionOption {
