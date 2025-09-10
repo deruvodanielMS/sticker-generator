@@ -1,4 +1,3 @@
-import React, { FC } from 'react';
 import type { Question } from '../types';
 import LinearSlider from './LinearSlider';
 import RadioListQuestion from './RadioListQuestion';
