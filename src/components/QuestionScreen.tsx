@@ -4,6 +4,7 @@ import LinearSlider from './LinearSlider';
 import RadioListQuestion from './RadioListQuestion';
 import styles from './QuestionScreen.module.css';
 import Button from './ui/Button';
+import type { FC } from 'react';
 
 type Props = {
   question: Question;
@@ -11,7 +12,7 @@ type Props = {
   onSelect: (optionId: string, intensity?: number) => void;
   onNext: () => void;
   onPrevious: () => void;
-  onClose: () => void;
+  onClose?: () => void;
   step: number;
   total: number;
 };
@@ -22,7 +23,6 @@ const QuestionScreen: FC<Props> = ({
   onSelect,
   onNext,
   onPrevious,
-  onClose,
   step,
   total
 }) => {
