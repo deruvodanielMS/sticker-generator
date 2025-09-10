@@ -78,6 +78,18 @@ const ResultScreen: FC<Props> = ({ result, userName, userEmail, onShare, onPrint
 
   const providerError = (result as any)?.providerError || null;
 
+  // Trigger the unified submission flow (frontend -> /api/submit-user-data -> n8n)
+  useEffect(() => {
+    try {
+      // call the handler provided by App which will POST to /api/submit-user-data
+      onShare();
+    } catch (e) {
+      // ignore errors to avoid breaking the UI
+      console.warn('Error calling onShare handler', e);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   return (
     <div className={styles.resultContainer}>
