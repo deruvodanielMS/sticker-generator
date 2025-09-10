@@ -26,12 +26,12 @@ export const QUESTIONS: Question[] = [
   {
     id: 'risk_appetite',
     title: 'Q3 – Risk Appetite\nWhen considering a new opportunity, what best describes your risk tolerance?',
-    layout: 'radio-list',
+    layout: 'dial',
     options: [
-      { id: 'high', label: 'High' },
-      { id: 'moderate_high', label: 'Moderate-High' },
-      { id: 'moderate_low', label: 'Moderate-Low' },
-      { id: 'low', label: 'Low' },
+      { id: 'low', label: 'Low', value: 0 },
+      { id: 'moderate_low', label: 'Moderate-Low', value: 25 },
+      { id: 'moderate_high', label: 'Moderate-High', value: 75 },
+      { id: 'high', label: 'High', value: 100 },
     ],
   },
   {
