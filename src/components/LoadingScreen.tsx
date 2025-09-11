@@ -38,50 +38,67 @@ const LoadingScreen = () => {
     let startX = 0;
     let scrollLeft = 0;
 
-    const onMouseDown = (e: MouseEvent) => {
+    const pointerStart = (clientX: number) => {
       isDown = true;
       el.classList.add('dragging');
-      startX = e.pageX - el.offsetLeft;
+      startX = clientX - el.offsetLeft;
       scrollLeft = el.scrollLeft;
     };
-    const onMouseLeave = () => {
-      isDown = false;
-      el.classList.remove('dragging');
-    };
-    const onMouseUp = () => {
-      isDown = false;
-      el.classList.remove('dragging');
-    };
-    const onMouseMove = (e: MouseEvent) => {
+
+    const pointerMove = (clientX: number) => {
       if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - el.offsetLeft;
+      const x = clientX - el.offsetLeft;
       const walk = (x - startX) * 1;
       el.scrollLeft = scrollLeft - walk;
     };
 
-    el.addEventListener('mousedown', onMouseDown);
-    el.addEventListener('mouseleave', onMouseLeave);
-    el.addEventListener('mouseup', onMouseUp);
-    el.addEventListener('mousemove', onMouseMove);
+    const onPointerDown = (e: PointerEvent) => {
+      pointerStart(e.pageX);
+    };
+    const onPointerUp = () => {
+      isDown = false;
+      el.classList.remove('dragging');
+    };
+    const onPointerMove = (e: PointerEvent) => {
+      if (!isDown) return;
+      e.preventDefault();
+      pointerMove(e.pageX);
+    };
+
+    const onTouchStart = (e: TouchEvent) => {
+      const clientX = e.touches[0].pageX;
+      pointerStart(clientX);
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const clientX = e.touches[0].pageX;
+      pointerMove(clientX);
+    };
+
+    // prefer pointer events if available
+    el.addEventListener('pointerdown', onPointerDown as any);
+    window.addEventListener('pointerup', onPointerUp as any);
+    window.addEventListener('pointermove', onPointerMove as any);
+
+    // fallback touch events
+    el.addEventListener('touchstart', onTouchStart as any, { passive: true });
+    el.addEventListener('touchmove', onTouchMove as any, { passive: false });
+    el.addEventListener('touchend', onPointerUp as any);
 
     return () => {
-      el.removeEventListener('mousedown', onMouseDown);
-      el.removeEventListener('mouseleave', onMouseLeave);
-      el.removeEventListener('mouseup', onMouseUp);
-      el.removeEventListener('mousemove', onMouseMove);
+      el.removeEventListener('pointerdown', onPointerDown as any);
+      window.removeEventListener('pointerup', onPointerUp as any);
+      window.removeEventListener('pointermove', onPointerMove as any);
+
+      el.removeEventListener('touchstart', onTouchStart as any);
+      el.removeEventListener('touchmove', onTouchMove as any);
+      el.removeEventListener('touchend', onPointerUp as any);
     };
   }, []);
 
   const renderStep1 = () => (
     <div className={styles.loadingContent}>
-      <h1 className={styles.loadingMainTitle}>
-        Making Sense
-        <br />
-        Technology for smarter
-        <br />
-        investments.
-      </h1>
       <div className={styles.loadingFeatures}>
         <div className={styles.featureItem}><span>20+ years driving digital innovation</span></div>
         <div className={styles.featureItem}><span>100+ successful projects</span></div>
@@ -92,13 +109,6 @@ const LoadingScreen = () => {
 
   const renderStep2 = () => (
     <div className={styles.loadingContent}>
-      <h1 className={styles.loadingMainTitle}>
-        Making Sense
-        <br />
-        Technology for smarter
-        <br />
-        investments.
-      </h1>
       <div className={styles.loadingDescriptionSection}>
         <h2 className={styles.loadingSubtitle}>From Due Diligence to Value Creation.</h2>
         <p className={styles.loadingDescription}>
@@ -110,13 +120,6 @@ const LoadingScreen = () => {
 
   const renderStep3 = () => (
     <div className={styles.loadingContent}>
-      <h1 className={styles.loadingMainTitle}>
-        Making Sense
-        <br />
-        Technology for smarter
-        <br />
-        investments.
-      </h1>
       <div className={styles.loadingServicesSection}>
         <h2 className={styles.loadingSubtitle}>How We Help?</h2>
         <div className={styles.servicesCarousel} ref={carouselRef}>
@@ -131,6 +134,29 @@ const LoadingScreen = () => {
   return (
     <MotionSection animateKey={`loading-step-${currentStep}`} duration={500} className={styles.loadingScreen}>
       <div className={styles.loadingSection}>
+        {/* Static header: main title, divider and loader spinner */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+          <h1 className={styles.loadingMainTitle}>
+            Making Sense
+            <br />
+            Technology for smarter
+            <br />
+            investments.
+          </h1>
+
+          <div className={styles.loadingDivider}>
+            <div className={styles.dividerLine}></div>
+            <div className={styles.dividerDot} style={{ background: 'linear-gradient(90deg, #0ecc7e 0%, #53c0d2 100%)' }}></div>
+          </div>
+
+          <div className={styles.loadingSpinner} aria-hidden>
+            <svg className={styles.loadingSpinnerSvg} viewBox="0 0 50 50" width="56" height="56" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="25" cy="25" r="20" stroke="#e6f6f2" strokeWidth="6" />
+              <path d="M45 25a20 20 0 0 1-20 20" stroke="#53c0d2" strokeWidth="6" strokeLinecap="round" />
+            </svg>
+          </div>
+        </div>
+
         {isTransitioning ? null : (
           <div className={styles.loadingInner}>
             {currentStep === 1 && renderStep1()}
