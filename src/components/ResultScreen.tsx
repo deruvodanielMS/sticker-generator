@@ -273,7 +273,7 @@ const ResultScreen: FC<Props> = ({
                 </defs>
               </svg>
             </div>
-         {personalityData && (
+            {personalityData && (
               <div className={styles.personalityDescription}>
                 <span className={styles.bold}>Personality: </span>
                 <span className={styles.regular}>
@@ -359,7 +359,7 @@ const ResultScreen: FC<Props> = ({
           </div>
         )}
       </div>
-    </MotionSection>
+    </div>
   );
 };
 
