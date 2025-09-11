@@ -130,6 +130,7 @@ const triggerShareService = (key: string, onShare: () => void) => {
 type Props = {
   result: GenerationResult;
   userName?: string;
+  userEmail?: string;
   agent?: Agent;
   onShare: () => void;
   onPrint: () => void;
