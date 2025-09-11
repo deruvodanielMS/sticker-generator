@@ -275,7 +275,7 @@
 
   .sliderContainer {
     width: 100%;
-    max-width: 360px;
+    max-width: 300px;
     height: 40px;
   }
 
@@ -296,7 +296,7 @@
   }
 
   .labels {
-    max-width: 360px;
+    max-width: 340px;
   }
 
   .labelItem {
