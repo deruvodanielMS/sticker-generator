@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import type { FormEvent } from 'react';
-import styles from './EmailCapture.module.css';
-import Button from './ui/Button';
-import Divider from './ui/Divider';
+import { useState } from "react";
+import type { FormEvent } from "react";
+import styles from "./EmailCapture.module.css";
+import Button from "./ui/Button";
+import Divider from "./ui/Divider";
 
-type Props = { onSubmit: (email: string) => void; onSkip?: () => void; };
+type Props = { onSubmit: (email: string) => void };
 
-const EmailCapture = ({ onSubmit, onSkip }: Props) => {
-  const [email, setEmail] = useState('');
+const EmailCapture = ({ onSubmit }: Props) => {
+  const [email, setEmail] = useState("");
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -24,8 +24,8 @@ const EmailCapture = ({ onSubmit, onSkip }: Props) => {
         <Divider />
 
         <p className={styles.emailDescription}>
-          Enter your email address below,
-and we'll send your new AI Agent directly to your inbox.
+          Enter your email address below, and we'll send your new AI Agent
+          directly to your inbox.
         </p>
 
         <form onSubmit={handleSubmit} className={styles.emailForm}>
@@ -40,7 +40,13 @@ and we'll send your new AI Agent directly to your inbox.
             />
           </div>
 
-          <Button className={styles.emailSubmitButton} type="submit" variant="primary">SUBMIT</Button>
+          <Button
+            className={styles.emailSubmitButton}
+            type="submit"
+            variant="primary"
+          >
+            SUBMIT
+          </Button>
         </form>
       </div>
     </div>
