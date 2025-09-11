@@ -85,7 +85,7 @@
   position: relative;
   z-index: 1;
   justify-items: center;
-  max-width: 480px; /* Constrain width for 2x2 layout */
+  max-width: 760px; /* Allow wider cards so labels don't wrap */
   margin: 0 auto;
 }
 
@@ -100,7 +100,7 @@
 
 .questionOption {
   display: flex;
-  width: 226px;
+  width: 320px;
   height: 124px;
   padding: 16px 40px 24px 40px;
   flex-direction: column;
@@ -362,7 +362,7 @@
   }
 
   .questionOption {
-    width: 226px;
+    width: 320px;
     height: 124px;
     padding: 16px 40px 24px 40px;
   }
