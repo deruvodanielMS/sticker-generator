@@ -169,7 +169,8 @@ const ResultScreen: FC<Props> = ({ result, userName, agent, onShare, onPrint, on
         strengths: 'Building strong management teams, fostering collaboration, and ensuring alignment with the fund\'s vision.',
         bestFor: 'Leaders who believe strong execution comes from strong relationships.',
         agentWill: 'Optimize team structures, improve communication flows, and align execution with investment theses.'
-      }    } as Record<string, any>;
+      }
+    } as Record<string, any>;
 
     const rawName = String(resultAgent.name || resultAgent.key || '').toLowerCase();
     let key = 'integrator';
