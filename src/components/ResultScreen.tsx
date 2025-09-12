@@ -102,7 +102,6 @@ const ResultScreen: FC<Props> = ({
       };
     }
 
-    // start hidden, then animate in to simulate 'sticking' to screen
     setStickerVisible(false);
     t = setTimeout(() => setStickerVisible(true), 520);
 
@@ -138,7 +137,6 @@ const ResultScreen: FC<Props> = ({
   }, [displayedSrc, onShare]);
 
   const printSticker = async () => {
-    // Espera a que la imagen esté compuesta si es necesario
     let outSrc = stickerSource;
     try {
       outSrc = await composeSticker();
@@ -146,7 +144,6 @@ const ResultScreen: FC<Props> = ({
       outSrc = stickerSource;
     }
 
-    // Crea un iframe oculto para imprimir solo la imagen, pero sin abrir nueva ventana
     const printFrame = document.createElement("iframe");
     printFrame.style.position = "fixed";
     printFrame.style.right = "0";
