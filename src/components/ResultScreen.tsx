@@ -172,7 +172,9 @@ const ResultScreen: FC<Props> = ({
     }
 
     setTimeout(() => {
-      document.body.removeChild(printFrame);
+      if (document.body.contains(printFrame)) {
+        document.body.removeChild(printFrame);
+      }
       onPrint();
     }, 1000);
   };
