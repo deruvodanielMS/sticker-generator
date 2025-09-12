@@ -186,7 +186,8 @@ const ResultScreen: FC<Props> = ({ result, userName, agent, onShare, onPrint, on
   const personalityData = getPersonalityData();
 
   return (
-    <MotionSection animateKey={displayedSrc || imageUrl || 'result'} duration={420} className={styles.resultContainer}>
+    // Using imageUrl instead of displayedSrc to avoid large white border
+    <MotionSection animateKey={imageUrl || 'result'} duration={420} className={styles.resultContainer}>
       <div className={styles.resultSection}>
         <div className={styles.heroSection}>
           <div className={styles.heroContent}>
@@ -208,7 +209,7 @@ const ResultScreen: FC<Props> = ({ result, userName, agent, onShare, onPrint, on
               </div>
             )}
             <div className={[styles.resultImageArea, stickerVisible ? styles.stickerVisible : styles.stickerHidden].join(' ')}>
-              <img src={displayedSrc || stickerSource || ''} alt="Result sticker" className={styles.resultImage} />
+              <img src={stickerSource || ''} alt="Result sticker" className={styles.resultImage} />
             </div>
             <div className={styles.ctaSection}>
               <button className={styles.printButton} onClick={printSticker}>PRINT</button>
