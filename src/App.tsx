@@ -48,7 +48,7 @@ function App() {
   const setThemeOnDocument = (theme: 'light' | 'dark') => {
     try {
       document.documentElement.setAttribute('data-theme', theme);
-    } catch (e) {}
+    } catch (err) { console.debug('setThemeOnDocument error', err); }
   };
 
   // Set default theme
@@ -66,8 +66,9 @@ function App() {
         else if (el.webkitRequestFullscreen) await el.webkitRequestFullscreen();
         else if (el.msRequestFullscreen) await el.msRequestFullscreen();
         // when fullscreen entered, the browser chrome will be hidden on supported devices
-      } catch (e) {
+      } catch (err) {
         // ignore errors — many browsers will refuse or require user gesture
+        console.debug('tryFullscreen failed', err);
       }
       // remove listener after attempt
       window.removeEventListener('pointerdown', tryFullscreen);
@@ -75,7 +76,7 @@ function App() {
     window.addEventListener('pointerdown', tryFullscreen, { once: true });
 
     return () => {
-      try { window.removeEventListener('pointerdown', tryFullscreen); } catch (e) {}
+      try { window.removeEventListener('pointerdown', tryFullscreen); } catch (err) { console.debug('removeEventListener failed', err); }
     };
   }, []);
 
